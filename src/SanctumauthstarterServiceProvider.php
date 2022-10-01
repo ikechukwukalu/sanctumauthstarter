@@ -15,7 +15,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::middleware('api')->prefix('api')->group(function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/api.php')->prefix('api');
+            $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
         });
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         $this->loadMigrationsFrom(__DIR__.'/migrations');
