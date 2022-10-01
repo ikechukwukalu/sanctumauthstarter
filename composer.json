@@ -17,7 +17,7 @@
     "autoload": {
         "psr-4": {
             "Ikechukwukalu\\Sanctumauthstarter\\": "src/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Controllers": "src/Controllers"
+            "Ikechukwukalu\\Sanctumauthstarter\\Controllers\\": "src/Controllers"
         }
     },
     "extra": {
