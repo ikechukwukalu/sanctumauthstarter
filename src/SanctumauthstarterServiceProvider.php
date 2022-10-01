@@ -4,7 +4,6 @@ namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
 class SanctumauthstarterServiceProvider extends ServiceProvider
 {
@@ -43,10 +42,6 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Tests/Feature' => base_path('tests/Feature/ikechukwukalu/sanctumauthstarter'),
         ], 'feature-tests');
-
-        Artisan::call('vendor:publish', [
-            '--tag' => 'unit-tests,feature-tests',
-        ]);
     }
 
     /**
