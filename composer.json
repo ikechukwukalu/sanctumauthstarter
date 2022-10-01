@@ -1,0 +1,28 @@
+{
+    "name": "ikechukwukalu/sanctumauthstarter",
+    "description": "Laravel sanctum auth starter kit",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ikechukwu Kalu"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravel/ui": "^3.4",
+        "laravel/sanctum": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ikechukwukalu\\Sanctumauthstarter\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ikechukwukalu\\Sanctumauthstarter\\SanctumauthstarterServiceProvider"
+            ]
+        }
+    }
+}
