@@ -8,6 +8,24 @@
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
+                    @if(Session::has('fail'))
+                        <div class="row mb-3 justify-content-center">
+                            <div class="col-6">
+                                <ul class="list-group">
+                                    @foreach (Session::get('fail') as $message)
+                                        <li class="list-group-item">{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(Session::has('success'))
+                        <div class="row mb-3 justify-content-center">
+                            <div class="col-6">{{ Session::get('fail') }}</div>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 

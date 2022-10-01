@@ -11,7 +11,8 @@
     "minimum-stability": "dev",
     "require": {
         "laravel/ui": "^3.4",
-        "laravel/sanctum": "^3.0"
+        "laravel/sanctum": "^3.0",
+        "laravel/framework": "^9.19"
     },
     "autoload": {
         "psr-4": {

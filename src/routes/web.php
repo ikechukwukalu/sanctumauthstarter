@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('forgot/password', 'ikechukwukalu.sanctumauthstarter.passwords.reset')->name('password.reset');
-Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPassword'])->name('password.update');
+Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPasswordView'])->name('password.update');

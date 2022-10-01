@@ -28,7 +28,7 @@ class ResetPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = ['message' => $validator->messages()->first()];
+            $data = ['message' => (array) $validator->messages()];
             return $this->httpJsonResponse('fail', 500, $data);
         }
 
@@ -38,5 +38,19 @@ class ResetPasswordController extends Controller
 
         $data = ['message' => 'Your password has been reset'];
         return $this->httpJsonResponse('success', 200, $data);
+    }
+
+    public function resetPasswordView(Request $request)
+    {
+        $response = json_encode($this->resetPassword($request));
+        $state = 'success';
+        $messages = $response['data']['message'];
+
+        if ($response['status_code'] === 500) {
+            $state = 'fail';
+        }
+
+        session()->flash($state, $messages);
+        return redirect()->back();
     }
 }
