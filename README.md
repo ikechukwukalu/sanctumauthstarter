@@ -19,6 +19,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 - `composer require ikechukwukalu/sanctumauthstarter`
 - `php artisan vendor:publish --tag=views`
+- `php artisan migrate`
 
 ## Publish Controllers
 
@@ -28,8 +29,10 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 - `php artisan vendor:publish --tag=routes`
 
-## Publish Feature Tests
+## Testing
 
+- `php artisan serve`
 - `php artisan vendor:publish --tag=feature-tests`
+- `php artisan test`
 
 
