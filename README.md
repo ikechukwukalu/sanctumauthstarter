@@ -1,6 +1,6 @@
 ## About Sanctum Auth Starter
 
-This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for making REST APIs using Laravel. The following functionalities are made available:
+This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for making REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
@@ -31,8 +31,10 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ## Testing
 
-- `php artisan serve`
 - `php artisan vendor:publish --tag=feature-tests`
+- `php artisan serve`
 - `php artisan test`
 
+## License
 
+The Laravel package is an open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
