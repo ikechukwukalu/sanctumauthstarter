@@ -4,6 +4,7 @@ namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 class SanctumauthstarterServiceProvider extends ServiceProvider
 {
@@ -20,13 +21,15 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         Route::middleware('web')->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         });
+
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
+
         $this->publishes([
             __DIR__.'/views' => base_path('resources/views/ikechukwukalu/sanctumauthstarter'),
         ], 'views');
         $this->publishes([
-            __DIR__.'/controllers' => base_path('app/Http/Controllers/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Controllers' => base_path('app/Http/Controllers/ikechukwukalu/sanctumauthstarter'),
         ], 'controllers');
         $this->publishes([
             __DIR__.'/models' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
@@ -34,6 +37,16 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/routes' => base_path('routes/ikechukwukalu/sanctumauthstarter'),
         ], 'routes');
+        $this->publishes([
+            __DIR__.'/Tests/Unit' => base_path('tests/Unit/ikechukwukalu/sanctumauthstarter'),
+        ], 'unit-tests');
+        $this->publishes([
+            __DIR__.'/Tests/Feature' => base_path('tests/Feature/ikechukwukalu/sanctumauthstarter'),
+        ], 'feature-tests');
+
+        Artisan::call('vendor:publish', [
+            '--tag' => 'unit-tests,feature-tests',
+        ]);
     }
 
     /**

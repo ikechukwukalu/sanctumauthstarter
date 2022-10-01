@@ -17,7 +17,9 @@
     "autoload": {
         "psr-4": {
             "Ikechukwukalu\\Sanctumauthstarter\\": "src/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Controllers\\": "src/Controllers"
+            "Ikechukwukalu\\Sanctumauthstarter\\Controllers\\": "src/Controllers/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\": "src/Tests/Unit/"
         }
     },
     "extra": {
@@ -26,8 +28,5 @@
                 "Ikechukwukalu\\Sanctumauthstarter\\SanctumauthstarterServiceProvider"
             ]
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "10.0.x-dev"
     }
 }
