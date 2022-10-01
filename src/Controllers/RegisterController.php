@@ -29,13 +29,11 @@ class RegisterController extends Controller
             return $this->httpJsonResponse('fail', 500, $data);
         }
 
-        $user =  User::firstOrCreate(
-            ['email' => $request->email],
-            [
-                'name' => $request->name,
-                'password' => Hash::make($request->password)
-            ]
-        );
+        $user =  User::create([
+            'email' => $request->email,
+            'name' => $request->name,
+            'password' => Hash::make($request->password)
+        ]);
 
         $user->sendEmailVerificationNotification();
 
