@@ -35,8 +35,6 @@ class ResetPasswordTest extends TestCase
         $response = $this->post('/api/auth/reset/password', $postData);
         $responseArray = json_decode($response->getContent(), true);
 
-        var_dump($response->getContent());
-
         $this->assertEquals(500, $responseArray['status_code']);
         $this->assertEquals('fail', $responseArray['status']);
 
@@ -56,8 +54,6 @@ class ResetPasswordTest extends TestCase
 
         $response = $this->post('/api/auth/reset/password', $postData);
         $responseArray = json_decode($response->getContent(), true);
-
-        var_dump($response->getContent());
 
         $this->assertEquals(200, $responseArray['status_code']);
         $this->assertEquals( 'success', $responseArray['status']);
