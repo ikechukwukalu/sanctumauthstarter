@@ -13,12 +13,12 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__ . '/routes/api.php')->prefix('api');
-        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php')->prefix('api');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->loadViewsFrom(__DIR__.'/../views', 'sanctumauthstarter');
         $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/../views' => base_path('resources/views/ikechukwukalu/sanctumauthstarter'),
         ], 'views');
     }
 
