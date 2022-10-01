@@ -17,7 +17,9 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         Route::middleware('api')->prefix('api')->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
         });
-        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+        Route::middleware('web')->group(function () {
+            $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+        });
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
         $this->publishes([
