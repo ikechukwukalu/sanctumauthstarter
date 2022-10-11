@@ -31,7 +31,7 @@ class ForgotPasswordController extends Controller
 
         Password::sendResetLink(['email' => $request->email]);
 
-        $data = ['message' => 'We\'ve sent you an email to reset your password'];
+        $data = ['message' => trans('sanctumauthstarter::passwords.sent')];
         return $this->httpJsonResponse('success', 200, $data);
     }
 }

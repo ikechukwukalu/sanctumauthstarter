@@ -36,7 +36,7 @@ class ResetPasswordController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        $data = ['message' => 'Your password has been reset'];
+        $data = ['message' => trans('sanctumauthstarter::passwords.reset')];
         return $this->httpJsonResponse('success', 200, $data);
     }
 

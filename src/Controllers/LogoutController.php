@@ -17,7 +17,7 @@ class LogoutController extends Controller
 
         $data = [
             'access_token' => null,
-            'message' => 'You\'re now logged out'
+            'message' => trans('sanctumauthstarter::auth.logout')
         ];
         return $this->httpJsonResponse('success', 200, $data);
     }

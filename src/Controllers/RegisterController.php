@@ -37,7 +37,8 @@ class RegisterController extends Controller
 
         $user->sendEmailVerificationNotification();
 
-        $data = ['message' => 'Registration successful'];
+        $data = ['message' => trans('sanctumauthstarter::register.success')];
+
         return $this->httpJsonResponse('success', 200, $data);
     }
 }

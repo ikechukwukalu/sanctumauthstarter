@@ -106,8 +106,6 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
             'Illuminate\\' => 11,
             'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\' => 44,
             'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\' => 47,
-            'Ikechukwukalu\\Sanctumauthstarter\\Tests\\' => 39,
-            'Ikechukwukalu\\Sanctumauthstarter\\TestModels\\' => 44,
             'Ikechukwukalu\\Sanctumauthstarter\\Controllers\\' => 45,
             'Ikechukwukalu\\Sanctumauthstarter\\' => 33,
         ),
@@ -342,19 +340,11 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         ),
         'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Tests/Unit',
+            0 => __DIR__ . '/../..' . '/src/Tests/Unit',
         ),
         'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/Tests/Feature',
-        ),
-        'Ikechukwukalu\\Sanctumauthstarter\\Tests\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/Tests',
-        ),
-        'Ikechukwukalu\\Sanctumauthstarter\\TestModels\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/TestModels',
+            0 => __DIR__ . '/../..' . '/src/Tests/Feature',
         ),
         'Ikechukwukalu\\Sanctumauthstarter\\Controllers\\' => 
         array (

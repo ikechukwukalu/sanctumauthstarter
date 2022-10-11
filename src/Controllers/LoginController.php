@@ -33,7 +33,11 @@ class LoginController extends Controller
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
 
-            $data = ["message" => 'Too many login attempts. Please try again in a minutes time.'];
+            $data = ["message" => trans('sanctumauthstarter::auth.throttle',
+                        ['seconds' => $this->limiter()->availableIn(
+                            $this->throttleKey($request))
+                        ])
+                    ];
             return $this->httpJsonResponse('fail', 500, $data);
         }
 
@@ -63,14 +67,14 @@ class LoginController extends Controller
 
             $data = [
                 'access_token' => $token->plainTextToken,
-                'message' => 'Login successful'
+                'message' => trans('sanctumauthstarter::auth.success')
             ];
             return $this->httpJsonResponse('success', 200, $data);
         }
 
         $this->incrementLoginAttempts($request);
 
-        $data = ['message' => 'Wrong email or password'];
+        $data = ['message' => trans('sanctumauthstarter::auth.failed')];
         return $this->httpJsonResponse('fail', 500, $data);
     }
 }
