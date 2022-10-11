@@ -3,6 +3,7 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
 use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
+use Ikechukwukalu\Sanctumauthstarter\Rules\StrongPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,7 @@ class ResetPasswordController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email', 'max:150', 'exists:users'
             ],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'string', 'min:8', 'max:16', new StrongPassword, 'confirmed'],
         ]);
 
         if ($validator->fails()) {
