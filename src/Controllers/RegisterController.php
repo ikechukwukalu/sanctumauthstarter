@@ -3,6 +3,7 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
 use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
+use Ikechukwukalu\Sanctumauthstarter\Rules\StrongPassword;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'max:16', new StrongPassword, 'confirmed'],
         ]);
 
         if ($validator->fails()) {
