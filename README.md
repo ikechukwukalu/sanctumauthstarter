@@ -29,6 +29,10 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 - `php artisan vendor:publish --tag=routes`
 
+## Publish Lang
+
+- `php artisan vendor:publish --tag=lang`
+
 ## Testing
 
 - `php artisan vendor:publish --tag=feature-tests`
