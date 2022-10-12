@@ -5,10 +5,16 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - User registration
 - User login
 - Login throttling
+- Login 2FA (pending)
+- Social media login (pending)
 - Forgot password
 - Email verification
 - Resend email verification
 - Reset password
+- Change password
+- Change pin (pending)
+- Require pin middleware (pending)
+- Change avatar (pending)
 
 ## Requirements
 
