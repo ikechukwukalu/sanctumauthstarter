@@ -23,3 +23,7 @@ Route::prefix('auth')->group(function () {
     Route::post('forgot/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
     Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPassword'])->name('resetPassword');
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('change/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class, 'changePassword'])->name('changePassword');
+});

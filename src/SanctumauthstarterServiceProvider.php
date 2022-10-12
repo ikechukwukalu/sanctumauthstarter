@@ -35,7 +35,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
             __DIR__.'/Controllers' => base_path('app/Http/Controllers/ikechukwukalu/sanctumauthstarter'),
         ], 'controllers');
         $this->publishes([
-            __DIR__.'/models' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Models' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
         ], 'models');
         $this->publishes([
             __DIR__.'/routes' => base_path('routes/ikechukwukalu/sanctumauthstarter'),

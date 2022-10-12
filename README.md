@@ -33,6 +33,10 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 - `php artisan vendor:publish --tag=lang`
 
+## Publish Laravel Email Notification Blade
+
+- `php artisan vendor:publish --tag=laravel-notifications`
+
 ## Testing
 
 - `php artisan vendor:publish --tag=feature-tests`

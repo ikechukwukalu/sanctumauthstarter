@@ -19,6 +19,8 @@
             "Ikechukwukalu\\Sanctumauthstarter\\": "src/",
             "Ikechukwukalu\\Sanctumauthstarter\\Controllers\\": "src/Controllers/",
             "Ikechukwukalu\\Sanctumauthstarter\\Rule\\": "src/Rule/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Model\\": "src/Models/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Middleware\\": "src/Middleware/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\": "src/Tests/Unit/"
         }

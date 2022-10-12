@@ -3,8 +3,10 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class StrongPassword implements Rule
+class CurrentPassword implements Rule
 {
     /**
      * Create a new rule instance.
@@ -25,7 +27,7 @@ class StrongPassword implements Rule
      */
     public function passes($attribute, $value)
     {
-        return preg_match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[special characters]).{8,16}$^', $value);
+        return Hash::check($value, Auth::user()->password);
     }
 
     /**
@@ -35,6 +37,6 @@ class StrongPassword implements Rule
      */
     public function message()
     {
-        return trans('sanctumauthstarter::passwords.strength');
+        return trans('sanctumauthstarter::passwords.wrong');
     }
 }
