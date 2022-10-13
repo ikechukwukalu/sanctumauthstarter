@@ -4,7 +4,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -12,6 +11,8 @@ use App\Models\User;
 
 class LoginTest extends TestCase
 {
+    use WithFaker;
+
     /**
      * A basic feature test example.
      *
@@ -20,7 +21,7 @@ class LoginTest extends TestCase
     public function testErrorValidationForLogin()
     {
         $postData = [
-            'email' => 'testuser2gmail.com', //Wrong email format
+            'email' => $this->faker->unique()->safeEmail(), //Wrong email format
             'password' => '' //Empty passwords
         ];
 
@@ -33,19 +34,16 @@ class LoginTest extends TestCase
 
     public function testLoginThrottling()
     {
-        $random = Str::random(40);
         $postData = [
-            'email' => 'testuser1@gmail.com',
-            'password' => 'password'
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => "{_'hhtl[N#%H3BXe"
         ];
 
-        $user =  User::firstOrCreate(
-            ['email' => $postData['email']],
-            [
-                'name' => $random,
-                'password' => Hash::make('12345678')
-            ]
-        );
+        $user =  User::create([
+            'name' => $this->faker->name(),
+            'email' => $postData['email'],
+            'password' => Hash::make($postData['password'])
+        ]);
 
         //Multipe login attempts
         for($i = 1; $i <= 6; $i ++) {
@@ -57,19 +55,16 @@ class LoginTest extends TestCase
 
     public function testLogin()
     {
-        $random = Str::random(40);
         $postData = [
-            'email' => 'testuser1@gmail.com',
-            'password' => 'password'
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => "{_'hhtl[N#%H3BXe"
         ];
 
-        $user =  User::firstOrCreate(
-            ['email' => $postData['email']],
-            [
-                'name' => $random,
-                'password' => Hash::make('12345678')
-            ]
-        );
+        $user =  User::create([
+                'name' => $this->faker->name(),
+                'email' => $postData['email'],
+                'password' => Hash::make($postData['password'])
+            ]);
 
         $response = $this->post('/api/auth/login', $postData);
         $responseArray = json_decode($response->getContent(), true);

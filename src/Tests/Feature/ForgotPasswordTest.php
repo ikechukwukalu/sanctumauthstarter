@@ -4,7 +4,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -12,6 +11,8 @@ use App\Models\User;
 
 class ForgotPasswordTest extends TestCase
 {
+    use WithFaker;
+
     /**
      * A basic feature test example.
      *
@@ -32,18 +33,17 @@ class ForgotPasswordTest extends TestCase
 
     public function testForgotPassword()
     {
-        $random = Str::random(40);
         $postData = [
-            'email' => 'testuser1@gmail.com', //Email doesn't exist
+            'email' => $this->faker->unique()->safeEmail(), //Email doesn't exist
         ];
 
-        $user =  User::firstOrCreate(
-            ['email' => $postData['email']],
-            [
-                'name' => $random,
-                'password' => Hash::make('12345678')
-            ]
-        );
+        var_dump($this->faker->name());
+
+        $user =  User::create([
+                'name' => $this->faker->name(),
+                'email' => $postData['email'],
+                'password' => Hash::make("{_'hhtl[N#%H3BXe")
+            ]);
 
         $response = $this->post('/api/auth/forgot/password', $postData);
         $responseArray = json_decode($response->getContent(), true);

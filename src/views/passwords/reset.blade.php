@@ -1,4 +1,4 @@
-@extends('ikechukwukalu.sanctumauthstarter.layouts.app')
+@extends('sanctumauthstarter::layouts.app')
 
 @section('content')
 <div class="container">

@@ -31,14 +31,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
 
-    Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'externalBooks'])->name('externalBooks');
+    Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'externalBooks'])->name('externalBooks');
 
     Route::middleware(['require.pin'])->group(function () {
         Route::prefix('v1/books')->group(function () {
-            Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'createBook'])->name('createBook');
-            Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'listBooks'])->name('listBooks');
-            Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'updateBook'])->name('updateBook');
-            Route::delete('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'deleteBook'])->name('deleteBook');
+            Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'createBook'])->name('createBook');
+            Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooks');
+            Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'updateBook'])->name('updateBook');
+            Route::delete('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'deleteBook'])->name('deleteBook');
         });
     });
 });

@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 use Ikechukwukalu\Sanctumauthstarter\Models\Book;
 
-class ApiController extends Controller
+class BookController extends Controller
 {
     public function externalBooks(Request $request): JsonResponse
     {

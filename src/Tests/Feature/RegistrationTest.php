@@ -4,11 +4,12 @@ namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
+    use WithFaker;
+
     /**
      * A basic feature test example.
      *
@@ -34,12 +35,11 @@ class RegistrationTest extends TestCase
 
     public function testRegistration()
     {
-        $random = Str::random(40);
         $postData = [
-            'name' => 'Test User ' . $random,
-            'email' => 'test-' . $random . '-user@gmail.com',
-            'password' => 'password',
-            'password_confirmation' => 'password'
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => "{_'hhtl[N#%H3BXe",
+            'password_confirmation' => "{_'hhtl[N#%H3BXe"
         ];
 
         $response = $this->post('/api/auth/register', $postData);

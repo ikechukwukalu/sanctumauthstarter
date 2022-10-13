@@ -12,6 +12,8 @@ use App\Models\User;
 
 class ResetPasswordTest extends TestCase
 {
+    use WithFaker;
+
     /**
      * A basic feature test example.
      *
@@ -43,13 +45,21 @@ class ResetPasswordTest extends TestCase
 
     public function testResetPassword()
     {
-        $random = Str::random(40);
-
         $user =  User::first();
+
+        if (!isset($user->id)) {
+            $user = User::create([
+                'name' => $this->faker->name(),
+                'email' => $this->faker->unique()->safeEmail(),
+                'password' => "{_'hhtl[N#%H3BXe",
+                'password_confirmation' => "{_'hhtl[N#%H3BXe"
+            ]);
+        }
+
         $postData = [
             'email' => $user->email,
-            'password' => 'password',
-            'password_confirmation' => 'password'
+            'password' => '$Ty12345678',
+            'password_confirmation' => '$Ty12345678'
         ];
 
         $response = $this->post('/api/auth/reset/password', $postData);
