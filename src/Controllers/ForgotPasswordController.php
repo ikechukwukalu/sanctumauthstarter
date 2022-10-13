@@ -26,12 +26,12 @@ class ForgotPasswordController extends Controller
 
         if ($credentials->fails()) {
             $data = ["message" => (array) $credentials->messages()];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         Password::sendResetLink(['email' => $request->email]);
 
         $data = ['message' => trans('sanctumauthstarter::passwords.sent')];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

@@ -30,7 +30,7 @@ class RegisterController extends Controller
 
         if ($validator->fails()) {
             $data = (array) $validator->messages();
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $user =  User::create([
@@ -43,6 +43,6 @@ class RegisterController extends Controller
 
         $data = ['message' => trans('sanctumauthstarter::register.success')];
 
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

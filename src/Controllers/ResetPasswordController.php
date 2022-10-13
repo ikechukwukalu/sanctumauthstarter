@@ -33,7 +33,7 @@ class ResetPasswordController extends Controller
 
         if ($validator->fails()) {
             $data = ['message' => (array) $validator->messages()];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -41,7 +41,7 @@ class ResetPasswordController extends Controller
         $user->save();
 
         $data = ['message' => trans('sanctumauthstarter::passwords.reset')];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
     public function resetPasswordView(Request $request)

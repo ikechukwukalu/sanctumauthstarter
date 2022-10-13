@@ -19,6 +19,6 @@ class LogoutController extends Controller
             'access_token' => null,
             'message' => trans('sanctumauthstarter::auth.logout')
         ];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

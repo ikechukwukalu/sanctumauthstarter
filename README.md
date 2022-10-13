@@ -24,20 +24,20 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Steps To Install
 
 - `composer require ikechukwukalu/sanctumauthstarter`
-- `php artisan vendor:publish --tag=views`
+- `php artisan vendor:publish --tag=sas-views`
 - `php artisan migrate`
 
 ## Publish Controllers
 
-- `php artisan vendor:publish --tag=controllers`
+- `php artisan vendor:publish --tag=sas-controllers`
 
 ## Publish Routes
 
-- `php artisan vendor:publish --tag=routes`
+- `php artisan vendor:publish --tag=sas-routes`
 
 ## Publish Lang
 
-- `php artisan vendor:publish --tag=lang`
+- `php artisan vendor:publish --tag=sas-lang`
 
 ## Publish Laravel Email Notification Blade
 
@@ -45,9 +45,16 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ## Testing
 
-- `php artisan vendor:publish --tag=feature-tests`
+- `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
+
+## Reserved keywords for payloads
+
+- `_uuid`
+- `_pin`
+- `expires`
+- `signature`
 
 ## License
 

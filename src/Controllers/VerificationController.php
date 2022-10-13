@@ -15,7 +15,7 @@ class VerificationController extends Controller
     {
         if (!$request->hasValidSignature()) {
             $data = ['message' => trans('sanctumauthstarter::verify.url_invalid')];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $user = User::find($request->id);
@@ -24,7 +24,7 @@ class VerificationController extends Controller
         }
 
         $data = ['message' => trans('sanctumauthstarter::verify.verified')];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
     public function resendUserEmailVerification(): JsonResponse
@@ -32,12 +32,12 @@ class VerificationController extends Controller
         $user = Auth::user();
         if ($user->hasVerifiedEmail()) {
             $data = ['message' => trans('sanctumauthstarter::verify.already_verified')];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $user->sendEmailVerificationNotification();
 
         $data = ['message' => trans('sanctumauthstarter::verify.sent')];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

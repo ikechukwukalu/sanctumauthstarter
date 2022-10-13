@@ -28,16 +28,22 @@ class ChangePasswordController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'current_password' => ['required', 'string', new CurrentPassword],
-            'password' => ['required', 'string', 'max:16', Password::min(8)
-                                            ->letters()->mixedCase()
-                                            ->numbers()->symbols()
-                                            ->uncompromised(),
-                                        'confirmed', new DisallowOldPassword],
+            'password' => ['required', 'string', 'max:16',
+                            Password::min(8)
+                                ->letters()->mixedCase()
+                                ->numbers()->symbols()
+                                ->uncompromised(),
+                            'confirmed',
+                            new DisallowOldPassword(
+                                config('sanctumauthstarter.password.check_all', true),
+                                config('sanctumauthstarter.password.number', 4)
+                            )
+                        ],
         ]);
 
         if ($validator->fails()) {
             $data = ['message' => (array) $validator->messages()];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $user = Auth::user();
@@ -50,6 +56,6 @@ class ChangePasswordController extends Controller
         }
 
         $data = ['message' => trans('sanctumauthstarter::passwords.changed')];
-        return $this->httpJsonResponse('success', 200, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

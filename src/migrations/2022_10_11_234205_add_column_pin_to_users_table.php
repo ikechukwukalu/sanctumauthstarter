@@ -15,7 +15,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('pin')->after('password')->default(Hash::make('0000'));
+            $table->string('pin')->after('password')->default(Hash::make(config('sanctumauthstarter.pin.default', '0000')));
+            $table->tinyInteger('default_pin')->after('pin')->default(1);
         });
     }
 
@@ -28,6 +29,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('pin');
+            $table->dropColumn('default_pin');
         });
     }
 };

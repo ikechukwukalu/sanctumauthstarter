@@ -38,7 +38,7 @@ class LoginController extends Controller
                             $this->throttleKey($request))
                         ])
                     ];
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $credentials = Validator::make($request->all(), [
@@ -50,7 +50,7 @@ class LoginController extends Controller
             $this->incrementLoginAttempts($request);
 
             $data = (array) $credentials->messages();
-            return $this->httpJsonResponse('fail', 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
         $remember = isset($request->remember_me) ? true : false;
@@ -69,12 +69,12 @@ class LoginController extends Controller
                 'access_token' => $token->plainTextToken,
                 'message' => trans('sanctumauthstarter::auth.success')
             ];
-            return $this->httpJsonResponse('success', 200, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
         }
 
         $this->incrementLoginAttempts($request);
 
         $data = ['message' => trans('sanctumauthstarter::auth.failed')];
-        return $this->httpJsonResponse('fail', 500, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 }
