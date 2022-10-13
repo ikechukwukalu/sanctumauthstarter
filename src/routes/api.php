@@ -27,9 +27,9 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('change')->group(function () {
         Route::post('password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class, 'changePassword'])->name('changePassword');
-        Route::post('pin', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinValidationController::class, 'changePin'])->name('changePin');
+        Route::post('pin', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'changePin'])->name('changePin');
     });
-    Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinValidationController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
+    Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
 
     Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\ApiController::class, 'externalBooks'])->name('externalBooks');
 

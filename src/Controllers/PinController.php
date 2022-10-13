@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Ikechukwukalu\Sanctumauthstarter\Models\RequirePin;
 
-class PinValidationController extends Controller
+class PinController extends Controller
 {
     public function __construct()
     {

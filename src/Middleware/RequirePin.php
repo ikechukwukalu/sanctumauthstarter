@@ -4,7 +4,7 @@ namespace Ikechukwukalu\Sanctumauthstarter\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Ikechukwukalu\Sanctumauthstarter\Controllers\PinValidationController;
+use Ikechukwukalu\Sanctumauthstarter\Controllers\PinController;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -56,7 +56,7 @@ class RequirePin
             config('sanctumauthstarter.pin.route', 'require_pin'),
             $expires_at, ['uuid' => $uuid]);
 
-        $pinController = new PinValidationController();
+        $pinController = new PinController();
 
         RequirePinModel::create([
             "user_id" => $user->id,
