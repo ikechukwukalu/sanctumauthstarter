@@ -29,27 +29,27 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ## Publish Controllers
 
-- `php artisan vendor:publish --tag=sas-controllers`
+- `php artisan vendor:publish --tag=controllers`
 
 ## Publish Models
 
-- `php artisan vendor:publish --tag=sas-models`
+- `php artisan vendor:publish --tag=models`
 
 ## Publish Views
 
-- `php artisan vendor:publish --tag=sas-views`
+- `php artisan vendor:publish --tag=views`
 
 ## Publish Routes
 
-- `php artisan vendor:publish --tag=sas-routes`
+- `php artisan vendor:publish --tag=routes`
 
 ## Publish Lang
 
-- `php artisan vendor:publish --tag=sas-lang`
+- `php artisan vendor:publish --tag=lang`
 
 ## Publish Config
 
-- `php artisan vendor:publish --tag=sas-config`
+- `php artisan vendor:publish --tag=config`
 
 ## Publish Laravel Email Notification Blade
 
@@ -57,7 +57,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ## Testing
 
-- `php artisan vendor:publish --tag=sas-feature-tests`
+- `php artisan vendor:publish --tag=feature-tests`
 - `php artisan serve`
 - `php artisan test`
 
