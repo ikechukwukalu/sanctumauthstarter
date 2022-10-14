@@ -28,7 +28,7 @@ class PinTest extends TestCase
             $user = User::create([
                 'name' => $this->faker->name(),
                 'email' => $this->faker->unique()->safeEmail(),
-                'password' => "{_'hhtl[N#%H3BXe"
+                'password' => Hash::make("{_'hhtl[N#%H3BXe")
             ]); // Would still have the default pin
         }
 
@@ -51,7 +51,7 @@ class PinTest extends TestCase
     {
         $userData = [
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe"
+            'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
         $user =  User::create([
@@ -85,7 +85,7 @@ class PinTest extends TestCase
         $user = User::create([
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe",
+            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);
@@ -136,7 +136,7 @@ class PinTest extends TestCase
         $user = User::create([
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe",
+            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);
@@ -203,7 +203,7 @@ class PinTest extends TestCase
         $user = User::create([
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe",
+            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);

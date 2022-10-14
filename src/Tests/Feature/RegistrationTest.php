@@ -38,7 +38,7 @@ class RegistrationTest extends TestCase
         $postData = [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe",
+            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
             'password_confirmation' => "{_'hhtl[N#%H3BXe"
         ];
 

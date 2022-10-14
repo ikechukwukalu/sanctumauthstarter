@@ -26,6 +26,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - `composer require ikechukwukalu/sanctumauthstarter`
 - `php artisan migrate`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
+- Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
 ## Publish Controllers
 

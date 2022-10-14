@@ -26,7 +26,7 @@ class ChangePasswordTest extends TestCase
             $user = User::create([
                 'name' => $this->faker->name(),
                 'email' => $this->faker->unique()->safeEmail(),
-                'password' => "{_'hhtl[N#%H3BXe"
+                'password' => Hash::make("{_'hhtl[N#%H3BXe")
             ]);
         }
 
@@ -49,7 +49,7 @@ class ChangePasswordTest extends TestCase
     {
         $userData = [
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe"
+            'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
         $user =  User::create([

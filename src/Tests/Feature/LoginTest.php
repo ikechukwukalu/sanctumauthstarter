@@ -36,7 +36,7 @@ class LoginTest extends TestCase
     {
         $postData = [
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe"
+            'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
         $user =  User::create([
@@ -57,7 +57,7 @@ class LoginTest extends TestCase
     {
         $postData = [
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe"
+            'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
         $user =  User::create([
