@@ -28,6 +28,23 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
+## Testing
+
+It's recommended that you run the tests before you start building your application.
+
+- `php artisan vendor:publish --tag=feature-tests`
+- `php artisan serve`
+- `php artisan test`
+
+## Reserved keywords for payloads
+
+- `_uuid`
+- `_pin`
+- `expires`
+- `signature`
+
+Some of the reserved keywords can be changed from the config file.
+
 ## Publish Controllers
 
 - `php artisan vendor:publish --tag=controllers`
@@ -55,21 +72,6 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Publish Laravel Email Notification Blade
 
 - `php artisan vendor:publish --tag=laravel-notifications`
-
-## Testing
-
-- `php artisan vendor:publish --tag=feature-tests`
-- `php artisan serve`
-- `php artisan test`
-
-## Reserved keywords for payloads
-
-- `_uuid`
-- `_pin`
-- `expires`
-- `signature`
-
-Some of the reserved keywords can be changed from the config file.
 
 ## License
 
