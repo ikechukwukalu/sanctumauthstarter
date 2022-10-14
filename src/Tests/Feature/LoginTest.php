@@ -39,10 +39,8 @@ class LoginTest extends TestCase
             'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
-        $user =  User::create([
-            'name' => $this->faker->name(),
-            'email' => $postData['email'],
-            'password' => Hash::make($postData['password'])
+        $user = User::factory()->create([
+            'email' => $postData['email']
         ]);
 
         //Multipe login attempts
@@ -50,7 +48,10 @@ class LoginTest extends TestCase
             $response = $this->post('/api/auth/login', $postData);
         }
 
-        $response->assertStatus(302);
+        $responseArray = json_decode($response->getContent(), true);
+
+        $this->assertEquals(500, $responseArray['status_code']);
+        $this->assertEquals('fail', $responseArray['status']);
     }
 
     public function testLogin()
@@ -60,11 +61,10 @@ class LoginTest extends TestCase
             'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
-        $user =  User::create([
-                'name' => $this->faker->name(),
-                'email' => $postData['email'],
-                'password' => Hash::make($postData['password'])
-            ]);
+        $user = User::factory()->create([
+            'email' => $postData['email'],
+            'password' => Hash::make($postData['password'])
+        ]);
 
         $response = $this->post('/api/auth/login', $postData);
         $responseArray = json_decode($response->getContent(), true);

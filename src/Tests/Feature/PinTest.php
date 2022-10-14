@@ -25,11 +25,7 @@ class PinTest extends TestCase
         $user =  User::find(1);
 
         if (!isset($user->id)) {
-            $user = User::create([
-                'name' => $this->faker->name(),
-                'email' => $this->faker->unique()->safeEmail(),
-                'password' => Hash::make("{_'hhtl[N#%H3BXe")
-            ]); // Would still have the default pin
+            $user = User::factory()->create(); // Would still have the default pin
         }
 
         $this->actingAs($user);
@@ -54,7 +50,7 @@ class PinTest extends TestCase
             'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ];
 
-        $user =  User::create([
+        $user = User::factory()->create([
             'name' => $this->faker->name(),
             'email' => $userData['email'],
             'password' => Hash::make($userData['password']),
@@ -82,10 +78,7 @@ class PinTest extends TestCase
     {
         $pin = 1234;
 
-        $user = User::create([
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
+        $user = User::factory()->create([
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);
@@ -133,10 +126,7 @@ class PinTest extends TestCase
     {
         $pin = 1234;
 
-        $user = User::create([
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
+        $user = User::factory()->create([
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);
@@ -200,10 +190,7 @@ class PinTest extends TestCase
     {
         $pin = 1234;
 
-        $user = User::create([
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
+        $user = User::factory()->create([
             'pin' => Hash::make($pin),
             'default_pin' => 0
         ]);

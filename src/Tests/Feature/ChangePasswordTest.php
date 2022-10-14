@@ -23,11 +23,7 @@ class ChangePasswordTest extends TestCase
         $user =  User::find(1);
 
         if (!isset($user->id)) {
-            $user = User::create([
-                'name' => $this->faker->name(),
-                'email' => $this->faker->unique()->safeEmail(),
-                'password' => Hash::make("{_'hhtl[N#%H3BXe")
-            ]);
+            $user = User::factory()->create();
         }
 
         $this->actingAs($user);
@@ -47,15 +43,8 @@ class ChangePasswordTest extends TestCase
 
     public function testChangePassword()
     {
-        $userData = [
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => "{_'hhtl[N#%H3BXe"
-        ];
-
-        $user =  User::create([
-            'name' => $this->faker->name(),
-            'email' => $userData['email'],
-            'password' => Hash::make($userData['password'])
+        $user = User::factory()->create([
+            'password' => Hash::make("{_'hhtl[N#%H3BXe")
         ]);
 
         $this->actingAs($user);

@@ -47,11 +47,7 @@ class ResetPasswordTest extends TestCase
         $user =  User::first();
 
         if (!isset($user->id)) {
-            $user = User::create([
-                'name' => $this->faker->name(),
-                'email' => $this->faker->unique()->safeEmail(),
-                'password' => Hash::make("{_'hhtl[N#%H3BXe")
-            ]);
+            $user = User::factory()->create();
         }
 
         $postData = [

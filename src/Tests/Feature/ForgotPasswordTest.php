@@ -37,11 +37,9 @@ class ForgotPasswordTest extends TestCase
             'email' => $this->faker->unique()->safeEmail(), //Email doesn't exist
         ];
 
-        $user =  User::create([
-                'name' => $this->faker->name(),
-                'email' => $postData['email'],
-                'password' => Hash::make("{_'hhtl[N#%H3BXe")
-            ]);
+        $user = User::factory()->create([
+                'email' => $postData['email']
+        ]);
 
         $response = $this->post('/api/auth/forgot/password', $postData);
         $responseArray = json_decode($response->getContent(), true);
