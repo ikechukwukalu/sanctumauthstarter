@@ -27,28 +27,28 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config' => base_path('resources/lang/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-config');
+        ], 'config');
         $this->publishes([
             __DIR__.'/lang' => base_path('resources/lang/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-lang');
+        ], 'lang');
         $this->publishes([
             __DIR__.'/views' => base_path('resources/views/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-views');
+        ], 'views');
         $this->publishes([
             __DIR__.'/Controllers' => base_path('app/Http/Controllers/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-controllers');
+        ], 'controllers');
         $this->publishes([
             __DIR__.'/Models' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-models');
+        ], 'models');
         $this->publishes([
             __DIR__.'/routes' => base_path('routes/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-routes');
+        ], 'routes');
         $this->publishes([
             __DIR__.'/Tests/Unit' => base_path('tests/Unit/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-unit-tests');
+        ], 'unit-tests');
         $this->publishes([
             __DIR__.'/Tests/Feature' => base_path('tests/Feature/ikechukwukalu/sanctumauthstarter'),
-        ], 'sas-feature-tests');
+        ], 'feature-tests');
     }
 
     /**
