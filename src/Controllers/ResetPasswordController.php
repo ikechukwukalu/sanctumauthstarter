@@ -44,7 +44,7 @@ class ResetPasswordController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
-    public function resetPasswordView(Request $request)
+    public function resetPasswordForm(Request $request)
     {
         $response = json_encode($this->resetPassword($request));
         $state = 'success';

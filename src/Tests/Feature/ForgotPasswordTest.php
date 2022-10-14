@@ -37,8 +37,6 @@ class ForgotPasswordTest extends TestCase
             'email' => $this->faker->unique()->safeEmail(), //Email doesn't exist
         ];
 
-        var_dump($this->faker->name());
-
         $user =  User::create([
                 'name' => $this->faker->name(),
                 'email' => $postData['email'],

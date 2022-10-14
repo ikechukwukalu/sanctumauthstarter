@@ -4,7 +4,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -51,8 +50,7 @@ class ResetPasswordTest extends TestCase
             $user = User::create([
                 'name' => $this->faker->name(),
                 'email' => $this->faker->unique()->safeEmail(),
-                'password' => "{_'hhtl[N#%H3BXe",
-                'password_confirmation' => "{_'hhtl[N#%H3BXe"
+                'password' => "{_'hhtl[N#%H3BXe"
             ]);
         }
 

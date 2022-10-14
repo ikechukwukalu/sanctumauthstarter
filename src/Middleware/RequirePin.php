@@ -25,15 +25,16 @@ class RequirePin
     {
         $user = Auth::user();
 
-        if ($request->has('_uuid')) {
+        if ($request->has(config('sanctumauthstarter.pin.param', '_uuid'))) {
+            $param = config('sanctumauthstarter.pin.param', '_uuid');
             $requirePin = RequirePinModel::whereBelongsTo($user)
                             ->where('route_arrested', $request->path())
-                            ->where('uuid', $request->_uuid)
+                            ->where('uuid', $request->{$param})
                             ->whereNull('approved_at')
                             ->whereNull('cancelled_at')
                             ->first();
 
-            if (isset($requirePin->uuid)) {
+            if (isset($requirePin->{$param})) {
                 $requirePin->approved_at = now();
                 $requirePin->save();
 

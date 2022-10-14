@@ -12,8 +12,8 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Resend email verification
 - Reset password
 - Change password
-- Change pin (pending)
-- Require pin middleware (pending)
+- Change pin
+- Require pin middleware
 - Change avatar (pending)
 
 ## Requirements
@@ -24,12 +24,20 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Steps To Install
 
 - `composer require ikechukwukalu/sanctumauthstarter`
-- `php artisan vendor:publish --tag=sas-views`
 - `php artisan migrate`
+- Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 
 ## Publish Controllers
 
 - `php artisan vendor:publish --tag=sas-controllers`
+
+## Publish Models
+
+- `php artisan vendor:publish --tag=sas-models`
+
+## Publish Views
+
+- `php artisan vendor:publish --tag=sas-views`
 
 ## Publish Routes
 
@@ -38,6 +46,10 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Publish Lang
 
 - `php artisan vendor:publish --tag=sas-lang`
+
+## Publish Config
+
+- `php artisan vendor:publish --tag=sas-config`
 
 ## Publish Laravel Email Notification Blade
 
@@ -55,6 +67,8 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - `_pin`
 - `expires`
 - `signature`
+
+Some of the reserved keywords can be changed from the config file.
 
 ## License
 

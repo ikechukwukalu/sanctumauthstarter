@@ -69,10 +69,10 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 
-    public function listBooks(Request $request): JsonResponse
+    public function listBooks(Request $request, $id = null): JsonResponse
     {
-        if (isset($request->id)) {
-            $data = Book::find($request->id);
+        if (isset($id)) {
+            $data = Book::find($id);
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
         }
 
@@ -80,9 +80,9 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
-    public function updateBook(Request $request): JsonResponse
+    public function updateBook(Request $request, $id): JsonResponse
     {
-        $request->request->add(['id' => $request->id]);
+        $request->merge(['id' => $id]);
 
         $validator = Validator::make($request->all(), [
             'id' => 'required|numeric|exists:books',
@@ -117,11 +117,11 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 
-    public function deleteBook(Request $request): JsonResponse
+    public function deleteBook(Request $request, $id): JsonResponse
     {
-        if (Book::where('id', $request->id)->delete()
+        if (Book::where('id', $id)->delete()
         ) {
-            $data = Book::withTrashed()->find($request->id);
+            $data = Book::withTrashed()->find($id);
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
         }
 
