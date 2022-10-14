@@ -5,6 +5,7 @@ namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Hash;
 
 class RegistrationTest extends TestCase
 {
@@ -38,7 +39,7 @@ class RegistrationTest extends TestCase
         $postData = [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'password' => Hash::make("{_'hhtl[N#%H3BXe"),
+            'password' => "{_'hhtl[N#%H3BXe",
             'password_confirmation' => "{_'hhtl[N#%H3BXe"
         ];
 
