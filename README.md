@@ -30,7 +30,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ## Testing
 
-It's recommended that you run the tests before you start building your application.
+It's recommended that you run the tests before you start building your application. Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
 
 - `php artisan vendor:publish --tag=feature-tests`
 - `php artisan serve`
