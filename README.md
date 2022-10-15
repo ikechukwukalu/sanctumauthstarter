@@ -28,10 +28,23 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
-## Testing
+## Tests
 
-It's recommended that you run the tests before you start building your application. Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
+It's recommended that you run the tests before you start adding your models and controllers.
+Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
 
+###### NOTE:
+The passwords created within the `database/factories/UserFactory.php` Class must match the validation below:
+
+```
+'password' => ['required', 'string', 'max:16',
+                Password::min(8)
+                    ->letters()->mixedCase()
+                    ->numbers()->symbols()
+                    ->uncompromised(),
+```
+
+###### RUNNING TESTS:
 - `php artisan vendor:publish --tag=feature-tests`
 - `php artisan serve`
 - `php artisan test`
