@@ -181,6 +181,10 @@ class ComponentTagCompiler
                             )
                             |
                             (?:
+                                (\:\\\$)(\w+)
+                            )
+                            |
+                            (?:
                                 [\w\-:.@]+
                                 (
                                     =
@@ -232,8 +236,12 @@ class ComponentTagCompiler
         // component and pass the component as a view parameter to the data so it
         // can be accessed within the component and we can render out the view.
         if (! class_exists($class)) {
+            $view = Str::startsWith($component, 'mail::')
+                ? "\$__env->getContainer()->make(Illuminate\\View\\Factory::class)->make('{$component}')"
+                : "'$class'";
+
             $parameters = [
-                'view' => "'$class'",
+                'view' => $view,
                 'data' => '['.$this->attributesToString($data->all(), $escapeBound = false).']',
             ];
 
@@ -306,6 +314,10 @@ class ComponentTagCompiler
 
         if (! is_null($guess)) {
             return $guess;
+        }
+
+        if (Str::startsWith($component, 'mail::')) {
+            return $component;
         }
 
         throw new InvalidArgumentException(
@@ -563,10 +575,10 @@ class ComponentTagCompiler
      */
     protected function parseShortAttributeSyntax(string $value)
     {
-        $pattern = "/\:\\\$(\w+)/x";
+        $pattern = "/\s\:\\\$(\w+)/x";
 
         return preg_replace_callback($pattern, function (array $matches) {
-            return ":{$matches[1]}=\"\${$matches[1]}\"";
+            return " :{$matches[1]}=\"\${$matches[1]}\"";
         }, $value);
     }
 

@@ -18,6 +18,7 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
+        '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         '09f6b20656683369174dd6fa83b7e5fb' => __DIR__ . '/..' . '/symfony/polyfill-uuid/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '35a6ad97d21e794e7e22a17d806652e4' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Functions.php',
@@ -33,9 +34,17 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         array (
             'voku\\' => 5,
         ),
+        'h' => 
+        array (
+            'hisorange\\BrowserDetect\\' => 24,
+        ),
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
+        ),
+        'U' => 
+        array (
+            'UAParser\\' => 9,
         ),
         'T' => 
         array (
@@ -91,6 +100,7 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         ),
         'L' => 
         array (
+            'League\\Pipeline\\' => 16,
             'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\' => 17,
             'League\\Config\\' => 14,
@@ -99,6 +109,10 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
             'Laravel\\SerializableClosure\\' => 28,
             'Laravel\\Sanctum\\' => 16,
         ),
+        'J' => 
+        array (
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -106,6 +120,11 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
             'Illuminate\\' => 11,
             'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\' => 44,
             'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\' => 47,
+            'Ikechukwukalu\\Sanctumauthstarter\\Rule\\' => 38,
+            'Ikechukwukalu\\Sanctumauthstarter\\Notifications\\' => 47,
+            'Ikechukwukalu\\Sanctumauthstarter\\Model\\' => 39,
+            'Ikechukwukalu\\Sanctumauthstarter\\Middleware\\' => 44,
+            'Ikechukwukalu\\Sanctumauthstarter\\Helpers\\' => 41,
             'Ikechukwukalu\\Sanctumauthstarter\\Controllers\\' => 45,
             'Ikechukwukalu\\Sanctumauthstarter\\' => 33,
         ),
@@ -127,10 +146,12 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
             'Doctrine\\Inflector\\' => 19,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Dflydev\\DotAccessData\\' => 22,
+            'DeviceDetector\\' => 15,
         ),
         'C' => 
         array (
             'Cron\\' => 5,
+            'Composer\\CaBundle\\' => 18,
             'Carbon\\' => 7,
         ),
         'B' => 
@@ -144,9 +165,17 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
         ),
+        'hisorange\\BrowserDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hisorange/browser-detect/src',
+        ),
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'UAParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ua-parser/uap-php/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -296,6 +325,10 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
+        'League\\Pipeline\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/pipeline/src',
+        ),
         'League\\MimeTypeDetection\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
@@ -324,6 +357,10 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         array (
             0 => __DIR__ . '/..' . '/laravel/sanctum/src',
         ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -345,6 +382,26 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         'Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/Tests/Feature',
+        ),
+        'Ikechukwukalu\\Sanctumauthstarter\\Rule\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Rule',
+        ),
+        'Ikechukwukalu\\Sanctumauthstarter\\Notifications\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Notifications',
+        ),
+        'Ikechukwukalu\\Sanctumauthstarter\\Model\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Models',
+        ),
+        'Ikechukwukalu\\Sanctumauthstarter\\Middleware\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Middleware',
+        ),
+        'Ikechukwukalu\\Sanctumauthstarter\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/Helpers',
         ),
         'Ikechukwukalu\\Sanctumauthstarter\\Controllers\\' => 
         array (
@@ -382,9 +439,17 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         array (
             0 => __DIR__ . '/..' . '/dflydev/dot-access-data/src',
         ),
+        'DeviceDetector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matomo/device-detector',
+        ),
         'Cron\\' => 
         array (
             0 => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron',
+        ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
         'Carbon\\' => 
         array (
@@ -396,9 +461,20 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Nette\\ArgumentOutOfRangeException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
         'Nette\\DeprecatedException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
         'Nette\\DirectoryNotFoundException' => __DIR__ . '/..' . '/nette/utils/src/exceptions.php',
@@ -467,6 +543,7 @@ class ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit257ba72ce8166cfbdef9969effa6aeec::$classMap;
 
         }, null, ClassLoader::class);

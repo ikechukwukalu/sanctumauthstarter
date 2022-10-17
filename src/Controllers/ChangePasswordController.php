@@ -5,7 +5,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
 use Ikechukwukalu\Sanctumauthstarter\Rules\CurrentPassword;
 use Ikechukwukalu\Sanctumauthstarter\Rules\DisallowOldPassword;
-use Ikechukwukalu\Sanctumauthstarter\Models\OldPassword;
 
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
@@ -14,8 +13,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\PasswordChange;
 
 use App\Models\User;
+use Ikechukwukalu\Sanctumauthstarter\Models\OldPassword;
 
 class ChangePasswordController extends Controller
 {
@@ -53,6 +54,10 @@ class ChangePasswordController extends Controller
                 'user_id' => $user->id,
                 'password' => Hash::make($request->password)
             ]);
+        }
+
+        if (config('sanctumauthstarter.registration.notify.pin', true)) {
+            $user->notify(new PasswordChange());
         }
 
         $data = ['message' => trans('sanctumauthstarter::passwords.changed')];

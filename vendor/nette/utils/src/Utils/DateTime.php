@@ -71,7 +71,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 		int $hour = 0,
 		int $minute = 0,
 		float $second = 0.0,
-	): static {
+	): static
+	{
 		$s = sprintf('%04d-%02d-%02d %02d:%02d:%02.5F', $year, $month, $day, $hour, $minute, $second);
 		if (
 			!checkdate($month, $day, $year)
@@ -96,7 +97,8 @@ class DateTime extends \DateTime implements \JsonSerializable
 		string $format,
 		string $time,
 		string|\DateTimeZone|null $timezone = null,
-	): static|false {
+	): static|false
+	{
 		if ($timezone === null) {
 			$timezone = new \DateTimeZone(date_default_timezone_get());
 

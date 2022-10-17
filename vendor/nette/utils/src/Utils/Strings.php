@@ -509,7 +509,8 @@ class Strings
 		bool $skipEmpty = false,
 		int $limit = -1,
 		bool $utf8 = false,
-	): array {
+	): array
+	{
 		$flags = is_int($captureOffset) && $captureOffset // back compatibility
 			? $captureOffset
 			: ($captureOffset ? PREG_SPLIT_OFFSET_CAPTURE : 0) | ($skipEmpty ? PREG_SPLIT_NO_EMPTY : 0);
@@ -533,7 +534,8 @@ class Strings
 		int $offset = 0,
 		bool $unmatchedAsNull = false,
 		bool $utf8 = false,
-	): ?array {
+	): ?array
+	{
 		$flags = is_int($captureOffset) && $captureOffset // back compatibility
 			? $captureOffset
 			: ($captureOffset ? PREG_OFFSET_CAPTURE : 0) | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0);
@@ -570,7 +572,8 @@ class Strings
 		bool $unmatchedAsNull = false,
 		bool $patternOrder = false,
 		bool $utf8 = false,
-	): array {
+	): array
+	{
 		$flags = is_int($captureOffset) && $captureOffset // back compatibility
 			? $captureOffset
 			: ($captureOffset ? PREG_OFFSET_CAPTURE : 0) | ($unmatchedAsNull ? PREG_UNMATCHED_AS_NULL : 0) | ($patternOrder ? PREG_PATTERN_ORDER : 0);
@@ -607,7 +610,8 @@ class Strings
 		bool $captureOffset = false,
 		bool $unmatchedAsNull = false,
 		bool $utf8 = false,
-	): string {
+	): string
+	{
 		if (is_object($replacement) || is_array($replacement)) {
 			if (!is_callable($replacement, false, $textual)) {
 				throw new Nette\InvalidStateException("Callback '$textual' is not callable.");

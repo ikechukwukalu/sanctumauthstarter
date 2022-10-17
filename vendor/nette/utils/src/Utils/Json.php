@@ -32,7 +32,8 @@ final class Json
 		mixed $value,
 		bool|int $pretty = false,
 		bool $escapeUnicode = false,
-	): string {
+	): string
+	{
 		$flags = 0;
 		if (is_int($pretty)) { // back compatibility
 			$escapeUnicode = $pretty & self::ESCAPE_UNICODE;

@@ -5,7 +5,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
 use Ikechukwukalu\Sanctumauthstarter\Rules\CurrentPin;
 use Ikechukwukalu\Sanctumauthstarter\Rules\DisallowOldPin;
-use Ikechukwukalu\Sanctumauthstarter\Models\OldPin;
 
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
@@ -16,9 +15,11 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\PinChange;
 
 use App\Models\User;
 use Ikechukwukalu\Sanctumauthstarter\Models\RequirePin;
+use Ikechukwukalu\Sanctumauthstarter\Models\OldPin;
 
 class PinController extends Controller
 {
@@ -57,6 +58,10 @@ class PinController extends Controller
                 'user_id' => $user->id,
                 'pin' => Hash::make($request->pin)
             ]);
+        }
+
+        if (config('sanctumauthstarter.pin.notify.change', true)) {
+            $user->notify(new PinChange());
         }
 
         $data = ['message' => trans('sanctumauthstarter::pin.changed')];

@@ -1,9 +1,10 @@
-## About Sanctum Auth Starter
+# About Sanctum Auth Starter
 
 This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for making REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
+- Auto login after registration
 - Login throttling
 - Login 2FA (pending)
 - Social media login (pending)
@@ -15,6 +16,12 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Change pin
 - Require pin middleware
 - Change avatar (pending)
+- Notifications
+  - Welcome notification
+  - Email verification
+  - Login notification
+  - Password change notification
+  - Pin change notification
 
 ## Requirements
 
@@ -33,10 +40,11 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 It's recommended that you run the tests before you start adding your models and controllers.
 Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
 
-###### NOTE:
+### NOTE
+
 The passwords created within the `database/factories/UserFactory.php` Class must match the validation below:
 
-```
+``` PHP
 'password' => ['required', 'string', 'max:16',
                 Password::min(8)
                     ->letters()->mixedCase()
@@ -44,7 +52,8 @@ The passwords created within the `database/factories/UserFactory.php` Class must
                     ->uncompromised(),
 ```
 
-###### RUNNING TESTS:
+### RUNNING TESTS
+
 - `php artisan vendor:publish --tag=feature-tests`
 - `php artisan serve`
 - `php artisan test`

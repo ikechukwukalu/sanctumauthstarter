@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser;
 
 class RegisterController extends Controller
 {
@@ -39,9 +41,24 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $user->sendEmailVerificationNotification();
+        $data = [];
 
-        $data = ['message' => trans('sanctumauthstarter::register.success')];
+        if (config('sanctumauthstarter.registration.autologin', false)) {
+            Auth::login($user);
+            $token = $user->createToken($request->email);
+            $data['access_token'] = $token->plainTextToken;
+        }
+
+        if (config('sanctumauthstarter.registration.notify.welcome', true)) {
+            //Welcome email
+            $user->notify(new WelcomeUser($user));
+        }
+
+        if (config('sanctumauthstarter.registration.notify.verify', true)) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        $data['message'] = trans('sanctumauthstarter::register.success');
 
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }

@@ -116,7 +116,8 @@ class Validators
 		$key,
 		?string $expected = null,
 		string $label = "item '%' in array",
-	): void {
+	): void
+	{
 		if (!array_key_exists($key, $array)) {
 			throw new AssertionException('Missing ' . str_replace('%', $key, $label) . '.');
 

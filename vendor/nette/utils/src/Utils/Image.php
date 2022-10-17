@@ -340,7 +340,8 @@ class Image
 		int|string|null $height,
 		int $mode = self::FIT,
 		bool $shrinkOnly = false,
-	): static {
+	): static
+	{
 		if ($mode & self::EXACT) {
 			return $this->resize($width, $height, self::FILL)->crop('50%', '50%', $width, $height);
 		}
@@ -383,7 +384,8 @@ class Image
 		$newHeight,
 		int $mode = self::FIT,
 		bool $shrinkOnly = false,
-	): array {
+	): array
+	{
 		$shrinkOnly = $shrinkOnly || ($mode & self::SHRINK_ONLY); // back compatibility
 		if ($newWidth === null) {
 		} elseif (self::isPercent($newWidth)) {
@@ -471,7 +473,8 @@ class Image
 		int|string $top,
 		int|string $newWidth,
 		int|string $newHeight,
-	): array {
+	): array
+	{
 		if (self::isPercent($newWidth)) {
 			$newWidth = (int) round($srcWidth / 100 * $newWidth);
 		}

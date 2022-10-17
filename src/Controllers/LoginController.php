@@ -3,7 +3,6 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
 use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\Validator;
@@ -12,6 +11,9 @@ use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
+use Carbon\Carbon;
+use hisorange\BrowserDetect\Parser as Browser;
 
 use App\Models\User;
 
@@ -65,6 +67,14 @@ class LoginController extends Controller
             $user = Auth::user();
             $token = $user->createToken($request->email);
 
+            if (config('sanctumauthstarter.login.notify.user', true)) {
+                $now = Carbon::now();
+                $time = $now->isoFormat('MMMM Do YYYY, h:mm:ss a');
+                $device = $this->getLoginUserInformation();
+
+                $user->notify(new UserLogin($time, $device));
+            }
+
             $data = [
                 'access_token' => $token->plainTextToken,
                 'message' => trans('sanctumauthstarter::auth.success')
@@ -76,5 +86,33 @@ class LoginController extends Controller
 
         $data = ['message' => trans('sanctumauthstarter::auth.failed')];
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+    }
+
+    private function getLoginUserInformation(): array
+    {
+        $info = [];
+
+        if (Browser::deviceType() === 'Mobile' ||
+            Browser::deviceType() === 'Tablet') {
+            $info = [
+                Browser::deviceFamily(),
+                Browser::deviceModel()
+            ];
+        }
+
+        if (Browser::deviceType() === 'Desktop') {
+            $info = [
+                Browser::browserName(),
+                Browser::platformName()
+            ];
+        }
+
+        if (Browser::deviceType() === 'Bot') {
+            $info = [
+                Browser::userAgent()
+            ];
+        }
+
+        return $info;
     }
 }

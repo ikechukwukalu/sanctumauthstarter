@@ -1,6 +1,6 @@
 {
     "name": "ikechukwukalu/sanctumauthstarter",
-    "description": "Laravel sanctum auth starter kit",
+    "description": "Laravel sanctum auth starter",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -12,7 +12,8 @@
     "require": {
         "laravel/ui": "^3.4",
         "laravel/sanctum": "^3.0",
-        "laravel/framework": "^9.19"
+        "laravel/framework": "^9.19",
+        "hisorange/browser-detect": "dev-stable"
     },
     "autoload": {
         "psr-4": {
@@ -21,6 +22,8 @@
             "Ikechukwukalu\\Sanctumauthstarter\\Rule\\": "src/Rule/",
             "Ikechukwukalu\\Sanctumauthstarter\\Model\\": "src/Models/",
             "Ikechukwukalu\\Sanctumauthstarter\\Middleware\\": "src/Middleware/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Notifications\\": "src/Notifications/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Helpers\\": "src/Helpers/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\": "src/Tests/Unit/"
         }

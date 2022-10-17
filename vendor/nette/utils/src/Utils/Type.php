@@ -28,7 +28,8 @@ final class Type
 	 */
 	public static function fromReflection(
 		\ReflectionFunctionAbstract|\ReflectionParameter|\ReflectionProperty $reflection,
-	): ?self {
+	): ?self
+	{
 		if ($reflection instanceof \ReflectionMethod) {
 			$type = $reflection->getReturnType() ?? (PHP_VERSION_ID >= 80100 ? $reflection->getTentativeReturnType() : null);
 		} else {
@@ -88,7 +89,8 @@ final class Type
 	public static function resolve(
 		string $type,
 		\ReflectionFunctionAbstract|\ReflectionParameter|\ReflectionProperty $reflection,
-	): string {
+	): string
+	{
 		$lower = strtolower($type);
 		if ($reflection instanceof \ReflectionFunction) {
 			return $type;
