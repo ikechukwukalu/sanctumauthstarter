@@ -31,7 +31,8 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Steps To Install
 
 - `composer require ikechukwukalu/sanctumauthstarter`
-- `php artisan migrate`
+- You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications. For a quick start set `QUEUE_CONNECTION=database` within your `.env` file.
+- Run `php artisan queue:table`, `php artisan migrate` and `php artisan queue:work --queue=high,default`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
@@ -54,7 +55,7 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 ### RUNNING TESTS
 
-- `php artisan vendor:publish --tag=feature-tests`
+- `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
 
@@ -69,27 +70,35 @@ Some of the reserved keywords can be changed from the config file.
 
 ## Publish Controllers
 
-- `php artisan vendor:publish --tag=controllers`
+- `php artisan vendor:publish --tag=sas-controllers`
 
 ## Publish Models
 
-- `php artisan vendor:publish --tag=models`
+- `php artisan vendor:publish --tag=sas-models`
+
+## Publish Middleware
+
+- `php artisan vendor:publish --tag=sas-middleware`
+
+## Publish Rules
+
+- `php artisan vendor:publish --tag=sas-rules`
 
 ## Publish Views
 
-- `php artisan vendor:publish --tag=views`
+- `php artisan vendor:publish --tag=sas-views`
 
 ## Publish Routes
 
-- `php artisan vendor:publish --tag=routes`
+- `php artisan vendor:publish --tag=sas-routes`
 
 ## Publish Lang
 
-- `php artisan vendor:publish --tag=lang`
+- `php artisan vendor:publish --tag=sas-lang`
 
 ## Publish Config
 
-- `php artisan vendor:publish --tag=config`
+- `php artisan vendor:publish --tag=sas-config`
 
 ## Publish Laravel Email Notification Blade
 
