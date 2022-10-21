@@ -115,6 +115,17 @@ class PinController extends Controller
         return $response;
     }
 
+    public function pinRequestTerminated(string $url): JsonResponse
+    {
+        return $this->httpJsonResponse(
+            trans('sanctumauthstarter::general.fail'), 401,
+            [
+                'message' => trans('sanctumauthstarter::pin.terminated'),
+                'url' => $url
+            ]
+        );
+    }
+
     public function pinValidationURL(string $url): JsonResponse
     {
         return $this->httpJsonResponse(

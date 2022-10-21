@@ -31,10 +31,13 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
 
-    Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'externalBooks'])->name('externalBooks');
 
+    // Sample Book APIs
+    Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'externalBooks'])->name('externalBooks');
     Route::prefix('v1/books')->group(function () {
         Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooksTest');
+
+        // These APIs require Pin before requests are processed
         Route::middleware(['require.pin'])->group(function () {
             Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'createBook'])->name('createBookTest');
             Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'updateBook'])->name('updateBookTest');

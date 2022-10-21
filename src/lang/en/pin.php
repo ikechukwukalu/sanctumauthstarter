@@ -15,6 +15,7 @@ return [
 
     'default' => 'You not allowed to use the default pin!',
     'require_pin' => 'Enter your pin to proceed!',
+    'terminated' => 'User is not logged in!',
     'expired_url' => 'URL has expired!',
     'invalid_url' => 'URL is invalid!',
     'changed' => 'Your pin has been changed!',

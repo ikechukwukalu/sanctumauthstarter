@@ -23,6 +23,12 @@ class RequirePin
      */
     public function handle(Request $request, Closure $next)
     {
+        $pinController = new PinController();
+
+        if (!Auth::check()) {
+            return $pinController->pinRequestTerminated();
+        }
+
         $user = Auth::user();
 
         if ($request->has(config('sanctumauthstarter.pin.param', '_uuid'))) {
@@ -56,8 +62,6 @@ class RequirePin
         $pin_validation_url = URL::temporarySignedRoute(
             config('sanctumauthstarter.pin.route', 'require_pin'),
             $expires_at, ['uuid' => $uuid]);
-
-        $pinController = new PinController();
 
         RequirePinModel::create([
             "user_id" => $user->id,
