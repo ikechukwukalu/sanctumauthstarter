@@ -57,35 +57,37 @@ class LoginController extends Controller
 
         $remember = isset($request->remember_me) ? true : false;
 
-        if (Auth::attempt([
+        if (!Auth::attempt([
                 'email' => $request->email,
                 'password' => $request->password
             ], $remember))
         {
-            $this->clearLoginAttempts($request);
+            $this->incrementLoginAttempts($request);
 
-            $user = Auth::user();
-            $token = $user->createToken($request->email);
-
-            if (config('sanctumauthstarter.login.notify.user', true)) {
-                $now = Carbon::now();
-                $time = $now->isoFormat('MMMM Do YYYY, h:mm:ss a');
-                $device = $this->getLoginUserInformation();
-
-                $user->notify(new UserLogin($time, $device));
-            }
-
-            $data = [
-                'access_token' => $token->plainTextToken,
-                'message' => trans('sanctumauthstarter::auth.success')
-            ];
-            return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
+            $data = ['message' => trans('sanctumauthstarter::auth.failed')];
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
-        $this->incrementLoginAttempts($request);
+        $this->clearLoginAttempts($request);
 
-        $data = ['message' => trans('sanctumauthstarter::auth.failed')];
-        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+        $user = Auth::user();
+        $token = $user->createToken($request->email);
+
+        if (config('sanctumauthstarter.login.notify.user', true)) {
+            $now = Carbon::now();
+            $time = $now->isoFormat('MMMM Do YYYY, h:mm:ss a');
+            $device = $this->getLoginUserInformation();
+
+            $user->notify(new UserLogin($time, $device));
+        }
+
+        $data = [
+            'access_token' => $token->plainTextToken,
+            'message' => trans('sanctumauthstarter::auth.success')
+        ];
+
+        return $this->httpJsonResponse(
+            trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
     private function getLoginUserInformation(): array
