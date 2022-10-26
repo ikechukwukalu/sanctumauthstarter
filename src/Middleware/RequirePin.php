@@ -76,11 +76,7 @@ class RequirePin
             "expires_at" => $expires_at
         ]);
 
-        if (isset($redirect_to)) {
-            redirect(config('sanctumauthstarter.pin.redirect_to'));
-        }
-
-        return $pinController->pinValidationURL($pin_validation_url);
+        return $pinController->pinValidationURL($pin_validation_url, $redirect_to);
     }
 
 }

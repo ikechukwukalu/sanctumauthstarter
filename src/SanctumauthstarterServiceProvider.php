@@ -26,7 +26,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');
 
         $this->publishes([
-            __DIR__.'/config' => base_path('resources/lang/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/config' => base_path('config'),
         ], 'sas-config');
         $this->publishes([
             __DIR__.'/lang' => base_path('resources/lang/ikechukwukalu/sanctumauthstarter'),

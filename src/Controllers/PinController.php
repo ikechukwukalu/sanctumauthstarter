@@ -126,13 +126,14 @@ class PinController extends Controller
         );
     }
 
-    public function pinValidationURL(string $url): JsonResponse
+    public function pinValidationURL(string $url, null|string $redirect): JsonResponse
     {
         return $this->httpJsonResponse(
             trans('sanctumauthstarter::general.success'), 200,
             [
                 'message' => trans('sanctumauthstarter::pin.require_pin'),
-                'url' => $url
+                'url' => $url,
+                'redirect' => $redirect
             ]
         );
     }
