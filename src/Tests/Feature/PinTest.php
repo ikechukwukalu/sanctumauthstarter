@@ -98,7 +98,7 @@ class PinTest extends TestCase
                 'release_date' => date('Y-m-d')
             ];
 
-            $response = $this->json('POST', '/api/v1/books', $postData);
+            $response = $this->json('POST', route('createBookTest'), $postData);
             $responseArray = json_decode($response->getContent(), true);
 
             $this->assertEquals(200, $responseArray['status_code']);
@@ -162,7 +162,7 @@ class PinTest extends TestCase
                 'release_date' => date('Y-m-d')
             ];
 
-            $response = $this->json('PATCH', "/api/v1/books/{$id}", $postData);
+            $response = $this->json('PATCH', route('updateBookTest', ['id' => $id]), $postData);
             $responseArray = json_decode($response->getContent(), true);
 
             $this->assertEquals(200, $responseArray['status_code']);
@@ -216,7 +216,7 @@ class PinTest extends TestCase
 
             $id = $book->id;
 
-            $response = $this->json('DELETE', "/api/v1/books/{$id}");
+            $response = $this->json('DELETE', route('deleteBookTest', ['id' => $id]));
             $responseArray = json_decode($response->getContent(), true);
 
             $this->assertEquals(200, $responseArray['status_code']);
