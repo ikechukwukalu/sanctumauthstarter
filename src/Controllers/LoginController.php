@@ -30,6 +30,7 @@ class LoginController extends Controller
      *
      * You can choose to notify a User whenever there has been a Login by setting
      * <b>password.notify.change</b> to <b>TRUE</b> within the config file.
+     * Make sure to retrieve <small class="badge badge-blue">access_token</small> after login for User authentication
      *
      * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
      * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
