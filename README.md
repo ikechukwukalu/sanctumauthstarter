@@ -80,6 +80,11 @@ Visit your newly generated docs:
 - If you're using `static` type, find the `docs/index.html` file in your `public/` folder and open it in your browser.
 - If you're using `laravel` type, start your app (`php artisan serve`), then visit `/docs`.
 
+`example_languages`:
+For each endpoint, an example request is shown in each of the languages specified in this array. Currently, only `bash` (curl), `javascript`(Fetch), `php` (Guzzle) and `python` (requests) are included. You can add extra languages, but you must also create the corresponding Blade view ([see Adding more example languages](https://scribe.knuckles.wtf/laravel/advanced/example-requests)).
+
+Default: `["bash", "javascript"]`
+
 Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
 
 ## Publish Controllers
