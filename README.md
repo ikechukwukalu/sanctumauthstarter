@@ -68,6 +68,20 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 Some of the reserved keywords can be changed from the config file.
 
+## Documentation
+
+To generate documentation:
+
+- `php artisan vendor:publish --tag=scribe-config`
+- `php artisan scribe:generate`
+
+Visit your newly generated docs:
+
+- If you're using `static` type, find the `docs/index.html` file in your `public/` folder and open it in your browser.
+- If you're using `laravel` type, start your app (`php artisan serve`), then visit `/docs`.
+
+Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
+
 ## Publish Controllers
 
 - `php artisan vendor:publish --tag=sas-controllers`

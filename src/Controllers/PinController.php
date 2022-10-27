@@ -106,7 +106,7 @@ class PinController extends Controller
      * User pin authentication.
      *
      * @bodyParam _pin string required The user's pin must contain only numbers. Example: 0000
-     * @queryParam uuid string required Example: eab8cce0-bb22-4c53-8924-b885ebb67f5a
+     * @urlParam uuid string required Example: eab8cce0-bb22-4c53-8924-b885ebb67f5a
      *
      * @authenticated
      * @group Auth APIs
