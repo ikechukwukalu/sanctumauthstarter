@@ -17,6 +17,24 @@ class ForgotPasswordController extends Controller
         $this->middleware('guest');
     }
 
+
+    /**
+     * User forgot password.
+     *
+     * The user must enter a registered email.
+     *
+     * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @group No Auth APIs
+     */
     public function forgotPassword(Request $request): JsonResponse
     {
         $credentials = Validator::make($request->all(), [

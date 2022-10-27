@@ -2,6 +2,7 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -12,7 +13,10 @@ use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, AuthenticatesUsers;
+
+    protected $maxAttempts = 5; // change to the max attempt you want.
+    protected $delayMinutes = 1;
 
     protected function httpJsonResponse(string $status, int $status_code, $data): JsonResponse
     {
@@ -21,6 +25,36 @@ class Controller extends BaseController
             'status_code' => $status_code,
             'data' => $data
         ]);
+    }
+
+    protected function hasTooManyAttempts (Request $request)
+    {
+        return $this->hasTooManyLoginAttempts($request);
+    }
+
+    protected function incrementAttempts (Request $request)
+    {
+        return $this->incrementLoginAttempts($request);
+    }
+
+    protected function clearAttempts (Request $request)
+    {
+        return $this->clearLoginAttempts($request);
+    }
+
+    protected function _fireLockoutEvent (Request $request)
+    {
+        return $this->fireLockoutEvent($request);
+    }
+
+    protected function _limiter ()
+    {
+        return $this->limiter();
+    }
+
+    protected function _throttleKey (Request $request)
+    {
+        return $this->throttleKey($request);
     }
 
     public function getClientIp(Request $request){

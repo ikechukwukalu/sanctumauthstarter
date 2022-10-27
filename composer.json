@@ -34,5 +34,8 @@
                 "Ikechukwukalu\\Sanctumauthstarter\\SanctumauthstarterServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "knuckleswtf/scribe": "dev-master"
     }
 }

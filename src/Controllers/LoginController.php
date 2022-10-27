@@ -2,7 +2,6 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\Validator;
@@ -20,28 +19,47 @@ use App\Models\User;
 class LoginController extends Controller
 {
 
-    use AuthenticatesUsers;
-
-    protected $maxAttempts = 5; // change to the max attempt you want.
-    protected $delayMinutes = 1;
-
     public function __construct()
     {
         $this->middleware('guest');
     }
 
+
+    /**
+     * User form login.
+     *
+     * You can choose to notify a User whenever there has been a Login by setting
+     * <b>password.notify.change</b> to <b>TRUE</b> within the config file.
+     *
+     * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
+     * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
+     * @bodyParam remember_me int Could be set to 0 or 1. Example: 1
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *      "access_token": string
+     *  }
+     * }
+     *
+     * @group No Auth APIs
+     */
     public function login(Request $request): JsonResponse
     {
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
+        if ($this->hasTooManyAttempts($request)) {
+            $this->_fireLockoutEvent($request);
 
             $data = ["message" => trans('sanctumauthstarter::auth.throttle',
-                        ['seconds' => $this->limiter()->availableIn(
-                            $this->throttleKey($request))
+                        ['seconds' => $this->_limiter()
+                            ->availableIn($this->_throttleKey($request))
                         ])
                     ];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
+
+        $this->incrementAttempts($request);
 
         $credentials = Validator::make($request->all(), [
            'email' => ['required', 'email', 'max:200'],
@@ -49,7 +67,6 @@ class LoginController extends Controller
         ]);
 
         if ($credentials->fails()) {
-            $this->incrementLoginAttempts($request);
 
             $data = (array) $credentials->messages();
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
@@ -62,13 +79,12 @@ class LoginController extends Controller
                 'password' => $request->password
             ], $remember))
         {
-            $this->incrementLoginAttempts($request);
 
             $data = ['message' => trans('sanctumauthstarter::auth.failed')];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
-        $this->clearLoginAttempts($request);
+        $this->clearAttempts($request);
 
         $user = Auth::user();
         $token = $user->createToken($request->email);

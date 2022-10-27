@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * @group No Auth APIs
+ *
+ * APIs that do not require User autherntication
+ */
+
+/**
+ * @group Auth APIs
+ *
+ * APIs that require User autherntication
+ *
+ * @subgroup Require Pin APIs
+ * @subgroup Sample APIs
+ */
+
 Route::prefix('auth')->group(function () {
     Route::post('register', [Ikechukwukalu\Sanctumauthstarter\Controllers\RegisterController::class, 'register'])->name('register');
     Route::post('login', [Ikechukwukalu\Sanctumauthstarter\Controllers\LoginController::class, 'login'])->name('login');
@@ -34,10 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Sample Book APIs
     Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'externalBooks'])->name('externalBooks');
-    Route::prefix('v1/books')->group(function () {
+    Route::prefix('v1/sample/books')->group(function () {
         Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooksTest');
 
-        // These APIs require Pin before requests are processed
+        // These APIs require a user's pin before requests are processed
         Route::middleware(['require.pin'])->group(function () {
             Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'createBook'])->name('createBookTest');
             Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'updateBook'])->name('updateBookTest');

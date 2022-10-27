@@ -52,6 +52,16 @@ return [
          * int - Number of previous pins to check
          */
         'number' => 4,
+        /**
+         * int - Number of times a user is allowed to authenticate
+         * using his pin
+         */
+        'maxAttempts' => 3,
+        /**
+         * int - Number of times a user is allowed to authenticate
+         * using his pin
+         */
+        'delayMinutes' => 1,
 
         /**
          * Pin notification configurations

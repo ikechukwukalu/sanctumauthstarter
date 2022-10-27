@@ -1,0 +1,6 @@
+parameters:
+    level: 5
+    reportUnmatchedIgnoredErrors: true
+    inferPrivatePropertyTypeFromConstructor: true
+    ignoreErrors:
+    - '#Method .+ should return .+\|null but return statement is missing.#'

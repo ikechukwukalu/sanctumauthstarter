@@ -9,6 +9,7 @@ use Ikechukwukalu\Sanctumauthstarter\Controllers\PinController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Crypt;
 
 use Ikechukwukalu\Sanctumauthstarter\Models\RequirePin as RequirePinModel;
 
@@ -40,7 +41,7 @@ class RequirePin
                             ->whereNull('cancelled_at')
                             ->first();
 
-            if (isset($requirePin->{$param})) {
+            if (isset($requirePin->id)) {
                 $requirePin->approved_at = now();
                 $requirePin->save();
 
@@ -70,7 +71,7 @@ class RequirePin
             "device" => $request->userAgent(),
             "method" => $request->method(),
             "route_arrested" => $request->path(),
-            "payload" => serialize($request->all()),
+            "payload" => Crypt::encryptString(serialize($request->all())),
             "redirect_to" => $redirect_to,
             "pin_validation_url" => $pin_validation_url,
             "expires_at" => $expires_at

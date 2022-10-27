@@ -12,6 +12,44 @@ use Ikechukwukalu\Sanctumauthstarter\Models\Book;
 
 class BookController extends Controller
 {
+
+    /**
+     * Fetch external books.
+     *
+     * @queryParam name string Example: Once upon a time
+     * @queryParam page string Example: 1
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *        [
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date,
+     *        ],
+     *        [
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date,
+     *        ]
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     * @subgroup Sample APIs
+     * @subgroupDescription This is a Book Management API for
+     * testing <b>require.pin</b> middleware
+     */
     public function externalBooks(Request $request): JsonResponse
     {
         $queryString = ['pageSize' => 3];
@@ -43,6 +81,32 @@ class BookController extends Controller
         return $this->httpJsonResponse($status, $status_code, $data);
     }
 
+    /**
+     * Create Book.
+     *
+     * @bodyParam name string required Example: Once upon a time
+     * @bodyParam isbn string required Example: 978-3-16-148410-0
+     * @bodyParam authors string[] required Example: ['John Doe', 'Jane Doe']
+     * @bodyParam country string required Example: Nigeria
+     * @bodyParam number_of_pages int required Example: 1090
+     * @bodyParam publisher string required Example: Walt Disney
+     * @bodyParam release_date string required Example: 2022-01-01
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *      "access_token": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     * @subgroup Sample APIs
+     * @subgroupDescription This is a Book Management API for
+     * testing <b>require.pin</b> middleware
+     */
     public function createBook(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -69,6 +133,42 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 
+    /**
+     * Fetch books.
+     *
+     * @urlParam id string The ID of the book Example: 1
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *        [
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date,
+     *        ],
+     *        [
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date,
+     *        ]
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     * @subgroup Sample APIs
+     * @subgroupDescription This is a Book Management API for
+     * testing <b>require.pin</b> middleware
+     */
     public function listBooks(Request $request, $id = null): JsonResponse
     {
         if (isset($id)) {
@@ -80,6 +180,53 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
+    /**
+     * Update book.
+     *
+     * @urlParam id string required The ID of the book Example: 1
+     * @bodyParam id string required This ID is gotten from the URL param Example: Once upon a time
+     * @bodyParam name string Example: Once upon a time
+     * @bodyParam isbn string Example: 978-3-16-148410-0
+     * @bodyParam authors string[] Example: ['John Doe', 'Jane Doe']
+     * @bodyParam country string Example: Nigeria
+     * @bodyParam number_of_pages int Example: 1090
+     * @bodyParam publisher string Example: Walt Disney
+     * @bodyParam release_date string Example: 2022-01-01
+     *
+     * @response 200
+     *
+     * //if status_code === 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date
+     *       }
+     * }
+     *
+     * //if status_code === 500
+     *
+     * {
+     * "status": "fail",
+     * "status_code": 500,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     * @subgroup Sample APIs
+     * @subgroupDescription This is a Book Management API for
+     * testing <b>require.pin</b> middleware
+     */
     public function updateBook(Request $request, $id): JsonResponse
     {
         $request->merge(['id' => $id]);
@@ -117,6 +264,45 @@ class BookController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 
+    /**
+     * Delete book.
+     *
+     * @urlParam id string required The ID of the book Example: 1
+     *
+     * @response 200
+     *
+     * //if status_code === 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *          'name': string,
+     *          'isbn': string,
+     *          'authors': array,
+     *          'number_of_pages': int,
+     *          'publisher': string,
+     *          'country': string,
+     *          'release_date': date
+     *       }
+     * }
+     *
+     * //if status_code === 500
+     *
+     * {
+     * "status": "fail",
+     * "status_code": 500,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     * @subgroup Sample APIs
+     * @subgroupDescription This is a Book Management API for
+     * testing <b>require.pin</b> middleware
+     */
     public function deleteBook(Request $request, $id): JsonResponse
     {
         if (Book::where('id', $id)->delete()

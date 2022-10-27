@@ -1,0 +1,55 @@
+{
+  "name": "shalvah/upgrader",
+  "license": "MIT",
+  "description": "Create automatic upgrades for your package.",
+  "keywords": [
+    "upgrade"
+  ],
+  "homepage": "http://github.com/shalvah/upgrader",
+  "authors": [
+    {
+      "name": "Shalvah",
+      "email": "hello@shalvah.me"
+    }
+  ],
+  "require": {
+    "php": ">=8.0",
+    "illuminate/support": "^8.0|^9.0",
+    "nikic/php-parser": "^4.13"
+  },
+  "require-dev": {
+    "dms/phpunit-arraysubset-asserts": "^0.2.0",
+    "pestphp/pest": "^1.21",
+    "phpstan/phpstan": "^1.0",
+    "spatie/ray": "^1.33"
+  },
+  "autoload": {
+    "psr-4": {
+      "Shalvah\\Upgrader\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Shalvah\\Upgrader\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "lint": "phpstan analyse -c ./phpstan.neon src --memory-limit 1G",
+    "test": "pest --stop-on-failure --coverage --min=90",
+    "test-ci": "pest"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "process-timeout": 600,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "funding": [
+    {
+      "type": "patreon",
+      "url": "https://patreon.com/shalvah"
+    }
+  ]
+}

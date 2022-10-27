@@ -20,6 +20,22 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 
+    /**
+     * User password reset.
+     *
+     * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
+     * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @group No Auth APIs
+     */
     public function resetPassword(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
