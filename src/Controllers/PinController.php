@@ -38,9 +38,10 @@ class PinController extends Controller
      *
      * Within the config file, you are required to determine the number
      * of previously used pins a User is not allowed to use anymore
-     * by setting <b>pin.check_all</b> to <b>TRUE</b> or to an <b>int</b>
+     * by setting <b>pin.check_all</b> to <b>TRUE/FALSE</b> or to an <b>int</b>
      * value and <b>pin.number</b> to a corresponding <b>int</b>
      * value as well.
+     *
      * You can choose to notify a User whenever a pin is changed by setting
      * <b>pin.notify.change</b> to <b>TRUE</b>
      *
@@ -79,7 +80,7 @@ class PinController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = ['message' => (array) $validator->messages()];
+            $data = ['message' => (array) $validator->errors()->all()];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
@@ -115,10 +116,14 @@ class PinController extends Controller
      * be added to a route to require pin authentication before
      * processing any request to that route. The <b>require.pin</b>
      * middleware would arrest any incoming request and return a laravel
-     * signed temporary URL via the route specified in <b>pin.route</b>
-     * within the config file. The User is meant to carryout a pin
-     * authentication over the returned URL and middleware would process
-     * the arrested request.
+     * signed temporary URL via the route specified in <b>pin.route</b>.
+     * The User is meant to carryout a pin authentication over the
+     * returned URL and the <b>require.pin</b> middleware would process
+     * the previously arrested request if the authentication is successful.
+     *
+     * Within the config file, use the <b>pin.maxAttempts</b> and
+     * the <b>pin.delayMinutes</b> to adjust the route throttling for
+     * pin authentication.
      */
 
     public function pinRequired(Request $request, $uuid)
@@ -159,7 +164,7 @@ class PinController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = ['message' => (array) $validator->messages()];
+            $data = ['message' => (array) $validator->errors()->all()];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         };
 

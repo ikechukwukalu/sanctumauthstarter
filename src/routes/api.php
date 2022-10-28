@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
  * APIs that require User autherntication
  *
  * @subgroup Require Pin APIs
- * @subgroup Sample APIs
+ * @subgroup Sample Require Pin APIs
  */
 
 Route::prefix('auth')->group(function () {
@@ -48,7 +48,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Sample Book APIs
-    Route::get('external-books', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'externalBooks'])->name('externalBooks');
     Route::prefix('v1/sample/books')->group(function () {
         Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooksTest');
 

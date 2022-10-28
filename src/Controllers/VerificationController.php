@@ -17,9 +17,12 @@ class VerificationController extends Controller
      *
      * This endpoint must have a valid laravel generated URL signature to work.
      * It is automatically sent after a successful registration and
-     * <b>registration.notify.verify</b> is set to <b>TRUE</b> within the config file.
+     * <b>registration.notify.verify</b> is set to <b>TRUE</b> within
+     * the config file.
      *
-     * @urlParam id string required <small class="badge badge-blue">id</small> Field must belong to a registered User. Example: 1
+     * @urlParam id string required
+     * <small class="badge badge-blue">id</small>
+     * Field must belong to a registered User. Example: 1
      *
      * @response 200 {
      * "status": "success",
@@ -52,8 +55,6 @@ class VerificationController extends Controller
      * User resend email verification.
      *
      * This endpoint is used to generate and send via email a URL for User email verification to a registered User.
-     * It is automatically sent after a successful registration and
-     * <b>registration.notify.verify</b> is set to <b>TRUE</b> within the config file.
      *
      * @queryParam id string required <small class="badge badge-blue">id</small> Field must belong to a registered User. Example: 1
      *

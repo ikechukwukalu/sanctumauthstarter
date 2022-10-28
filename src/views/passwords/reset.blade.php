@@ -13,7 +13,12 @@
                             <div class="col-6">
                                 <ul class="list-group">
                                     @foreach (Session::get('fail') as $message)
-                                        <li class="list-group-item">{{ $message }}</li>
+                                    @if (is_array($message))
+                                        @foreach ($message as $submessage)
+                                            <li class="list-group-item text-danger">{{ $submessage }}</li>
+                                        @endforeach
+                                    @endif
+                                        <li class="list-group-item text-danger">{{ $message }}</li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -22,7 +27,7 @@
 
                     @if(Session::has('success'))
                         <div class="row mb-3 justify-content-center">
-                            <div class="col-6">{{ Session::get('fail') }}</div>
+                            <div class="col-6 text-success">{{ Session::get('success') }}</div>
                         </div>
                     @endif
 

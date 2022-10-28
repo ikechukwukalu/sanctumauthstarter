@@ -9,7 +9,24 @@ use Illuminate\Http\JsonResponse;
 
 class LogoutController extends Controller
 {
-    //
+    /**
+     * User logout.
+     *
+     * This API logs a user out and clears all user tokens
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
     public function logout(Request $request): JsonResponse
     {
         $user = Auth::user();

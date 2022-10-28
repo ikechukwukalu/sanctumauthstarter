@@ -48,7 +48,7 @@ class ResetPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = ['message' => (array) $validator->messages()];
+            $data = ['message' => (array) $validator->errors()->all()];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
@@ -62,7 +62,9 @@ class ResetPasswordController extends Controller
 
     public function resetPasswordForm(Request $request)
     {
-        $response = json_encode($this->resetPassword($request));
+        $response = json_decode(
+                json_encode($this->resetPassword($request)),
+            true)['original'];
         $state = 'success';
         $messages = $response['data']['message'];
 

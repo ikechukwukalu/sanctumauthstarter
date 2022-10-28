@@ -14,74 +14,6 @@ class BookController extends Controller
 {
 
     /**
-     * Fetch external books.
-     *
-     * @queryParam name string Example: Once upon a time
-     * @queryParam page string Example: 1
-     *
-     * @response 200 {
-     * "status": "success",
-     * "status_code": 200,
-     * "data": {
-     *        [
-     *          'name': string,
-     *          'isbn': string,
-     *          'authors': array,
-     *          'number_of_pages': int,
-     *          'publisher': string,
-     *          'country': string,
-     *          'release_date': date,
-     *        ],
-     *        [
-     *          'name': string,
-     *          'isbn': string,
-     *          'authors': array,
-     *          'number_of_pages': int,
-     *          'publisher': string,
-     *          'country': string,
-     *          'release_date': date,
-     *        ]
-     *  }
-     * }
-     *
-     * @authenticated
-     * @group Auth APIs
-     * @subgroup Sample APIs
-     * @subgroupDescription This is a Book Management API for
-     * testing <b>require.pin</b> middleware
-     */
-    public function externalBooks(Request $request): JsonResponse
-    {
-        $queryString = ['pageSize' => 3];
-        foreach(['name', 'page'] as $param) {
-            if ($request->has($param)) {
-                $queryString[$param] = $request->query($param);
-            }
-        }
-
-        $response = Http::get('https://www.anapioficeandfire.com/api/books', $queryString);
-
-        $data = [];
-        foreach($response->json() as $json) {
-            $data[] = [
-                'name' => $json['name'],
-                'isbn' => $json['isbn'],
-                'authors' => $json['authors'],
-                'number_of_pages' => $json['numberOfPages'],
-                'publisher' => $json['publisher'],
-                'country' => $json['country'],
-                'release_date' => $json['released'],
-            ];
-        }
-
-        $numberOfItems = count($data);
-        $status = $response->successful() ? $numberOfItems === 0 ? 'Not Found' : 'success' : 'fail';
-        $status_code = $numberOfItems === 0 ? 404 : $response->status();
-
-        return $this->httpJsonResponse($status, $status_code, $data);
-    }
-
-    /**
      * Create Book.
      *
      * @bodyParam name string required Example: Once upon a time
@@ -103,9 +35,9 @@ class BookController extends Controller
      *
      * @authenticated
      * @group Auth APIs
-     * @subgroup Sample APIs
+     * @subgroup Sample Require Pin APIs
      * @subgroupDescription This is a Book Management API for
-     * testing <b>require.pin</b> middleware
+     * testing the <b>require.pin</b> middleware
      */
     public function createBook(Request $request): JsonResponse
     {
@@ -120,7 +52,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = (array) $validator->messages();
+            $data = (array) $validator->errors()->all();
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
@@ -165,9 +97,9 @@ class BookController extends Controller
      *
      * @authenticated
      * @group Auth APIs
-     * @subgroup Sample APIs
+     * @subgroup Sample Require Pin APIs
      * @subgroupDescription This is a Book Management API for
-     * testing <b>require.pin</b> middleware
+     * testing the <b>require.pin</b> middleware
      */
     public function listBooks(Request $request, $id = null): JsonResponse
     {
@@ -223,9 +155,9 @@ class BookController extends Controller
      *
      * @authenticated
      * @group Auth APIs
-     * @subgroup Sample APIs
+     * @subgroup Sample Require Pin APIs
      * @subgroupDescription This is a Book Management API for
-     * testing <b>require.pin</b> middleware
+     * testing the <b>require.pin</b> middleware
      */
     public function updateBook(Request $request, $id): JsonResponse
     {
@@ -247,7 +179,7 @@ class BookController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = (array) $validator->messages();
+            $data = (array) $validator->errors()->all();
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
@@ -299,9 +231,9 @@ class BookController extends Controller
      *
      * @authenticated
      * @group Auth APIs
-     * @subgroup Sample APIs
+     * @subgroup Sample Require Pin APIs
      * @subgroupDescription This is a Book Management API for
-     * testing <b>require.pin</b> middleware
+     * testing the <b>require.pin</b> middleware
      */
     public function deleteBook(Request $request, $id): JsonResponse
     {

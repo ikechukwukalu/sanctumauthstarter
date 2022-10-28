@@ -70,7 +70,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = (array) $validator->messages();
+            $data = (array) $validator->errors()->all();
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 

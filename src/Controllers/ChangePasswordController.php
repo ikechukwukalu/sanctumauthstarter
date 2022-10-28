@@ -30,9 +30,10 @@ class ChangePasswordController extends Controller
      *
      * Within the config file, you are required to determine the number
      * of previously used passwords a User is not allowed to use anymore
-     * by setting <b>password.check_all</b> to <b>TRUE</b> or to an <b>int</b>
+     * by setting <b>password.check_all</b> to <b>TRUE/FALSE</b> or to an <b>int</b>
      * value and <b>password.number</b> to a corresponding <b>int</b>
      * value as well.
+     *
      * You can choose to notify a User whenever a password is changed by setting
      * <b>password.notify.change</b> to <b>TRUE</b>
      *
@@ -71,7 +72,7 @@ class ChangePasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $data = ['message' => (array) $validator->messages()];
+            $data = ['message' => (array) $validator->errors()->all()];
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
