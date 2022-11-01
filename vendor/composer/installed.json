@@ -6268,18 +6268,5 @@
         }
     ],
     "dev": true,
-    "dev-package-names": [
-        "erusev/parsedown",
-        "fakerphp/faker",
-        "filp/whoops",
-        "knuckleswtf/scribe",
-        "mpociot/reflection-docblock",
-        "nikic/php-parser",
-        "nunomaduro/collision",
-        "shalvah/clara",
-        "shalvah/upgrader",
-        "spatie/data-transfer-object",
-        "symfony/var-exporter",
-        "symfony/yaml"
-    ]
+    "dev-package-names": []
 }

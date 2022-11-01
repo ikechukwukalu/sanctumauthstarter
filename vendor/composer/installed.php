@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '587317bf12b850a1cf2aae359ae038e9960f4e47',
+        'reference' => 'bcfdb7a21fee22582ff6f9306a5c24ace61a974a',
         'name' => 'ikechukwukalu/sanctumauthstarter',
         'dev' => true,
     ),
@@ -84,7 +84,7 @@
             'install_path' => __DIR__ . '/../erusev/parsedown',
             'aliases' => array(),
             'reference' => 'cb17b6477dfff935958ba01325f2e8a2bfa6dab3',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'fakerphp/faker' => array(
             'pretty_version' => 'dev-main',
@@ -95,7 +95,7 @@
                 0 => '1.20.x-dev',
             ),
             'reference' => 'bc743e9bfa6e42375cbf79c42bbe49f5fef12c2a',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'filp/whoops' => array(
             'pretty_version' => '2.14.5',
@@ -104,7 +104,7 @@
             'install_path' => __DIR__ . '/../filp/whoops',
             'aliases' => array(),
             'reference' => 'a63e5e8f26ebbebf8ed3c5c691637325512eb0dc',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'fruitcake/php-cors' => array(
             'pretty_version' => 'dev-master',
@@ -143,7 +143,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '587317bf12b850a1cf2aae359ae038e9960f4e47',
+            'reference' => 'bcfdb7a21fee22582ff6f9306a5c24ace61a974a',
             'dev_requirement' => false,
         ),
         'illuminate/auth' => array(
@@ -356,7 +356,7 @@
                 0 => '9999999-dev',
             ),
             'reference' => 'fca55860d8cab9306dd9c23ebf20f4bf4b644e84',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'laravel/framework' => array(
             'pretty_version' => '9.x-dev',
@@ -473,7 +473,7 @@
             'dev_requirement' => false,
         ),
         'mpociot/laravel-apidoc-generator' => array(
-            'dev_requirement' => true,
+            'dev_requirement' => false,
             'replaced' => array(
                 0 => '*',
             ),
@@ -485,7 +485,7 @@
             'install_path' => __DIR__ . '/../mpociot/reflection-docblock',
             'aliases' => array(),
             'reference' => 'c8b2e2b1f5cebbb06e2b5ccbf2958f2198867587',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'mtdowling/cron-expression' => array(
             'dev_requirement' => false,
@@ -540,7 +540,7 @@
             'install_path' => __DIR__ . '/../nikic/php-parser',
             'aliases' => array(),
             'reference' => '2f1fd784fe5560675722a1e5cbbcece5f43bf3a0',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'nunomaduro/collision' => array(
             'pretty_version' => 'v6.x-dev',
@@ -549,7 +549,7 @@
             'install_path' => __DIR__ . '/../nunomaduro/collision',
             'aliases' => array(),
             'reference' => '0f6349c3ed5dd28467087b08fb59384bb458a22b',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'nunomaduro/termwind' => array(
             'pretty_version' => 'v1.14.0',
@@ -677,7 +677,7 @@
             'install_path' => __DIR__ . '/../shalvah/clara',
             'aliases' => array(),
             'reference' => 'd3ae9b277393d438edbfcf9ddb7ca42e958fa054',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'shalvah/upgrader' => array(
             'pretty_version' => '0.3.0',
@@ -686,7 +686,7 @@
             'install_path' => __DIR__ . '/../shalvah/upgrader',
             'aliases' => array(),
             'reference' => '2a2b1452bd4a1484784deb2af49fb5e1abbcf420',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'spatie/data-transfer-object' => array(
             'pretty_version' => '3.9.1',
@@ -695,7 +695,7 @@
             'install_path' => __DIR__ . '/../spatie/data-transfer-object',
             'aliases' => array(),
             'reference' => '1df0906c4e9e3aebd6c0506fd82c8b7d5548c1c8',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/console' => array(
             'pretty_version' => '6.2.x-dev',
@@ -994,7 +994,7 @@
             'install_path' => __DIR__ . '/../symfony/var-exporter',
             'aliases' => array(),
             'reference' => 'e6151f9f2d5231e72b870319209b4f1ba2c31ac5',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
             'pretty_version' => '6.2.x-dev',
@@ -1003,7 +1003,7 @@
             'install_path' => __DIR__ . '/../symfony/yaml',
             'aliases' => array(),
             'reference' => 'b5fbe4feba6891de7ec1393b0282b13401a74049',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'tijsverkoyen/css-to-inline-styles' => array(
             'pretty_version' => 'dev-master',

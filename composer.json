@@ -13,7 +13,8 @@
         "laravel/ui": "^3.4",
         "laravel/sanctum": "^3.0",
         "laravel/framework": "^9.19",
-        "hisorange/browser-detect": "dev-stable"
+        "hisorange/browser-detect": "dev-stable",
+        "knuckleswtf/scribe": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -34,8 +35,5 @@
                 "Ikechukwukalu\\Sanctumauthstarter\\SanctumauthstarterServiceProvider"
             ]
         }
-    },
-    "require-dev": {
-        "knuckleswtf/scribe": "dev-master"
     }
 }
