@@ -1,23 +1,11 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Notify Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
     'welcome' => [
         'subject' => 'Welcome :name.',
         'introduction' => 'Welcome on board :name.',
-        'message' => 'Your registration with us was successful. Please here the link below to login',
-        'action' => 'Click Here',
+        'message' => 'Your registration with us was successful. Click the link below to login',
+        'action' => 'Login',
         'complimentary_close' => 'Thank you for choosing us. We are glad to serve you!'
     ],
 

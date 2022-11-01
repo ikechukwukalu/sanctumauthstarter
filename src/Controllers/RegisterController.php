@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser;
+use Ikechukwukalu\Sanctumauthstarter\Events\EmailVerification;
 
 class RegisterController extends Controller
 {
@@ -94,7 +95,7 @@ class RegisterController extends Controller
         }
 
         if (config('sanctumauthstarter.registration.notify.verify', true)) {
-            $user->sendEmailVerificationNotification();
+            EmailVerification::dispatch($user);
         }
 
         $data['message'] = trans('sanctumauthstarter::register.success');

@@ -6,6 +6,7 @@ use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Ikechukwukalu\Sanctumauthstarter\Events\EmailVerification;
 
 use App\Models\User;
 
@@ -77,7 +78,7 @@ class VerificationController extends Controller
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
-        $user->sendEmailVerificationNotification();
+        EmailVerification::dispatch($user);
 
         $data = ['message' => trans('sanctumauthstarter::verify.sent')];
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);

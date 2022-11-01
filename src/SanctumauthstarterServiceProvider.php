@@ -68,6 +68,8 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
             __DIR__.'/config/sanctumauthstarter.php', 'sanctumauthstarter'
         );
 
+        $this->app->register(EventServiceProvider::class);
+
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\Controller::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ForgotPasswordController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\LoginController::class);

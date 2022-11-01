@@ -135,7 +135,7 @@ return [
              * boolean - Send a notification whenever there
              * has been a login
              */
-            'user' => false,
+            'user' => true,
         ]
     ],
 ];

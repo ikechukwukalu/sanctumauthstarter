@@ -35,6 +35,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Run `php artisan queue:table`, `php artisan migrate` and `php artisan queue:work --queue=high,default`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
+- Run `php artisan serve`
 
 ## Tests
 

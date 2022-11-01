@@ -3,15 +3,18 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
 
 use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Events\ForgotPassword;
+
+use App\Models\User;
 
 class ForgotPasswordController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('guest');
@@ -47,7 +50,10 @@ class ForgotPasswordController extends Controller
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
 
-        Password::sendResetLink(['email' => $request->email]);
+        $user = User::where("email", $request->email)->first();
+        if (isset($user->email)) {
+            ForgotPassword::dispatch($user);
+        }
 
         $data = ['message' => trans('sanctumauthstarter::passwords.sent')];
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
