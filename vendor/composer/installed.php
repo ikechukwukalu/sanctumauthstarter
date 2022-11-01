@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '91f31711538c334d17f36a50866f2424342ece43',
+        'reference' => '587317bf12b850a1cf2aae359ae038e9960f4e47',
         'name' => 'ikechukwukalu/sanctumauthstarter',
         'dev' => true,
     ),
@@ -126,39 +126,6 @@
             'reference' => '821e73872c8eec935700049e46e009382a2efaaf',
             'dev_requirement' => false,
         ),
-        'guzzlehttp/guzzle' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
-            'aliases' => array(
-                0 => '7.5.x-dev',
-            ),
-            'reference' => '8459341c16f96b9610dcdfe22bd3060d60c0da04',
-            'dev_requirement' => false,
-        ),
-        'guzzlehttp/promises' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../guzzlehttp/promises',
-            'aliases' => array(
-                0 => '1.5.x-dev',
-            ),
-            'reference' => 'b94b2807d85443f9719887892882d0329d1e2598',
-            'dev_requirement' => false,
-        ),
-        'guzzlehttp/psr7' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../guzzlehttp/psr7',
-            'aliases' => array(
-                0 => '2.4.x-dev',
-            ),
-            'reference' => '67c26b443f348a51926030c83481b85718457d3d',
-            'dev_requirement' => false,
-        ),
         'hisorange/browser-detect' => array(
             'pretty_version' => 'dev-stable',
             'version' => 'dev-stable',
@@ -176,7 +143,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '91f31711538c334d17f36a50866f2424342ece43',
+            'reference' => '587317bf12b850a1cf2aae359ae038e9960f4e47',
             'dev_requirement' => false,
         ),
         'illuminate/auth' => array(
@@ -420,17 +387,6 @@
             'reference' => 'e04e46a3aeff6946a06b6c06c7fa96f1461d3cf6',
             'dev_requirement' => false,
         ),
-        'laravel/socialite' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/socialite',
-            'aliases' => array(
-                0 => '6.x-dev',
-            ),
-            'reference' => 'c3d7e859dc7ca3953b62b6f44af09cc421b0ab98',
-            'dev_requirement' => false,
-        ),
         'laravel/ui' => array(
             'pretty_version' => '3.x-dev',
             'version' => '3.9999999.9999999.9999999-dev',
@@ -478,15 +434,6 @@
             'install_path' => __DIR__ . '/../league/mime-type-detection',
             'aliases' => array(),
             'reference' => 'ff6248ea87a9f116e78edd6002e39e5128a0d4dd',
-            'dev_requirement' => false,
-        ),
-        'league/oauth1-client' => array(
-            'pretty_version' => 'v1.10.1',
-            'version' => '1.10.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../league/oauth1-client',
-            'aliases' => array(),
-            'reference' => 'd6365b901b5c287dd41f143033315e2f777e1167',
             'dev_requirement' => false,
         ),
         'league/pipeline' => array(
@@ -664,57 +611,6 @@
                 0 => '1.0',
             ),
         ),
-        'psr/http-client' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-client',
-            'aliases' => array(
-                0 => '1.0.x-dev',
-            ),
-            'reference' => '22b2ef5687f43679481615605d7a15c557ce85b1',
-            'dev_requirement' => false,
-        ),
-        'psr/http-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
-        'psr/http-factory' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(
-                0 => '1.0.x-dev',
-            ),
-            'reference' => '5a4f141ac2e5bc35e615134f127e1833158d2944',
-            'dev_requirement' => false,
-        ),
-        'psr/http-factory-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
-        'psr/http-message' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-message',
-            'aliases' => array(
-                0 => '1.0.x-dev',
-            ),
-            'reference' => 'efd67d1dc14a7ef4fc4e518e7dee91c271d524e4',
-            'dev_requirement' => false,
-        ),
-        'psr/http-message-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
         'psr/log' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
@@ -749,15 +645,6 @@
             'provided' => array(
                 0 => '1.0|2.0|3.0',
             ),
-        ),
-        'ralouphie/getallheaders' => array(
-            'pretty_version' => '3.0.3',
-            'version' => '3.0.3.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../ralouphie/getallheaders',
-            'aliases' => array(),
-            'reference' => '120b605dfeb996808c31b6477290a714d356e822',
-            'dev_requirement' => false,
         ),
         'ramsey/collection' => array(
             'pretty_version' => '1.2.2',

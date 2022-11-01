@@ -13,8 +13,7 @@
         "laravel/ui": "^3.4",
         "laravel/sanctum": "^3.0",
         "laravel/framework": "^9.19",
-        "hisorange/browser-detect": "dev-stable",
-        "laravel/socialite": "6.x-dev"
+        "hisorange/browser-detect": "dev-stable"
     },
     "autoload": {
         "psr-4": {
