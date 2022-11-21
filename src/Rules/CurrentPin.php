@@ -16,7 +16,7 @@ class CurrentPin implements Rule
      *
      * @return void
      */
-    public function __construct($allowDefaultPin = false)
+    public function __construct(bool $allowDefaultPin = false)
     {
         //
         $this->allowDefaultPin = $allowDefaultPin;
