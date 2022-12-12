@@ -4,6 +4,7 @@ namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\DatabaseBackUp;
 
 class SanctumauthstarterServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,11 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                DatabaseBackUp::class
+            ]);
+        }
         Route::middleware('api')->prefix('api')->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
         });
@@ -79,6 +85,8 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class);
+
+        // Controller for Sample Book APIs
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class);
     }
 }

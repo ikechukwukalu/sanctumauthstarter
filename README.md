@@ -1,6 +1,6 @@
 # About Sanctum Auth Starter
 
-This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for making REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
+This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
@@ -23,6 +23,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
   - Login notification
   - Password change notification
   - Pin change notification
+- Helper CI/CD files for GitHub
 
 ## Requirements
 
@@ -60,6 +61,21 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 - `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
+
+## Backup Database
+
+Set the following parameters in your `.env` file
+
+``` shell
+DB_BACKUP_PATH="/db/backup/${APP_NAME}"
+DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} | gzip > "
+DB_BACKUP_SSH_USER=root
+DB_BACKUP_SSH_HOST=127.0.0.1
+DB_BACKUP_FILE="backup-${APP_NAME}-db"
+DB_BACKUP_FILE_EXT=".gz"
+```
+
+- `php artisan database:backup`
 
 ## Reserved keywords for payloads
 

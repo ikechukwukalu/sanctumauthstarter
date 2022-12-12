@@ -25,6 +25,7 @@
             "Ikechukwukalu\\Sanctumauthstarter\\Middleware\\": "src/Middleware/",
             "Ikechukwukalu\\Sanctumauthstarter\\Notifications\\": "src/Notifications/",
             "Ikechukwukalu\\Sanctumauthstarter\\Helpers\\": "src/Helpers/",
+            "Ikechukwukalu\\Sanctumauthstarter\\Console\\Commands": "src/Console/Commands/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/",
             "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\": "src/Tests/Unit/"
         }
