@@ -61,6 +61,9 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Tests/Feature' => base_path('tests/Feature/ikechukwukalu/sanctumauthstarter'),
         ], 'sas-feature-tests');
+        $this->publishes([
+            __DIR__.'/.github/workflows' => base_path('.github/workflows'),
+        ], 'github');
     }
 
     /**

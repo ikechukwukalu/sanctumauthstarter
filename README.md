@@ -64,7 +64,7 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 ## Backup Database
 
-Set the following parameters in your `.env` file
+Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
 
 ``` shell
 DB_BACKUP_PATH="/db/backup/${APP_NAME}"
@@ -74,8 +74,6 @@ DB_BACKUP_SSH_HOST=127.0.0.1
 DB_BACKUP_FILE="backup-${APP_NAME}-db"
 DB_BACKUP_FILE_EXT=".gz"
 ```
-
-- `php artisan database:backup`
 
 ## Reserved keywords for payloads
 
@@ -140,6 +138,10 @@ Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
 ## Publish Laravel Email Notification Blade
 
 - `php artisan vendor:publish --tag=laravel-notifications`
+
+## Publish GitHub workflows
+
+- `php artisan vendor:publish --tag=github`
 
 ## License
 
