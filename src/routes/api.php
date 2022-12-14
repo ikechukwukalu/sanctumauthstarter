@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('pin', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'changePin'])->name('changePin');
     });
     Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
+    Route::post('edit/profile', [Ikechukwukalu\Sanctumauthstarter\Controllers\ProfileController::class, 'editProfile'])->name('editProfile');
 
 
     // Sample Book APIs

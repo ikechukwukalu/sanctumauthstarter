@@ -1,0 +1,65 @@
+<?php
+
+namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+
+use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
+
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+
+use App\Models\User;
+
+class ProfileController extends Controller
+{
+
+    /**
+     * User edit profile.
+     *
+     * @bodyParam name string required The user fullname. Example: John Doe
+     * @bodyParam email string required The user email. Example: johndoe@example.com
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+
+    public function editProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string','max:100'],
+            'email' => ['required', 'email', 'max:100', 'unique:users,email,' . $user->id],
+        ]);
+
+        if ($validator->fails()) {
+            $data = ['message' => (array) $validator->errors()->all()];
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if (empty($user->getDirty())) {
+            $data = ['message' => trans('sanctumauthstarter::general.no_changes')];
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        $user->save();
+
+        $data = ['message' => trans('sanctumauthstarter::profile.changed')];
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
+    }
+}

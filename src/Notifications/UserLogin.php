@@ -30,8 +30,8 @@ class UserLogin extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject(trans('sanctumauthstarter::notify.login.subject'))
             ->line(trans('sanctumauthstarter::notify.login.introduction', ['time' => $this->time, 'device' => $this->device]))
-            ->line(trans('sanctumauthstarter::notify.pin.message'))
-            ->action(trans('sanctumauthstarter::notify.pin.action'), route('changePassword'))
+            ->line(trans('sanctumauthstarter::notify.login.message'))
+            ->action(trans('sanctumauthstarter::notify.login.action'), route('changePassword'))
             ->line(trans('sanctumauthstarter::notify.login.complimentary_close'));
     }
 
