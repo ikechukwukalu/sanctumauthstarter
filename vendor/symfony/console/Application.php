@@ -143,13 +143,8 @@ class Application implements ResetInterface
             @putenv('COLUMNS='.$this->terminal->getWidth());
         }
 
-        if (null === $input) {
-            $input = new ArgvInput();
-        }
-
-        if (null === $output) {
-            $output = new ConsoleOutput();
-        }
+        $input ??= new ArgvInput();
+        $output ??= new ConsoleOutput();
 
         $renderException = function (\Throwable $e) use ($output) {
             if ($output instanceof ConsoleOutputInterface) {
@@ -264,7 +259,9 @@ class Application implements ResetInterface
                 $alternative = $alternatives[0];
 
                 $style = new SymfonyStyle($input, $output);
-                $style->block(sprintf("\nCommand \"%s\" is not defined.\n", $name), null, 'error');
+                $output->writeln('');
+                $formattedBlock = (new FormatterHelper())->formatBlock(sprintf('Command "%s" is not defined.', $name), 'error', true);
+                $output->writeln($formattedBlock);
                 if (!$style->confirm(sprintf('Do you want to run "%s" instead? ', $alternative), false)) {
                     if (null !== $this->dispatcher) {
                         $event = new ConsoleErrorEvent($input, $output, $e);
@@ -301,6 +298,8 @@ class Application implements ResetInterface
 
                         return isset($event) ? $event->getExitCode() : 1;
                     }
+
+                    throw $e;
                 } catch (NamespaceNotFoundException) {
                     throw $e;
                 }
@@ -918,11 +917,21 @@ class Application implements ResetInterface
         }
 
         switch ($shellVerbosity = (int) getenv('SHELL_VERBOSITY')) {
-            case -1: $output->setVerbosity(OutputInterface::VERBOSITY_QUIET); break;
-            case 1: $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE); break;
-            case 2: $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE); break;
-            case 3: $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG); break;
-            default: $shellVerbosity = 0; break;
+            case -1:
+                $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+                break;
+            case 1:
+                $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+                break;
+            case 2:
+                $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+                break;
+            case 3:
+                $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
+                break;
+            default:
+                $shellVerbosity = 0;
+                break;
         }
 
         if (true === $input->hasParameterOption(['--quiet', '-q'], true)) {
@@ -985,27 +994,20 @@ class Application implements ResetInterface
                         });
                     }
                 }
-
-                foreach ($commandSignals as $signal) {
-                    $this->signalRegistry->register($signal, [$command, 'handleSignal']);
-                }
             }
 
             if (null !== $this->dispatcher) {
                 foreach ($this->signalsToDispatchEvent as $signal) {
                     $event = new ConsoleSignalEvent($command, $input, $output, $signal);
 
-                    $this->signalRegistry->register($signal, function ($signal, $hasNext) use ($event) {
+                    $this->signalRegistry->register($signal, function () use ($event) {
                         $this->dispatcher->dispatch($event, ConsoleEvents::SIGNAL);
-
-                        // No more handlers, we try to simulate PHP default behavior
-                        if (!$hasNext) {
-                            if (!\in_array($signal, [\SIGUSR1, \SIGUSR2], true)) {
-                                exit(0);
-                            }
-                        }
                     });
                 }
+            }
+
+            foreach ($commandSignals as $signal) {
+                $this->signalRegistry->register($signal, [$command, 'handleSignal']);
             }
         }
 

@@ -251,7 +251,7 @@ class ComponentTagCompiler
         }
 
         return "##BEGIN-COMPONENT-CLASS##@component('{$class}', '{$component}', [".$this->attributesToString($parameters, $escapeBound = false).'])
-<?php if (isset($attributes) && $constructor = (new ReflectionClass('.$class.'::class))->getConstructor()): ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass('.$class.'::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
 <?php $component->withAttributes(['.$this->attributesToString($attributes->all(), $escapeAttributes = $class !== DynamicComponent::class).']); ?>';
@@ -291,7 +291,65 @@ class ComponentTagCompiler
             return $class;
         }
 
-        $guess = collect($this->blade->getAnonymousComponentNamespaces())
+        if (! is_null($guess = $this->guessAnonymousComponentUsingNamespaces($viewFactory, $component)) ||
+            ! is_null($guess = $this->guessAnonymousComponentUsingPaths($viewFactory, $component))) {
+            return $guess;
+        }
+
+        if (Str::startsWith($component, 'mail::')) {
+            return $component;
+        }
+
+        throw new InvalidArgumentException(
+            "Unable to locate a class or view for component [{$component}]."
+        );
+    }
+
+    /**
+     * Attempt to find an anonymous component using the registered anonymous component paths.
+     *
+     * @param  \Illuminate\Contracts\View\Factory  $viewFactory
+     * @param  string  $component
+     * @return string|null
+     */
+    protected function guessAnonymousComponentUsingPaths(Factory $viewFactory, string $component)
+    {
+        $delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
+
+        foreach ($this->blade->getAnonymousComponentPaths() as $path) {
+            try {
+                if (str_contains($component, $delimiter) &&
+                    ! str_starts_with($component, $path['prefix'].$delimiter)) {
+                    continue;
+                }
+
+                $formattedComponent = str_starts_with($component, $path['prefix'].$delimiter)
+                        ? Str::after($component, $delimiter)
+                        : $component;
+
+                if (! is_null($guess = match (true) {
+                    $viewFactory->exists($guess = $path['prefixHash'].$delimiter.$formattedComponent) => $guess,
+                    $viewFactory->exists($guess = $path['prefixHash'].$delimiter.$formattedComponent.'.index') => $guess,
+                    default => null,
+                })) {
+                    return $guess;
+                }
+            } catch (InvalidArgumentException $e) {
+                //
+            }
+        }
+    }
+
+    /**
+     * Attempt to find an anonymous component using the registered anonymous component namespaces.
+     *
+     * @param  \Illuminate\Contracts\View\Factory  $viewFactory
+     * @param  string  $component
+     * @return string|null
+     */
+    protected function guessAnonymousComponentUsingNamespaces(Factory $viewFactory, string $component)
+    {
+        return collect($this->blade->getAnonymousComponentNamespaces())
             ->filter(function ($directory, $prefix) use ($component) {
                 return Str::startsWith($component, $prefix.'::');
             })
@@ -311,18 +369,6 @@ class ComponentTagCompiler
                     return $view;
                 }
             });
-
-        if (! is_null($guess)) {
-            return $guess;
-        }
-
-        if (Str::startsWith($component, 'mail::')) {
-            return $component;
-        }
-
-        throw new InvalidArgumentException(
-            "Unable to locate a class or view for component [{$component}]."
-        );
     }
 
     /**

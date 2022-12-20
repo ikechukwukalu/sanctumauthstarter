@@ -166,7 +166,7 @@ class GetFromLaravelAPI extends Strategy
                 $parameterRegex = $endpointData->route->wheres[$name] ?? null;
                 $parameters[$name]['example'] = $parameterRegex
                     ? $this->castToType($this->getFaker()->regexify($parameterRegex), $parameters[$name]['type'])
-                    : $this->generateDummyValue($parameters[$name]['type']);
+                    : $this->generateDummyValue($parameters[$name]['type'], hints: ['name' => $name]);
             }
         }
         return $parameters;
@@ -195,7 +195,7 @@ class GetFromLaravelAPI extends Strategy
             $paramIndex = array_search("{{$alternateParamName}}", $parts);
         }
 
-        if ($paramIndex === false) return null;
+        if ($paramIndex === false || $paramIndex === 0) return null;
 
         $things = $parts[$paramIndex - 1];
         // Replace underscores/hyphens, so "side_projects" becomes "side project"
@@ -217,7 +217,11 @@ class GetFromLaravelAPI extends Strategy
         if (class_exists($class = "{$rootNamespace}Models\\" . $className)
             // For the heathens that don't use a Models\ directory
             || class_exists($class = $rootNamespace . $className)) {
-            $instance = new $class;
+            try {
+                $instance = new $class;
+            } catch (\Error) { // It might be an enum or some other non-instantiable class
+                return null;
+            }
             return $instance instanceof Model ? $instance : null;
         }
 

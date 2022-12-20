@@ -7,8 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Knuckles\Camel\Camel;
-use Knuckles\Camel\Output\OutputEndpointData;
-use Knuckles\Scribe\Exceptions\GroupNotFound;
 use Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFactory;
 use Knuckles\Scribe\Matching\RouteMatcherInterface;
 use Knuckles\Scribe\Tools\ConsoleOutputUtils as c;
@@ -66,14 +64,9 @@ class GenerateDocumentation extends Command
         $writer = new Writer($this->docConfig, $this->configName);
         $writer->writeDocs($groupedEndpoints);
 
-        if ($groupedEndpointsInstance->hasEncounteredErrors()) {
-            c::warn('Generated docs, but encountered some errors while processing routes.');
-            c::warn('Check the output above for details.');
-        }
-
         $this->upgradeConfigFileIfNeeded();
 
-        $this->sayGoodbye();
+        $this->sayGoodbye(errored: $groupedEndpointsInstance->hasEncounteredErrors());
     }
 
     public function isForcing(): bool
@@ -89,6 +82,13 @@ class GenerateDocumentation extends Command
     public function getDocConfig(): DocumentationConfig
     {
         return $this->docConfig;
+    }
+
+    protected function runBootstrapHook()
+    {
+        if (is_callable(Globals::$__bootstrap)) {
+            call_user_func_array(Globals::$__bootstrap, [$this]);
+        }
     }
 
     public function bootstrap(): void
@@ -115,6 +115,8 @@ class GenerateDocumentation extends Command
         if ($this->forcing && !$this->shouldExtract) {
             throw new \InvalidArgumentException("Can't use --force and --no-extraction together.");
         }
+
+        $this->runBootstrapHook();
     }
 
     protected function mergeUserDefinedEndpoints(array $groupedEndpoints, array $userDefinedEndpoints): array
@@ -187,7 +189,7 @@ class GenerateDocumentation extends Command
 
     }
 
-    protected function sayGoodbye(): void
+    protected function sayGoodbye(bool $errored = false): void
     {
         $message = 'All done. ';
         if ($this->docConfig->get('type') == 'laravel') {
@@ -200,5 +202,13 @@ class GenerateDocumentation extends Command
 
         $this->newLine();
         c::success($message);
+
+        if ($errored) {
+            c::warn('Generated docs, but encountered some errors while processing routes.');
+            c::warn('Check the output above for details.');
+            if (empty($_SERVER["SCRIBE_TESTS"])) {
+                exit(2);
+            }
+        }
     }
 }

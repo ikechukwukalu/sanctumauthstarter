@@ -467,6 +467,10 @@ trait HasAttributes
         if ($this->exists &&
             ! $this->wasRecentlyCreated &&
             static::preventsAccessingMissingAttributes()) {
+            if (isset(static::$missingAttributeViolationCallback)) {
+                return call_user_func(static::$missingAttributeViolationCallback, $this, $key);
+            }
+
             throw new MissingAttributeException($this, $key);
         }
 
@@ -537,7 +541,7 @@ trait HasAttributes
         }
 
         return method_exists($this, $key) ||
-            (static::$relationResolvers[get_class($this)][$key] ?? null);
+               $this->relationResolver(static::class, $key);
     }
 
     /**
@@ -1115,7 +1119,7 @@ trait HasAttributes
     {
         $caster = $this->resolveCasterClass($key);
 
-        $this->attributes = array_merge(
+        $this->attributes = array_replace(
             $this->attributes,
             $this->normalizeCastClassResponse($key, $caster->set(
                 $this, $key, $value, $this->attributes
@@ -2141,25 +2145,27 @@ trait HasAttributes
      */
     public function getMutatedAttributes()
     {
-        $class = static::class;
-
-        if (! isset(static::$mutatorCache[$class])) {
-            static::cacheMutatedAttributes($class);
+        if (! isset(static::$mutatorCache[static::class])) {
+            static::cacheMutatedAttributes($this);
         }
 
-        return static::$mutatorCache[$class];
+        return static::$mutatorCache[static::class];
     }
 
     /**
      * Extract and cache all the mutated attributes of a class.
      *
-     * @param  string  $class
+     * @param  object|string  $classOrInstance
      * @return void
      */
-    public static function cacheMutatedAttributes($class)
+    public static function cacheMutatedAttributes($classOrInstance)
     {
+        $reflection = new ReflectionClass($classOrInstance);
+
+        $class = $reflection->getName();
+
         static::$getAttributeMutatorCache[$class] =
-            collect($attributeMutatorMethods = static::getAttributeMarkedMutatorMethods($class))
+            collect($attributeMutatorMethods = static::getAttributeMarkedMutatorMethods($classOrInstance))
                     ->mapWithKeys(function ($match) {
                         return [lcfirst(static::$snakeAttributes ? Str::snake($match) : $match) => true];
                     })->all();

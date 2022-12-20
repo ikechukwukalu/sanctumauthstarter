@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace League\Flysystem;
 
+use DateTimeInterface;
 use Generator;
+use League\Flysystem\UrlGeneration\ShardedPrefixPublicUrlGenerator;
 use League\Flysystem\UrlGeneration\PrefixPublicUrlGenerator;
 use League\Flysystem\UrlGeneration\PublicUrlGenerator;
+use League\Flysystem\UrlGeneration\TemporaryUrlGenerator;
 use Throwable;
+
+use function is_array;
 
 class Filesystem implements FilesystemOperator
 {
     use CalculateChecksumFromStream;
 
-    private FilesystemAdapter $adapter;
     private Config $config;
     private PathNormalizer $pathNormalizer;
-    private PublicUrlGenerator $publicUrlGenerator;
 
     public function __construct(
-        FilesystemAdapter $adapter,
+        private FilesystemAdapter $adapter,
         array $config = [],
         PathNormalizer $pathNormalizer = null,
+        private ?PublicUrlGenerator $publicUrlGenerator = null,
+        private ?TemporaryUrlGenerator $temporaryUrlGenerator = null,
     ) {
-        $this->adapter = $adapter;
         $this->config = new Config($config);
         $this->pathNormalizer = $pathNormalizer ?: new WhitespacePathNormalizer();
     }
@@ -165,21 +169,39 @@ class Filesystem implements FilesystemOperator
         return $this->publicUrlGenerator->publicUrl($path, $config);
     }
 
+    public function temporaryUrl(string $path, DateTimeInterface $expiresAt, array $config = []): string
+    {
+        $generator = $this->temporaryUrlGenerator ?: $this->adapter;
+
+        if ($generator instanceof TemporaryUrlGenerator) {
+            return $generator->temporaryUrl($path, $expiresAt, $this->config->extend($config));
+        }
+
+        throw UnableToGenerateTemporaryUrl::noGeneratorConfigured($path);
+    }
+
     public function checksum(string $path, array $config = []): string
     {
         $config = $this->config->extend($config);
 
-        if ($this->adapter instanceof ChecksumProvider) {
-            return $this->adapter->checksum($path, $config);
+        if ( ! $this->adapter instanceof ChecksumProvider) {
+            return $this->calculateChecksumFromStream($path, $config);
         }
 
-        return $this->calculateChecksumFromStream($path, $config);
+        try {
+            return $this->adapter->checksum($path, $config);
+        } catch (ChecksumAlgoIsNotSupported) {
+            return $this->calculateChecksumFromStream($path, $config);
+        }
     }
 
     private function resolvePublicUrlGenerator(): ?PublicUrlGenerator
     {
         if ($publicUrl = $this->config->get('public_url')) {
-            return new PrefixPublicUrlGenerator($publicUrl);
+            return match (true) {
+                is_array($publicUrl) => new ShardedPrefixPublicUrlGenerator($publicUrl),
+                default => new PrefixPublicUrlGenerator($publicUrl),
+            };
         }
 
         if ($this->adapter instanceof PublicUrlGenerator) {

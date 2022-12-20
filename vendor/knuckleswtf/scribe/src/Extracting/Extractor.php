@@ -85,7 +85,7 @@ class Extractor
         // We need to do all this so response calls can work correctly,
         // even though they're only needed for output
         // Note that this
-        [$files, $regularParameters] = OutputEndpointData::getFileParameters($endpointData->cleanBodyParameters);
+        [$files, $regularParameters] = OutputEndpointData::splitIntoFileAndRegularParameters($endpointData->cleanBodyParameters);
         if (count($files)) {
             $endpointData->headers['Content-Type'] = 'multipart/form-data';
         }
@@ -267,7 +267,7 @@ class Extractor
             if (Str::contains($paramName, '.')) { // Object field (or array of objects)
                 self::setObject($cleanParameters, $paramName, $details->example, $parameters, $details->required);
             } else {
-                $cleanParameters[$paramName] = $details->example instanceof \stdClass ? $details->example : $details->example;
+                $cleanParameters[$paramName] = $details->example;
             }
         }
 
@@ -402,8 +402,27 @@ class Extractor
     /**
      * Transform body parameters such that object fields have a `fields` property containing a list of all subfields
      * Subfields will be removed from the main parameter map
-     * For instance, if $parameters is ['dad' => [], 'dad.cars' => [], 'dad.age' => []],
-     * normalise this into ['dad' => [..., '__fields' => ['dad.cars' => [], 'dad.age' => []]]
+     * For instance, if $parameters is [
+     *   'dad' => new Parameter(...),
+     *   'dad.age' => new Parameter(...),
+     *   'dad.cars[]' => new Parameter(...),
+     *   'dad.cars[].model' => new Parameter(...),
+     *   'dad.cars[].price' => new Parameter(...),
+     * ],
+     * normalise this into [
+     *   'dad' => [
+     *     ...,
+     *     '__fields' => [
+     *       'dad.age' => [...],
+     *       'dad.cars' => [
+     *         ...,
+     *         '__fields' => [
+     *           'model' => [...],
+     *           'price' => [...],
+     *         ],
+     *       ],
+     *   ],
+     * ]]
      *
      * @param array $parameters
      *
@@ -415,11 +434,11 @@ class Extractor
         $normalisedParameters = [];
         foreach ($parameters as $name => $parameter) {
             if (Str::contains($name, '.')) {
-                // Get the various pieces of the name
+                // If the user didn't add a parent field, we'll helpfully add it for them
+                $ancestors = [];
+
                 $parts = explode('.', $name);
                 $fieldName = array_pop($parts);
-
-                // If the user didn't add a parent field, we'll helpfully add it for them
                 $parentName = rtrim(join('.', $parts), '[]');
 
                 // When the body is an array, param names will be "[].paramname",
@@ -428,17 +447,38 @@ class Extractor
                     $parentName = '[]';
                 }
 
-                if (empty($normalisedParameters[$parentName])) {
-                    $normalisedParameters[$parentName] = new Parameter([
+                while ($parentName) {
+                    if (!empty($normalisedParameters[$parentName])) {
+                        break;
+                    }
+
+                    $details = [
                         "name" => $parentName,
                         "type" => $parentName === '[]' ? "object[]" : "object",
                         "description" => "",
-                        "required" => true,
-                        "example" => [$fieldName => $parameter->example],
-                    ]);
+                        "required" => false,
+                    ];
+
+                    if ($parameter instanceof ResponseField) {
+                        $ancestors[] = [$parentName, new ResponseField($details)];
+                    } else {
+                        $lastParentExample = $details["example"] =
+                            [$fieldName => $lastParentExample ?? $parameter->example];
+                        $ancestors[] = [$parentName, new Parameter($details)];
+                    }
+
+                    $fieldName = array_pop($parts);
+                    $parentName = rtrim(join('.', $parts), '[]');
+                }
+
+                // We add ancestors in reverse so we can iterate over parents first in the next section
+                foreach (array_reverse($ancestors) as [$ancestorName, $ancestor]) {
+                    $normalisedParameters[$ancestorName] = $ancestor;
                 }
             }
+
             $normalisedParameters[$name] = $parameter;
+            unset($lastParentExample);
         }
 
         $finalParameters = [];

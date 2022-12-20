@@ -22,7 +22,7 @@ class UseResponseAttributes extends PhpAttributeStrategy
 {
     use ParamHelpers, DatabaseTransactionHelpers, InstantiatesExampleModels;
 
-    protected array $attributeNames = [
+    protected static array $attributeNames = [
         Response::class,
         ResponseFromFile::class,
         ResponseFromApiResource::class,
@@ -30,12 +30,12 @@ class UseResponseAttributes extends PhpAttributeStrategy
     ];
 
     protected function extractFromAttributes(
-        array $attributesOnMethod, array $attributesOnController,
-        ExtractedEndpointData $endpointData
+        ExtractedEndpointData $endpointData,
+        array $attributesOnMethod, array $attributesOnFormRequest = [], array $attributesOnController = []
     ): ?array
     {
         $responses = [];
-        foreach ([...$attributesOnController, ...$attributesOnMethod] as $attributeInstance) {
+        foreach ([...$attributesOnController, ...$attributesOnFormRequest, ...$attributesOnMethod] as $attributeInstance) {
             /* @phpstan-ignore-next-line */
             $responses[] = match (get_class($attributeInstance)) {
                 Response::class => $attributeInstance->toArray(),

@@ -21,11 +21,6 @@ namespace Symfony\Component\VarExporter\Internal;
 class LazyObjectRegistry
 {
     /**
-     * @var array<int, LazyObjectState>
-     */
-    public static $states = [];
-
-    /**
      * @var array<class-string, \ReflectionClass>
      */
     public static $classReflectors = [];
@@ -50,6 +45,11 @@ class LazyObjectRegistry
      */
     public static $parentMethods = [];
 
+    /**
+     * @var LazyObjectState
+     */
+    public static $noInitializerState;
+
     public static function getClassResetters($class)
     {
         $classProperties = [];
@@ -63,25 +63,25 @@ class LazyObjectRegistry
         foreach ($propertyScopes as $key => [$scope, $name, $readonlyScope]) {
             $propertyScopes[$k = "\0$scope\0$name"] ?? $propertyScopes[$k = "\0*\0$name"] ?? $k = $name;
 
-            if ($k === $key && "\0$class\0lazyObjectId" !== $k) {
+            if ($k === $key && "\0$class\0lazyObjectState" !== $k) {
                 $classProperties[$readonlyScope ?? $scope][$name] = $key;
             }
         }
 
         $resetters = [];
         foreach ($classProperties as $scope => $properties) {
-            $resetters[] = \Closure::bind(static function ($instance, $skippedProperties = []) use ($properties) {
+            $resetters[] = \Closure::bind(static function ($instance, $skippedProperties, $onlyProperties = null) use ($properties) {
                 foreach ($properties as $name => $key) {
-                    if (!\array_key_exists($key, $skippedProperties)) {
+                    if (!\array_key_exists($key, $skippedProperties) && (null === $onlyProperties || \array_key_exists($key, $onlyProperties))) {
                         unset($instance->$name);
                     }
                 }
             }, null, $scope);
         }
 
-        $resetters[] = static function ($instance, $skippedProperties = []) {
+        $resetters[] = static function ($instance, $skippedProperties, $onlyProperties = null) {
             foreach ((array) $instance as $name => $value) {
-                if ("\0" !== ($name[0] ?? '') && !\array_key_exists($name, $skippedProperties)) {
+                if ("\0" !== ($name[0] ?? '') && !\array_key_exists($name, $skippedProperties) && (null === $onlyProperties || \array_key_exists($name, $onlyProperties))) {
                     unset($instance->$name);
                 }
             }

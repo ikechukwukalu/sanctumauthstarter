@@ -26,6 +26,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         Route::middleware('web')->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         });
+        $this->loadRoutesFrom(__DIR__ . '/routes/channels.php');
 
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
@@ -89,6 +90,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ProfileController::class);
+        $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class);
 
         // Controller for Sample Book APIs
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class);

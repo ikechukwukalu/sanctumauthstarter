@@ -11,6 +11,9 @@
 
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Types;
+
 /**
  * Session handler using a PDO connection to read and write data.
  *
@@ -175,6 +178,52 @@ class PdoSessionHandler extends AbstractSessionHandler
         $this->ttl = $options['ttl'] ?? null;
     }
 
+    public function configureSchema(Schema $schema, \Closure $isSameDatabase): void
+    {
+        if ($schema->hasTable($this->table) || !$isSameDatabase($this->getConnection()->exec(...))) {
+            return;
+        }
+
+        $table = $schema->createTable($this->table);
+        switch ($this->driver) {
+            case 'mysql':
+                $table->addColumn($this->idCol, Types::BINARY)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addOption('collate', 'utf8mb4_bin');
+                $table->addOption('engine', 'InnoDB');
+                break;
+            case 'sqlite':
+                $table->addColumn($this->idCol, Types::TEXT)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'pgsql':
+                $table->addColumn($this->idCol, Types::STRING)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BINARY)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'oci':
+                $table->addColumn($this->idCol, Types::STRING)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setNotnull(true);
+                break;
+            case 'sqlsrv':
+                $table->addColumn($this->idCol, Types::TEXT)->setLength(128)->setNotnull(true);
+                $table->addColumn($this->dataCol, Types::BLOB)->setNotnull(true);
+                $table->addColumn($this->lifetimeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                $table->addColumn($this->timeCol, Types::INTEGER)->setUnsigned(true)->setNotnull(true);
+                break;
+            default:
+                throw new \DomainException(sprintf('Creating the session table is currently not implemented for PDO driver "%s".', $this->driver));
+        }
+        $table->setPrimaryKey([$this->idCol]);
+    }
+
     /**
      * Creates the table to store sessions which can be called once for setup.
      *
@@ -207,7 +256,7 @@ class PdoSessionHandler extends AbstractSessionHandler
 
         try {
             $this->pdo->exec($sql);
-            $this->pdo->exec("CREATE INDEX EXPIRY ON $this->table ($this->lifetimeCol)");
+            $this->pdo->exec("CREATE INDEX expiry ON $this->table ($this->lifetimeCol)");
         } catch (\PDOException $e) {
             $this->rollback();
 
@@ -441,8 +490,8 @@ class PdoSessionHandler extends AbstractSessionHandler
                         return $dsn;
                     }
                 }
-            // If "unix_socket" is not in the query, we continue with the same process as pgsql
-            // no break
+                // If "unix_socket" is not in the query, we continue with the same process as pgsql
+                // no break
             case 'pgsql':
                 $dsn ??= 'pgsql:';
 

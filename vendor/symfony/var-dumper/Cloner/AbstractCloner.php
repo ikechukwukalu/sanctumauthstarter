@@ -28,6 +28,7 @@ abstract class AbstractCloner implements ClonerInterface
         'Symfony\Component\VarDumper\Caster\CutArrayStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castCutArray'],
         'Symfony\Component\VarDumper\Caster\ConstStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castStub'],
         'Symfony\Component\VarDumper\Caster\EnumStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castEnum'],
+        'Symfony\Component\VarDumper\Caster\ScalarStub' => ['Symfony\Component\VarDumper\Caster\StubCaster', 'castScalar'],
 
         'Fiber' => ['Symfony\Component\VarDumper\Caster\FiberCaster', 'castFiber'],
 
@@ -89,6 +90,7 @@ abstract class AbstractCloner implements ClonerInterface
         'Symfony\Component\HttpFoundation\Request' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castRequest'],
         'Symfony\Component\Uid\Ulid' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castUlid'],
         'Symfony\Component\Uid\Uuid' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castUuid'],
+        'Symfony\Component\VarExporter\Internal\LazyObjectState' => ['Symfony\Component\VarDumper\Caster\SymfonyCaster', 'castLazyObjectState'],
         'Symfony\Component\VarDumper\Exception\ThrowingCasterException' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castThrowingCasterException'],
         'Symfony\Component\VarDumper\Caster\TraceStub' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castTraceStub'],
         'Symfony\Component\VarDumper\Caster\FrameStub' => ['Symfony\Component\VarDumper\Caster\ExceptionCaster', 'castFrameStub'],
@@ -124,6 +126,7 @@ abstract class AbstractCloner implements ClonerInterface
         'SplObjectStorage' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castObjectStorage'],
         'SplPriorityQueue' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castHeap'],
         'OuterIterator' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castOuterIterator'],
+        'WeakMap' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castWeakMap'],
         'WeakReference' => ['Symfony\Component\VarDumper\Caster\SplCaster', 'castWeakReference'],
 
         'Redis' => ['Symfony\Component\VarDumper\Caster\RedisCaster', 'castRedis'],
@@ -216,10 +219,7 @@ abstract class AbstractCloner implements ClonerInterface
      */
     public function __construct(array $casters = null)
     {
-        if (null === $casters) {
-            $casters = static::$defaultCasters;
-        }
-        $this->addCasters($casters);
+        $this->addCasters($casters ?? static::$defaultCasters);
     }
 
     /**

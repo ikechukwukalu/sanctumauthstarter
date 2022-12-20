@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'Parsedown' => array($vendorDir . '/erusev/parsedown'),
     'Mpociot' => array($vendorDir . '/mpociot/reflection-docblock/src'),
+    'Evenement' => array($vendorDir . '/evenement/evenement/src'),
     'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),
 );

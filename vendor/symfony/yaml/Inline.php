@@ -77,7 +77,7 @@ class Inline
                 ++$i;
                 break;
             default:
-                $result = self::parseScalar($value, $flags, null, $i, null === $tag, $references);
+                $result = self::parseScalar($value, $flags, null, $i, true, $references);
         }
 
         // some comments are allowed at the end
@@ -123,13 +123,7 @@ class Inline
                 }
 
                 if (Yaml::DUMP_OBJECT_AS_MAP & $flags && ($value instanceof \stdClass || $value instanceof \ArrayObject)) {
-                    $output = [];
-
-                    foreach ($value as $key => $val) {
-                        $output[] = sprintf('%s: %s', self::dump($key, $flags), self::dump($val, $flags));
-                    }
-
-                    return sprintf('{ %s }', implode(', ', $output));
+                    return self::dumpHashArray($value, $flags);
                 }
 
                 if (Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE & $flags) {
@@ -232,7 +226,17 @@ class Inline
             return sprintf('[%s]', implode(', ', $output));
         }
 
-        // hash
+        return self::dumpHashArray($value, $flags);
+    }
+
+    /**
+     * Dumps hash array to a YAML string.
+     *
+     * @param array|\ArrayObject|\stdClass $value The hash array to dump
+     * @param int                          $flags A bit field of Yaml::DUMP_* constants to customize the dumped YAML string
+     */
+    private static function dumpHashArray(array|\ArrayObject|\stdClass $value, int $flags): string
+    {
         $output = [];
         foreach ($value as $key => $val) {
             $output[] = sprintf('%s: %s', self::dump($key, $flags), self::dump($val, $flags));
@@ -673,7 +677,6 @@ class Inline
                 }
 
                 return octdec($value);
-            // Optimize for returning strings.
             case \in_array($scalar[0], ['+', '-', '.'], true) || is_numeric($scalar[0]):
                 if (Parser::preg_match('{^[+-]?[0-9][0-9_]*$}', $scalar)) {
                     $scalar = str_replace('_', '', $scalar);

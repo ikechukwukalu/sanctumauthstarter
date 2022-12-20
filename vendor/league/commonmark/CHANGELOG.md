@@ -8,8 +8,8 @@ Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) princi
 
 ### Added
 
-- Added generic `CommonMarkExceptionInterface` marker interface.
-- Added several new specific exception types:
+- Added generic `CommonMarkException` marker interface for all exceptions thrown by the library
+- Added several new specific exception types implementing that marker interface:
     - `AlreadyInitializedException`
     - `InvalidArgumentException`
     - `IOException`
@@ -17,6 +17,10 @@ Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) princi
     - `MissingDependencyException`
     - `NoMatchingRendererException`
     - `ParserLogicException`
+- Added more configuration options to the Heading Permalinks extension (#939):
+    - `heading_permalink/apply_id_to_heading` - When `true`, the `id` attribute will be applied to the heading element itself instead of the `<a>` tag
+    - `heading_permalink/heading_class` - class to apply to the heading element
+    - `heading_permalink/insert` - now accepts `none` to prevent the creation of the `<a>` link
 
 ### Changed
 
@@ -26,11 +30,30 @@ Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) princi
     - Adding items to an already-initialized `Environment`
     - Rendering a `Node` when no renderer has been registered for it
 - `HeadingPermalinkProcessor` now throws `InvalidConfigurationException` instead of `RuntimeException` when invalid config values are given.
+- `HtmlElement::setAttribute()` no longer requires the second parameter for boolean attributes
 
 ### Fixed
 
 - Fixed inaccurate `@throws` docblocks throughout the codebase, including `ConverterInterface`, `MarkdownConverter`, and `MarkdownConverterInterface`.
     - These previously suggested that only `\RuntimeException`s were thrown, which was inaccurate as `\LogicException`s were also possible.
+
+## [2.3.8] - 2022-12-10
+
+### Fixed
+
+- Fixed parsing issues when `mb_internal_encoding()` is set to something other than `UTF-8` (#951)
+
+## [2.3.7] - 2022-11-03
+
+### Fixed
+
+- Fixed `TaskListItemMarkerRenderer` not including HTML attributes set on the node by other extensions (#947)
+
+## [2.3.6] - 2022-10-30
+
+### Fixed
+
+- Fixed unquoted attribute parsing when closing curly brace is followed by certain characters (like a `.`) (#943)
 
 ## [2.3.5] - 2022-07-29
 
@@ -520,7 +543,10 @@ No changes were introduced since the previous release.
     - Alternative 1: Use `CommonMarkConverter` or `GithubFlavoredMarkdownConverter` if you don't need to customize the environment
     - Alternative 2: Instantiate a new `Environment` and add the necessary extensions yourself
 
-[unreleased]: https://github.com/thephpleague/commonmark/compare/2.3.5...main
+[unreleased]: https://github.com/thephpleague/commonmark/compare/2.3.8...main
+[2.3.8]: https://github.com/thephpleague/commonmark/compare/2.3.7...2.3.8
+[2.3.7]: https://github.com/thephpleague/commonmark/compare/2.3.6...2.3.7
+[2.3.6]: https://github.com/thephpleague/commonmark/compare/2.3.5...2.3.6
 [2.3.5]: https://github.com/thephpleague/commonmark/compare/2.3.4...2.3.5
 [2.3.4]: https://github.com/thephpleague/commonmark/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/thephpleague/commonmark/compare/2.3.2...2.3.3

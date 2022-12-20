@@ -314,6 +314,7 @@ class Route
      */
     public function flushController()
     {
+        $this->computedMiddleware = null;
         $this->controller = null;
     }
 
@@ -1093,7 +1094,7 @@ class Route
             );
         }
 
-        if (is_a($controllerClass, Controller::class, true)) {
+        if (method_exists($controllerClass, 'getMiddleware')) {
             return $this->controllerDispatcher()->getMiddleware(
                 $this->getController(), $controllerMethod
             );

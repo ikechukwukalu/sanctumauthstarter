@@ -1,10 +1,16 @@
 CHANGELOG
 =========
 
+6.3
+---
+
+ * Deprecate parameters `container.dumper.inline_factories` and `container.dumper.inline_class_loader`, use `.container.dumper.inline_factories` and `.container.dumper.inline_class_loader` instead
+ * `FileProfilerStorage` removes profiles automatically after two days
+
 6.2
 ---
 
- * Add constructor argument `bool $catchThrowable` to `HttpKernel`
+ * Add constructor argument `bool $handleAllThrowable` to `HttpKernel`
  * Add `ControllerEvent::getAttributes()` to handle attributes on controllers
  * Add `#[Cache]` to describe the default HTTP cache headers on controllers
  * Add `absolute_uri` option to surrogate fragment renderers

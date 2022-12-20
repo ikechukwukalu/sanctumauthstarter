@@ -13,7 +13,7 @@ class SendEmailVerificationNotification implements ShouldQueue
 
     public function viaConnection()
     {
-        return env('QUEUE_CONNECTION', 'database');
+        return env('QUEUE_CONNECTION', 'redis');
     }
 
     public function handle(EmailVerification $event)

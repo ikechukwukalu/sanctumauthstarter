@@ -10,10 +10,15 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "laravel/ui": "^3.4",
+        "laravel/ui": "^4.0",
         "laravel/sanctum": "^3.0",
         "laravel/framework": "^9.19",
-        "hisorange/browser-detect": "dev-stable"
+        "hisorange/browser-detect": "^4.5",
+        "laravel/socialite": "^5.5",
+        "doctrine/dbal": "^3.5",
+        "beyondcode/laravel-websockets": "^1.13",
+        "pusher/pusher-php-server": "7.0",
+        "predis/predis": "^2.0"
     },
     "require-dev": {
         "knuckleswtf/scribe": "dev-master"

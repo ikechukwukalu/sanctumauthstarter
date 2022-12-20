@@ -18,7 +18,7 @@ class Response extends BaseDTO
     public function __construct(array $parameters = [])
     {
         if (is_array($parameters['content'] ?? null)) {
-            $parameters['content'] = json_encode($parameters['content']);
+            $parameters['content'] = json_encode($parameters['content'], JSON_UNESCAPED_SLASHES);
         }
 
         if (isset($parameters['status'])) {
@@ -48,5 +48,12 @@ class Response extends BaseDTO
         }
 
         parent::__construct($parameters);
+    }
+
+    public function fullDescription()
+    {
+        $description = $this->status;
+        if ($this->description) $description .= ", {$this->description}";
+        return $description;
     }
 }

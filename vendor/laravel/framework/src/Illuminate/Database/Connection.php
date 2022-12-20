@@ -13,6 +13,7 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Events\StatementPrepared;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Database\Events\TransactionCommitting;
 use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Query\Expression;
@@ -978,6 +979,7 @@ class Connection implements ConnectionInterface
         return $this->events?->dispatch(match ($event) {
             'beganTransaction' => new TransactionBeginning($this),
             'committed' => new TransactionCommitted($this),
+            'committing' => new TransactionCommitting($this),
             'rollingBack' => new TransactionRolledBack($this),
             default => null,
         });
@@ -1072,6 +1074,16 @@ class Connection implements ConnectionInterface
     public function isDoctrineAvailable()
     {
         return class_exists('Doctrine\DBAL\Connection');
+    }
+
+    /**
+     * Indicates whether native alter operations will be used when dropping or renaming columns, even if Doctrine DBAL is installed.
+     *
+     * @return bool
+     */
+    public function usingNativeSchemaOperations()
+    {
+        return ! $this->isDoctrineAvailable() || SchemaBuilder::$alwaysUsesNativeSchemaOperationsIfPossible;
     }
 
     /**

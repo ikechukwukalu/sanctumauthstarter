@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use hisorange\BrowserDetect\Parser as Browser;
 
 class Controller extends BaseController
 {
@@ -81,5 +82,33 @@ class Controller extends BaseController
         }
 
         return $request->ip(); // it will return server ip when no client ip found
+    }
+
+    protected function getLoginUserInformation(): array
+    {
+        $info = [];
+
+        if (Browser::deviceType() === 'Mobile' ||
+            Browser::deviceType() === 'Tablet') {
+            $info = [
+                Browser::deviceFamily(),
+                Browser::deviceModel()
+            ];
+        }
+
+        if (Browser::deviceType() === 'Desktop') {
+            $info = [
+                Browser::browserName(),
+                Browser::platformName()
+            ];
+        }
+
+        if (Browser::deviceType() === 'Bot') {
+            $info = [
+                Browser::userAgent()
+            ];
+        }
+
+        return $info;
     }
 }

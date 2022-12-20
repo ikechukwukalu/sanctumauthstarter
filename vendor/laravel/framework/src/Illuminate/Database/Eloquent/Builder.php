@@ -96,8 +96,10 @@ class Builder implements BuilderContract
         'count',
         'dd',
         'doesntExist',
+        'doesntExistOr',
         'dump',
         'exists',
+        'existsOr',
         'explain',
         'getBindings',
         'getConnection',
@@ -110,6 +112,7 @@ class Builder implements BuilderContract
         'max',
         'min',
         'raw',
+        'rawValue',
         'sum',
         'toSql',
     ];
@@ -1907,8 +1910,8 @@ class Builder implements BuilderContract
     protected static function registerMixin($mixin, $replace)
     {
         $methods = (new ReflectionClass($mixin))->getMethods(
-                ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED
-            );
+            ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED
+        );
 
         foreach ($methods as $method) {
             if ($replace || ! static::hasGlobalMacro($method->name)) {

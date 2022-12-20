@@ -54,18 +54,15 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     protected $resolver;
     protected $requestStack;
     private ArgumentResolverInterface $argumentResolver;
-    private bool $catchThrowable;
+    private bool $handleAllThrowables;
 
-    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null, bool $catchThrowable = false)
+    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null, bool $handleAllThrowables = false)
     {
         $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
         $this->requestStack = $requestStack ?? new RequestStack();
         $this->argumentResolver = $argumentResolver ?? new ArgumentResolver();
-        $this->catchThrowable = $catchThrowable;
-        if (!$catchThrowable) {
-            trigger_deprecation('symfony/http-kernel', '6.2', 'Starting from 7.0, "%s::handle()" will catch \Throwable exceptions and convert them to HttpFoundation responses. Pass $catchThrowable=true to adapt to this behavior now.', self::class);
-        }
+        $this->handleAllThrowables = $handleAllThrowables;
     }
 
     public function handle(Request $request, int $type = HttpKernelInterface::MAIN_REQUEST, bool $catch = true): Response
@@ -76,7 +73,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         try {
             return $this->handleRaw($request, $type);
         } catch (\Throwable $e) {
-            if (!$this->catchThrowable && !$e instanceof \Exception) {
+            if ($e instanceof \Error && !$this->handleAllThrowables) {
                 throw $e;
             }
 
@@ -109,7 +106,17 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             throw $exception;
         }
 
-        $response = $this->handleThrowable($exception, $request, self::MAIN_REQUEST);
+        if ($pop = $request !== $this->requestStack->getMainRequest()) {
+            $this->requestStack->push($request);
+        }
+
+        try {
+            $response = $this->handleThrowable($exception, $request, self::MAIN_REQUEST);
+        } finally {
+            if ($pop) {
+                $this->requestStack->pop();
+            }
+        }
 
         $response->sendHeaders();
         $response->sendContent();
@@ -207,8 +214,6 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     /**
      * Handles a throwable by trying to convert it to a Response.
-     *
-     * @throws \Throwable
      */
     private function handleThrowable(\Throwable $e, Request $request, int $type): Response
     {
@@ -241,7 +246,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         try {
             return $this->filterResponse($response, $request, $type);
         } catch (\Throwable $e) {
-            if (!$this->catchThrowable && !$e instanceof \Exception) {
+            if ($e instanceof \Error && !$this->handleAllThrowables) {
                 throw $e;
             }
 

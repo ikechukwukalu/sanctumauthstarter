@@ -34,15 +34,112 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## Steps To Install
 
 - `composer require ikechukwukalu/sanctumauthstarter`
-- You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications. For a quick start set `QUEUE_CONNECTION=database` within your `.env` file.
-- Run `php artisan queue:table`, `php artisan migrate` and `php artisan queue:work --queue=high,default`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
+
+### SOCIAL MEDIAL LOGIN
+
+For social media login, you must setup your laravel app for websockets. In order to do that run the following:
+
+- Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
+- Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
+- Set `REDIS_CLIENT=predis` and `BROADCAST_DRIVER=pusher` within your `.env` file.
+- Your `laravel echo` config should look similar to this:
+
+```js
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+    forceTLS: false,
+    encrypted: false,
+    enabledTransports: ['ws', 'wss'],
+    authorizer: (channel, options) => {
+        return {
+            authorize: (socketId, callback) => {
+                axios.post('/broadcasting/auth', {
+                    socket_id: socketId,
+                    channel_name: channel.name
+                })
+                .then(response => {
+                    callback(false, response.data);
+                })
+                .catch(error => {
+                    callback(true, error);
+                });
+            }
+        };
+    },
+});
+```
+
+### WEBSOCKETS AND QUEUES
+
+You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
+
+- Set `QUEUE_CONNECTION=redis` within your `.env` file.
+- Run `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
 - Run `php artisan serve`
+
+## Routes
+
+- `web.php`
+
+```php
+Route::view('forgot/password', 'sanctumauthstarter::passwords.reset')->name('password.reset');
+Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPasswordForm'])->name('password.update');
+
+Route::group(['middleware' => ['web']], function () {
+    Route::get('auth/socialite', function() {
+        return view('sanctumauthstarter::socialite.auth');
+    })->name('socialite.auth');
+
+    Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'setCookie'])->name('set.cookie');
+    Route::get('auth/redirect', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'authRedirect'])->name('auth.redirect');
+    Route::get('auth/callback', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'authCallback'])->name('auth.callback');
+});
+```
+
+- `api.php`
+
+```php
+Route::prefix('auth')->group(function () {
+    Route::post('register', [Ikechukwukalu\Sanctumauthstarter\Controllers\RegisterController::class, 'register'])->name('register');
+    Route::post('login', [Ikechukwukalu\Sanctumauthstarter\Controllers\LoginController::class, 'login'])->name('login');
+    Route::middleware('auth:sanctum')->post('logout', [Ikechukwukalu\Sanctumauthstarter\Controllers\LogoutController::class, 'logout'])->name('logout');
+    Route::get('verify/email/{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class, 'verifyUserEmail'])->name('verification.verify');
+    Route::middleware('auth:sanctum')->post('resend/verify/email', [Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class, 'resendUserEmailVerification'])->name('verification.resend');
+    Route::post('forgot/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPassword'])->name('resetPassword');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('change')->group(function () {
+        Route::post('password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class, 'changePassword'])->name('changePassword');
+        Route::post('pin', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'changePin'])->name('changePin');
+    });
+    Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
+    Route::post('edit/profile', [Ikechukwukalu\Sanctumauthstarter\Controllers\ProfileController::class, 'editProfile'])->name('editProfile');
+
+
+    // Sample Book APIs
+    Route::prefix('v1/sample/books')->group(function () {
+        Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooksTest');
+
+        // These APIs require a user's pin before requests are processed
+        Route::middleware(['require.pin'])->group(function () {
+            Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'createBook'])->name('createBookTest');
+            Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'updateBook'])->name('updateBookTest');
+            Route::delete('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'deleteBook'])->name('deleteBookTest');
+        });
+    });
+});
+```
 
 ## Tests
 
-It's recommended that you run the tests before you start adding your models and controllers.
+It's recommended that you run the tests before you start adding your custom models and controllers.
 Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
 
 ### NOTE

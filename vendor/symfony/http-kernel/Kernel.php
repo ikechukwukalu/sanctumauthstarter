@@ -17,6 +17,7 @@ use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\Compiler\RemoveBuildParametersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -75,15 +76,15 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
      */
     private static array $freshCache = [];
 
-    public const VERSION = '6.2.0-DEV';
-    public const VERSION_ID = 60200;
+    public const VERSION = '6.3.0-DEV';
+    public const VERSION_ID = 60300;
     public const MAJOR_VERSION = 6;
-    public const MINOR_VERSION = 2;
+    public const MINOR_VERSION = 3;
     public const RELEASE_VERSION = 0;
     public const EXTRA_VERSION = 'DEV';
 
-    public const END_OF_MAINTENANCE = '07/2023';
-    public const END_OF_LIFE = '07/2023';
+    public const END_OF_MAINTENANCE = '01/2024';
+    public const END_OF_LIFE = '01/2024';
 
     public function __construct(string $environment, bool $debug)
     {
@@ -414,7 +415,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
                     $lock = null;
                 } elseif (!is_file($cachePath) || !\is_object($this->container = include $cachePath)) {
                     $this->container = null;
-                } elseif (!$oldContainer || \get_class($this->container) !== $oldContainer->name) {
+                } elseif (!$oldContainer || $this->container::class !== $oldContainer->name) {
                     flock($lock, \LOCK_UN);
                     fclose($lock);
                     $this->container->set('kernel', $this);
@@ -504,7 +505,7 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
         $this->container = require $cachePath;
         $this->container->set('kernel', $this);
 
-        if ($oldContainer && \get_class($this->container) !== $oldContainer->name) {
+        if ($oldContainer && $this->container::class !== $oldContainer->name) {
             // Because concurrent requests might still be using them,
             // old container files are not removed immediately,
             // but on a next dump of the container.
@@ -648,12 +649,37 @@ abstract class Kernel implements KernelInterface, RebootableInterface, Terminabl
         // cache the container
         $dumper = new PhpDumper($container);
 
+        $buildParameters = [];
+        foreach ($container->getCompilerPassConfig()->getPasses() as $pass) {
+            if ($pass instanceof RemoveBuildParametersPass) {
+                $buildParameters = array_merge($buildParameters, $pass->getRemovedParameters());
+            }
+        }
+
+        $inlineFactories = false;
+        if (isset($buildParameters['.container.dumper.inline_factories'])) {
+            $inlineFactories = $buildParameters['.container.dumper.inline_factories'];
+        } elseif ($container->hasParameter('container.dumper.inline_factories')) {
+            trigger_deprecation('symfony/http-kernel', '6.3', 'Parameter "%s" is deprecated, use ".%1$s" instead.', 'container.dumper.inline_factories');
+            $inlineFactories = $container->getParameter('container.dumper.inline_factories');
+        }
+
+        $inlineClassLoader = $this->debug;
+        if (isset($buildParameters['.container.dumper.inline_class_loader'])) {
+            $inlineClassLoader = $buildParameters['.container.dumper.inline_class_loader'];
+        } elseif ($container->hasParameter('container.dumper.inline_class_loader')) {
+            trigger_deprecation('symfony/http-kernel', '6.3', 'Parameter "%s" is deprecated, use ".%1$s" instead.', 'container.dumper.inline_class_loader');
+            $inlineClassLoader = $container->getParameter('container.dumper.inline_class_loader');
+        }
+
         $content = $dumper->dump([
             'class' => $class,
             'base_class' => $baseClass,
             'file' => $cache->getPath(),
             'as_files' => true,
             'debug' => $this->debug,
+            'inline_factories' => $inlineFactories,
+            'inline_class_loader' => $inlineClassLoader,
             'build_time' => $container->hasParameter('kernel.container_build_time') ? $container->getParameter('kernel.container_build_time') : time(),
             'preload_classes' => array_map('get_class', $this->bundles),
         ]);

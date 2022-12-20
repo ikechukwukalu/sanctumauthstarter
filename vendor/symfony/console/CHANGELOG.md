@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+6.3
+---
+
+ * Remove `exit` call in `Application` signal handlers. Commands will no longer be automatically interrupted after receiving signal other than `SIGUSR1` or `SIGUSR2`
+ * Add `ProgressBar::setPlaceholderFormatter` to set a placeholder attached to a instance, instead of being global.
+
 6.2
 ---
 

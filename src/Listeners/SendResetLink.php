@@ -14,7 +14,7 @@ class SendResetLink implements ShouldQueue
 
     public function viaConnection()
     {
-        return env('QUEUE_CONNECTION', 'database');
+        return env('QUEUE_CONNECTION', 'redis');
     }
 
     public function handle(ForgotPassword $event)

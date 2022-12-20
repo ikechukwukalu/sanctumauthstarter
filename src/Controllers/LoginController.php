@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
 use Carbon\Carbon;
-use hisorange\BrowserDetect\Parser as Browser;
 
 use App\Models\User;
 
@@ -69,7 +68,6 @@ class LoginController extends Controller
         ]);
 
         if ($credentials->fails()) {
-
             $data = (array) $credentials->messages();
             return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
         }
@@ -106,33 +104,5 @@ class LoginController extends Controller
 
         return $this->httpJsonResponse(
             trans('sanctumauthstarter::general.success'), 200, $data);
-    }
-
-    private function getLoginUserInformation(): array
-    {
-        $info = [];
-
-        if (Browser::deviceType() === 'Mobile' ||
-            Browser::deviceType() === 'Tablet') {
-            $info = [
-                Browser::deviceFamily(),
-                Browser::deviceModel()
-            ];
-        }
-
-        if (Browser::deviceType() === 'Desktop') {
-            $info = [
-                Browser::browserName(),
-                Browser::platformName()
-            ];
-        }
-
-        if (Browser::deviceType() === 'Bot') {
-            $info = [
-                Browser::userAgent()
-            ];
-        }
-
-        return $info;
     }
 }

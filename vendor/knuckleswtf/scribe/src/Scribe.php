@@ -3,12 +3,13 @@
 namespace Knuckles\Scribe;
 
 use Knuckles\Camel\Extraction\ExtractedEndpointData;
+use Knuckles\Scribe\Commands\GenerateDocumentation;
 use Knuckles\Scribe\Tools\Globals;
 use Symfony\Component\HttpFoundation\Request;
 
 class Scribe
 {
-    public const VERSION = '4.1.0';
+    public const VERSION = '4.10.1';
 
     /**
      * Specify a callback that will be executed just before a response call is made
@@ -19,6 +20,16 @@ class Scribe
     public static function beforeResponseCall(callable $callable)
     {
         Globals::$__beforeResponseCall = $callable;
+    }
+
+    /**
+     * Specify a callback that will be executed just before the generate command is executed
+     *
+     * @param callable(GenerateDocumentation): mixed $callable
+     */
+    public static function bootstrap(callable $callable)
+    {
+        Globals::$__bootstrap = $callable;
     }
 
     /**
@@ -52,10 +63,24 @@ class Scribe
      * to instantiate Form Requests. his callback takes the name of the form request class,
      * the current Laravel route being processed, and the controller method.
      *
-     * @param callable(string,\Illuminate\Routing\Route,\ReflectionFunctionAbstract): mixed $callable
+     * @param ?callable(string,\Illuminate\Routing\Route,\ReflectionFunctionAbstract): mixed $callable
      */
-    public static function instantiateFormRequestUsing(callable $callable)
+    public static function instantiateFormRequestUsing(?callable $callable)
     {
         Globals::$__instantiateFormRequestUsing = $callable;
+    }
+
+    /**
+     * Specify a callback that will be called when instantiating an `ExtractedEndpointData` object
+     * in order to normalize the URL. The default normalization tries to convert URL parameters from
+     * Laravel resource-style (`users/{user}/projects/{project}`)
+     * to a general style (`users/{user_id}/projects/{id}`).
+     * The callback will be passed the default Laravel URL, the route object, the controller method and class.
+     *
+     * @param ?callable(string,\Illuminate\Routing\Route,\ReflectionFunctionAbstract,?\ReflectionClass): string $callable
+     */
+    public static function normalizeEndpointUrlUsing(?callable $callable)
+    {
+        Globals::$__normalizeEndpointUrlUsing = $callable;
     }
 }

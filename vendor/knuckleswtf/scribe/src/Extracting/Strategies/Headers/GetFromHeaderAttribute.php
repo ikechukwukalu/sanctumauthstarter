@@ -11,15 +11,15 @@ use Knuckles\Scribe\Extracting\Strategies\PhpAttributeStrategy;
  */
 class GetFromHeaderAttribute extends PhpAttributeStrategy
 {
-    protected array $attributeNames = [Header::class];
+    protected static array $attributeNames = [Header::class];
 
     protected function extractFromAttributes(
-        array $attributesOnMethod, array $attributesOnController,
-        ExtractedEndpointData $endpointData
+        ExtractedEndpointData $endpointData,
+        array $attributesOnMethod, array $attributesOnFormRequest = [], array $attributesOnController = []
     ): ?array
     {
         $headers = [];
-        foreach ([...$attributesOnController, ...$attributesOnMethod] as $attributeInstance) {
+        foreach ([...$attributesOnController, ...$attributesOnFormRequest, ...$attributesOnMethod] as $attributeInstance) {
             $data = $attributeInstance->toArray();
             $data['example'] ??= $this->generateDummyValue('string');
             $headers[$data["name"]] = $data["example"];
