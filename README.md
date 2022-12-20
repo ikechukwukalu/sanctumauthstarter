@@ -7,7 +7,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Auto login after registration
 - Login throttling
 - Login 2FA (pending)
-- Social media login (pending)
+- Social media login
 - Forgot password
 - Email verification
 - Resend email verification
