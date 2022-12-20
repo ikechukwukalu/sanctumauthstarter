@@ -90,7 +90,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class);
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\ProfileController::class);
-        $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class);
+        $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class);
 
         // Controller for Sample Book APIs
         $this->app->make(\Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class);

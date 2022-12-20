@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
 use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
 
-class SocialiteRegisterController extends Controller
+class SocialiteController extends Controller
 {
 
 

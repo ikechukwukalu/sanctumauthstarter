@@ -16,7 +16,7 @@ Route::group(['middleware' => ['web']], function () {
         return view('sanctumauthstarter::socialite.auth');
     })->name('socialite.auth');
 
-    Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'setCookie'])->name('set.cookie');
-    Route::get('auth/redirect', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'authRedirect'])->name('auth.redirect');
-    Route::get('auth/callback', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteRegisterController::class, 'authCallback'])->name('auth.callback');
+    Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'setCookie'])->name('set.cookie');
+    Route::get('auth/redirect', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'authRedirect'])->name('auth.redirect');
+    Route::get('auth/callback', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'authCallback'])->name('auth.callback');
 });
