@@ -1,4 +1,4 @@
-# About Sanctum Auth Starter
+# ABOUT SANCTUM AUTH STARTER
 
 This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
@@ -26,18 +26,18 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
   - Pin change notification
 - Helper CI/CD files for GitHub
 
-## Requirements
+## REQUIREMENTS
 
 - PHP 8+
 - Laravel 9+
 
-## Steps To Install
+## STEPS TO INSTALL
 
 - `composer require ikechukwukalu/sanctumauthstarter`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
-### SOCIAL MEDIAL LOGIN
+### Social Media Login
 
 For social media login, you must setup your laravel app for websockets. In order to do that run the following:
 
@@ -74,7 +74,7 @@ window.Echo = new Echo({
 });
 ```
 
-### WEBSOCKETS AND QUEUES
+### Websockets and Queues
 
 You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
 
@@ -82,7 +82,7 @@ You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker
 - Run `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
 - Run `php artisan serve`
 
-## Routes
+## ROUTES
 
 - `web.php`
 
@@ -137,12 +137,12 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 ```
 
-## Tests
+## TESTS
 
 It's recommended that you run the tests before you start adding your custom models and controllers.
 Make sure to keep your `database/factories/UserFactory.php` Class updated with your `users` table so that the Tests can continue to run successfully.
 
-### NOTE
+### Passwords
 
 The passwords created within the `database/factories/UserFactory.php` Class must match the validation below:
 
@@ -154,13 +154,13 @@ The passwords created within the `database/factories/UserFactory.php` Class must
                     ->uncompromised(),
 ```
 
-### RUNNING TESTS
+### Running Tests
 
 - `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
 
-## Backup Database
+## BACKUP DATABASE
 
 Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
 
@@ -173,7 +173,7 @@ DB_BACKUP_FILE="backup-${APP_NAME}-db"
 DB_BACKUP_FILE_EXT=".gz"
 ```
 
-## Reserved keywords for payloads
+## RESERVED KEYWORDS FOR PAYLOADS
 
 - `_uuid`
 - `_pin`
@@ -182,7 +182,7 @@ DB_BACKUP_FILE_EXT=".gz"
 
 Some of the reserved keywords can be changed from the config file.
 
-## Documentation
+## DOCUMENTATION
 
 To generate documentation:
 
@@ -201,46 +201,46 @@ Default: `["bash", "javascript"]`
 
 Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
 
-## Publish Controllers
+## PUBLISH CONTROLLERS
 
 - `php artisan vendor:publish --tag=sas-controllers`
 
-## Publish Models
+## PUBLISH MODELS
 
 - `php artisan vendor:publish --tag=sas-models`
 
-## Publish Middleware
+## PUBLISH MIDDLEWARE
 
 - `php artisan vendor:publish --tag=sas-middleware`
 
-## Publish Rules
+## PUBLISH RULES
 
 - `php artisan vendor:publish --tag=sas-rules`
 
-## Publish Views
+## PUBLISH VIEWS
 
 - `php artisan vendor:publish --tag=sas-views`
 
-## Publish Routes
+## PUBLISH ROUTES
 
 - `php artisan vendor:publish --tag=sas-routes`
 
-## Publish Lang
+## PUBLISH LANG
 
 - `php artisan vendor:publish --tag=sas-lang`
 
-## Publish Config
+## PUBLISH CONFIG
 
 - `php artisan vendor:publish --tag=sas-config`
 
-## Publish Laravel Email Notification Blade
+## PUBLISH LARAVEL EMAIL NOTIFICATIONS BLADE
 
 - `php artisan vendor:publish --tag=laravel-notifications`
 
-## Publish GitHub workflows
+## PUBLISH GITHUB WORKFLOWS
 
 - `php artisan vendor:publish --tag=github`
 
-## License
+## LICENSE
 
 The Laravel package is an open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
