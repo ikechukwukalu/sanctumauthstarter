@@ -39,7 +39,7 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 
 ### Social Media Login
 
-For social media login, you must setup your laravel app for websockets. In order to do that run the following:
+For social media login, you must setup your laravel app for [websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction). In order to do that run the following:
 
 - Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
 - Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
