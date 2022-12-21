@@ -171,4 +171,19 @@ return [
          */
         'remote_access' => false,
     ],
+
+    /**
+     * Cookie configurations
+     */
+    'cookie' => [
+        /**
+         * int - Uses minutes.
+         */
+        'minutes' => 30,
+
+        /**
+         * string - Cookie name.
+         */
+        'name' => 'user_uuid'
+    ]
 ];

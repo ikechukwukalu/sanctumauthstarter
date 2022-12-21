@@ -5,13 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Google Sign Up') }}</div>
+                <div class="card-header">{{ trans('sanctumauthstarter::socialite.google.header') }}</div>
 
                 <div class="card-body">
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
                             <button type="click" id="googleSignUp" class="btn btn-primary">
-                                {{ __('Google Sign Up') }}
+                                {{ trans('sanctumauthstarter::socialite.google.button') }}
                             </button>
                         </div>
                     </div>

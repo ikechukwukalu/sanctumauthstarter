@@ -99,6 +99,7 @@ class PinController extends Controller
             $user->notify(new PinChange());
         }
 
+        \App\Events\AppModelsUser::dispatch();
         $data = ['message' => trans('sanctumauthstarter::pin.changed')];
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }

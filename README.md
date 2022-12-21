@@ -1,4 +1,4 @@
-# ABOUT SANCTUM AUTH STARTER
+# SANCTUM AUTH STARTER
 
 This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
@@ -187,6 +187,7 @@ Some of the reserved keywords can be changed from the config file.
 To generate documentation:
 
 - `php artisan vendor:publish --tag=scribe-config`
+- Change `'prefixes' => ['api/*']` to `'prefixes' => ['*']` if you want to see the docs for APIs for the  `web.php` as well.
 - `php artisan scribe:generate`
 
 Visit your newly generated docs:

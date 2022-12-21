@@ -24,13 +24,21 @@ class SocialiteController extends Controller
     /**
      * Set user uuid cookie.
      *
-     * This API accepts a uuid value as a url param
-     * sets it as aa cookie and saves it into the database
-     * and redirects to the Oauth URL
+     * This API accepts a <b>UUID</b> value as a url param and stores it as <b>user_uuid</b>
+     * and as a unique value together with the following params: <b>ip_address</b>, <b>user_agent</b>
+     * into the database
+     *
+     * It sets the <b>UUID</b> as a cookie and returns a view.
+     *
+     * The page returned redirects to the Oauth URL - <small class="badge badge-blue">/auth/redirect</small>
+     *  using JavaScript.
+     *
+     * @header Accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*\/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+     * @header Content-Type text/html; charset=UTF-8
      *
      * @urlParam uuid string required Example: 149c283b-2e63-440b-bd62-d411674881ee
      *
-     * @response 302 redirects to /auth/redirect
+     * @response 200 return view('sanctumauthstarter::cookie.setcookie')
      *
      *
      *
@@ -46,15 +54,16 @@ class SocialiteController extends Controller
             ]
         );
 
-        return response(view('sanctumauthstarter::cookie.setcookie'))->cookie('user_uuid', $request->uuid, 30);
+        return response(view('sanctumauthstarter::cookie.setcookie'))->cookie(config('sanctumauthstarter.cookie.name', 'user_uuid'), $request->uuid, config('sanctumauthstarter.cookie.minutes', 30));
     }
 
     /**
      * User Oauth authentication redirect.
      *
-     * URL for Oauth authentication
+     * @header Accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*\/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+     * @header Content-Type text/html; charset=UTF-8
      *
-     * @response 302 redirects to /auth/callback
+     * @response 302 redirects to <small class="badge badge-blue">/auth/callback</small>
      *
      * @group Web APIs
      */
@@ -65,9 +74,18 @@ class SocialiteController extends Controller
     /**
      * User Oauth authentication callback.
      *
-     * URL for Oauth user details retrieval
+     * Retrieves Oauth authenticated user details, registers and logins the
+     * user.
      *
-     * @response 200 via websocket
+     * Retrieves <b>UUID</b> from cookie and updates the user details in the database.
+     *
+     * Creates user <b>access_token</b> and broadcasts the following payload <b>user_id</b>, <b>access_token</b> to the
+     * unique public channel created with the unique <b>UUID</b>
+     *
+     * @header Accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*\/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+     * @header Content-Type text/html; charset=UTF-8
+     *
+     * @response 200
      *
      * {
      * "access_token": "1|mtnWTrh2Am6PWJ991wYB0rewVtROKxkuSiWEY836",
@@ -77,9 +95,9 @@ class SocialiteController extends Controller
      * @group Web APIs
      */
     public function authCallback(Request $request) {
-        $userUUID = $request->cookie('user_uuid');
+        $userUUID = $request->cookie(config('sanctumauthstarter.cookie.name', 'user_uuid'));
         if (!$userUUID) {
-            abort(440, 'Wrong user credential!');
+            abort(440, trans('sanctumauthstarter::cookie.error_440'));
         }
 
         $google = Socialite::driver('google')->user();
@@ -110,5 +128,7 @@ class SocialiteController extends Controller
         ]);
 
         SocialiteLogin::dispatch($user, $token, $userUUID);
+
+        return view('sanctumauthstarter::socialite.callback', ['user' => $user]);
     }
 }
