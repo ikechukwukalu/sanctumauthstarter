@@ -15,8 +15,6 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 - Change password
 - Change pin
 - Require pin middleware
-- Require token middleware (pending)
-- Change avatar (pending)
 - Edit User profile
 - Notifications
   - Welcome notification
