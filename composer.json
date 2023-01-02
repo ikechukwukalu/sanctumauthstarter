@@ -18,7 +18,8 @@
         "doctrine/dbal": "^3.5",
         "beyondcode/laravel-websockets": "^1.13",
         "pusher/pusher-php-server": "7.0",
-        "predis/predis": "^2.0"
+        "predis/predis": "^2.0",
+        "knuckleswtf/scribe": "dev-master"
     },
     "require-dev": {
         "knuckleswtf/scribe": "dev-master"
