@@ -32,7 +32,9 @@ This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to cr
 ## STEPS TO INSTALL
 
 - `composer require ikechukwukalu/sanctumauthstarter`
+- `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
+- `npm install && npm run dev`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
@@ -71,6 +73,16 @@ window.Echo = new Echo({
         };
     },
 });
+```
+
+- Add the following to your `config/services.php` file.
+
+```php
+'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' => env('GOOGLE_CLIENT_REDIRECT'),
+],
 ```
 
 ### Websockets and Queues
