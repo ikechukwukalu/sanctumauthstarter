@@ -93,6 +93,18 @@ You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker
 - Run `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
 - Run `php artisan serve`
 
+- Your `.env` should look like this
+
+```shell
+PUSHER_APP_KEY=app-key
+PUSHER_APP_ID=app-id
+PUSHER_APP_SECRET=app-secret
+PUSHER_HOST=127.0.0.1
+PUSHER_PORT=6001
+PUSHER_SCHEME=http
+PUSHER_APP_CLUSTER=mt1
+```
+
 ## ROUTES
 
 - `web.php`
