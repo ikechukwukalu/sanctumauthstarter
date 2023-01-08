@@ -1,6 +1,6 @@
 # SANCTUM AUTH STARTER
 
-This is a laravel package that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
+This is a very flexible and customisable laravel package (boilerplate) that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
@@ -90,10 +90,8 @@ window.Echo = new Echo({
 You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
 
 - Set `QUEUE_CONNECTION=redis` within your `.env` file.
-- Run `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
-- Run `php artisan serve`
-
-- Your `.env` should look like this
+- Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
+- Your `.env` should look similar to this
 
 ```shell
 PUSHER_APP_KEY=app-key
@@ -104,6 +102,9 @@ PUSHER_PORT=6001
 PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
 ```
+
+- Run `php artisan config:clear`, `php artisan config:cache`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
+- Run `php artisan serve`
 
 ## ROUTES
 
