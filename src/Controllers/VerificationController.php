@@ -33,8 +33,7 @@ class VerificationController extends Controller
      *  }
      * }
      *
-     * @authenticated
-     * @group Auth APIs
+     * @group No Auth APIs
      */
     public function verifyUserEmail(Request $request): JsonResponse
     {
@@ -56,6 +55,8 @@ class VerificationController extends Controller
      * User resend email verification.
      *
      * This endpoint is used to generate and send via email a URL for User email verification to a registered User.
+     *
+     * @header Authorization Bearer {Your key}
      *
      * @queryParam id string required <small class="badge badge-blue">id</small> Field must belong to a registered User. Example: 1
      *

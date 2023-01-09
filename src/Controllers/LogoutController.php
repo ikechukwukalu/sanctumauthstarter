@@ -14,6 +14,8 @@ class LogoutController extends Controller
      *
      * This API logs a user out and clears all user tokens
      *
+     * @header Authorization Bearer {Your key}
+     *
      * @response 200
      *
      * {

@@ -26,7 +26,6 @@
 <script>
     window.addEventListener('DOMContentLoaded',  () => {
         const getUserUUID = () => {
-
             let userUUID = localStorage.getItem('user_uuid');
 
             if (!userUUID) {
@@ -37,7 +36,16 @@
             return userUUID;
         }
 
+        const removeUserUUID = () => {
+            if (localStorage.getItem('user_uuid')) {
+                localStorage.removeItem('user_uuid');
+            }
+
+            console.log('user_uuid removed');
+        }
+
         const USER_UUID = getUserUUID();
+        const TIMEOUT = "{{ $minutes }}";
 
         window.Echo.channel(`access.token.${USER_UUID}`)
         .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
@@ -50,6 +58,10 @@
                 '_blank'
             )
         }
+
+        setTimeout(() => {
+            removeUserUUID();
+        }, TIMEOUT);
     });
 </script>
 @endsection

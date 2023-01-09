@@ -37,9 +37,11 @@ class ChangePasswordController extends Controller
      * You can choose to notify a User whenever a password is changed by setting
      * <b>password.notify.change</b> to <b>TRUE</b>
      *
-     * @bodyParam current_password string required The user's password. Example: @wE3456qas@$
-     * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
-     * @bodyParam password_confirmation string required Must match <small class="badge badge-blue">password</small> Field. Example: Ex@m122p$%l6E
+     * @header Authorization Bearer {Your key}
+     *
+     * @bodyParam current_password string required The user's password. Example: Ex@m122p$%l6E
+     * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: @wE3456qas@$
+     * @bodyParam password_confirmation string required Must match <small class="badge badge-blue">password</small> Field. Example: @wE3456qas@$
      *
      * @response 200
      *

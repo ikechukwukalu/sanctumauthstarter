@@ -42,19 +42,23 @@ class SocialiteController extends Controller
      *
      *
      *
-     * @group Web APIs
+     * @group Web URLs
      */
     public function setCookie(Request $request) {
-        SocialiteUserDeviceLogin::firstOrCreate(
-            ["user_uuid" => $request->uuid],
-            [
+        if (SocialiteUserDeviceLogin::where("user_uuid", $request->uuid)
+            ->first()->id)
+        {
+            abort(440, trans('sanctumauthstarter::cookie.error_440'));
+        }
+
+        SocialiteUserDeviceLogin::create([
                 "user_uuid" => $request->uuid,
                 "ip_address" => $this->getClientIp($request),
                 "user_agent" => $request->userAgent(),
             ]
         );
 
-        return response(view('sanctumauthstarter::cookie.setcookie'))->cookie(config('sanctumauthstarter.cookie.name', 'user_uuid'), $request->uuid, config('sanctumauthstarter.cookie.minutes', 30));
+        return response(view('sanctumauthstarter::cookie.setcookie'))->cookie(config('sanctumauthstarter.cookie.name', 'user_uuid'), $request->uuid, config('sanctumauthstarter.cookie.minutes', 5));
     }
 
     /**
@@ -65,7 +69,7 @@ class SocialiteController extends Controller
      *
      * @response 302 redirects to <small class="badge badge-blue">/auth/callback</small>
      *
-     * @group Web APIs
+     * @group Web URLs
      */
     public function authRedirect(Request $request) {
         return Socialite::driver('google')->redirect();
@@ -92,7 +96,7 @@ class SocialiteController extends Controller
      * "user_id": 1,
      * }
      *
-     * @group Web APIs
+     * @group Web URLs
      */
     public function authCallback(Request $request) {
         $userUUID = $request->cookie(config('sanctumauthstarter.cookie.name', 'user_uuid'));

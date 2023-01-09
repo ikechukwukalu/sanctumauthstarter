@@ -179,7 +179,7 @@ return [
         /**
          * int - Uses minutes.
          */
-        'minutes' => 30,
+        'minutes' => 5,
 
         /**
          * string - Cookie name.

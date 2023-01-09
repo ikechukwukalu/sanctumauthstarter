@@ -32,6 +32,8 @@ class LoginController extends Controller
      *
      * Make sure to retrieve <small class="badge badge-blue">access_token</small> after login for User authentication
      *
+     * @header Authorization Bearer {Your key}
+     *
      * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
      * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
      * @bodyParam remember_me int Could be set to 0 or 1. Example: 1

@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'error_440' => 'Wrong user credential!',
+    'error_440' => 'A wrong user credential was passed!',
 
 ];

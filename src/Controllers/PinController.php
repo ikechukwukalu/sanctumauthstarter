@@ -45,9 +45,11 @@ class PinController extends Controller
      * You can choose to notify a User whenever a pin is changed by setting
      * <b>pin.notify.change</b> to <b>TRUE</b>
      *
-     * @bodyParam current_pin string required The user's pin. Example: 1234
-     * @bodyParam pin string required The pin for user authentication must contain only numbers. Example: 1233
-     * @bodyParam pin_confirmation string required Must match <small class="badge badge-blue">pin</small> Field. Example: 1233
+     * @header Authorization Bearer {Your key}
+     *
+     * @bodyParam current_pin string required The user's pin. Example: 0000
+     * @bodyParam pin string required The pin for user authentication must contain only numbers. Example: 1234
+     * @bodyParam pin_confirmation string required Must match <small class="badge badge-blue">pin</small> Field. Example: 1234
      *
      * @response 200
      *
@@ -105,6 +107,8 @@ class PinController extends Controller
 
     /**
      * User pin authentication.
+     *
+     * @header Authorization Bearer {Your key}
      *
      * @bodyParam _pin string required The user's pin must contain only numbers. Example: 0000
      * @urlParam uuid string required Example: eab8cce0-bb22-4c53-8924-b885ebb67f5a

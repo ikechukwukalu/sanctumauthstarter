@@ -16,6 +16,8 @@ class BookController extends Controller
     /**
      * Create Book.
      *
+     * @header Authorization Bearer {Your key}
+     *
      * @bodyParam name string required Example: Once upon a time
      * @bodyParam isbn string required Example: 978-3-16-148410-0
      * @bodyParam authors string[] required Example: ['John Doe', 'Jane Doe']
@@ -68,6 +70,8 @@ class BookController extends Controller
     /**
      * Fetch books.
      *
+     * @header Authorization Bearer {Your key}
+     *
      * @urlParam id string The ID of the book Example: 1
      *
      * @response 200 {
@@ -114,6 +118,8 @@ class BookController extends Controller
 
     /**
      * Update book.
+     *
+     * @header Authorization Bearer {Your key}
      *
      * @urlParam id string required The ID of the book Example: 1
      * @bodyParam id string required This ID is gotten from the URL param Example: Once upon a time
@@ -198,6 +204,8 @@ class BookController extends Controller
 
     /**
      * Delete book.
+     *
+     * @header Authorization Bearer {Your key}
      *
      * @urlParam id string required The ID of the book Example: 1
      *

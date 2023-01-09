@@ -18,6 +18,8 @@ class ProfileController extends Controller
     /**
      * User edit profile.
      *
+     * @header Authorization Bearer {Your key}
+     *
      * @bodyParam name string required The user fullname. Example: John Doe
      * @bodyParam email string required The user email. Example: johndoe@example.com
      *

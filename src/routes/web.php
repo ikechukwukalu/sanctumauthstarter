@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- * @group Web APIs
+ * @group Web URLs
  *
  * APIs that do not require User autherntication and is performed over a web browser
  */
@@ -29,10 +29,11 @@ Route::group(['middleware' => ['web']], function () {
      *
      * @response 200 return view('sanctumauthstarter::socialite.auth')
      *
-     * @group Web APIs
+     * @group Web URLs
      */
     Route::get('auth/socialite', function() {
-        return view('sanctumauthstarter::socialite.auth');
+        return view('sanctumauthstarter::socialite.auth',
+            [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
     Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'setCookie'])->name('set.cookie');
