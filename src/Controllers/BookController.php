@@ -36,8 +36,7 @@ class BookController extends Controller
      * }
      *
      * @authenticated
-     * @group Auth APIs
-     * @subgroup Sample Require Pin APIs
+     * @group Sample APIs
      * @subgroupDescription This is a Book Management API for
      * testing the <b>require.pin</b> middleware
      */
@@ -100,8 +99,7 @@ class BookController extends Controller
      * }
      *
      * @authenticated
-     * @group Auth APIs
-     * @subgroup Sample Require Pin APIs
+     * @group Sample APIs
      * @subgroupDescription This is a Book Management API for
      * testing the <b>require.pin</b> middleware
      */
@@ -160,8 +158,7 @@ class BookController extends Controller
      * }
      *
      * @authenticated
-     * @group Auth APIs
-     * @subgroup Sample Require Pin APIs
+     * @group Sample APIs
      * @subgroupDescription This is a Book Management API for
      * testing the <b>require.pin</b> middleware
      */
@@ -238,8 +235,7 @@ class BookController extends Controller
      * }
      *
      * @authenticated
-     * @group Auth APIs
-     * @subgroup Sample Require Pin APIs
+     * @group Sample APIs
      * @subgroupDescription This is a Book Management API for
      * testing the <b>require.pin</b> middleware
      */

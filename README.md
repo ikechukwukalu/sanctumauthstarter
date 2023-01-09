@@ -40,7 +40,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 
 ### Social Media Login
 
-For social media login, you must setup your laravel app for [websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction). In order to do that run the following:
+Social media login utilizes laravel websockets to pass `access_token` to the client after authentication. First, you must setup your laravel app for [websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction). In order to do that run the following:
 
 - Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
 - Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
@@ -83,6 +83,51 @@ window.Echo = new Echo({
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
     'redirect' => env('GOOGLE_CLIENT_REDIRECT'),
 ],
+```
+
+- Navigate to `auth/socialite` view sample Google sign up page. Below is the script that is called within the page.
+
+```js
+window.addEventListener('DOMContentLoaded',  () => {
+    const getUserUUID = () => {
+        let userUUID = localStorage.getItem('user_uuid');
+
+        if (!userUUID) {
+            userUUID = crypto.randomUUID();
+            localStorage.setItem('user_uuid', userUUID);
+        }
+
+        console.log('user_uuid created');
+        return userUUID;
+    }
+
+    const removeUserUUID = () => {
+        if (localStorage.getItem('user_uuid')) {
+            localStorage.removeItem('user_uuid');
+        }
+
+        console.log('user_uuid removed');
+    }
+
+    const USER_UUID = getUserUUID();
+    const TIMEOUT = parseInt("{{ $minutes }}") * 60 * 1000;
+
+    window.Echo.channel(`access.token.${USER_UUID}`)
+    .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
+        console.log(`payload:`, e);
+    });
+
+    document.getElementById('googleSignUp').onclick = () => {
+        window.open(
+            "{{ url('set/cookie') }}/" + USER_UUID,
+            '_blank'
+        )
+    }
+
+    setTimeout(() => {
+        removeUserUUID();
+    }, TIMEOUT);
+});
 ```
 
 ### Websockets and Queues

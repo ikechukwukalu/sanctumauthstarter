@@ -45,8 +45,10 @@ class SocialiteController extends Controller
      * @group Web URLs
      */
     public function setCookie(Request $request) {
-        if (SocialiteUserDeviceLogin::where("user_uuid", $request->uuid)
-            ->first()->id)
+        $socialiteUser = SocialiteUserDeviceLogin::where("user_uuid", $request->uuid)
+                            ->first();
+
+        if (isset($socialiteUser->user_uuid))
         {
             abort(440, trans('sanctumauthstarter::cookie.error_440'));
         }
@@ -120,7 +122,7 @@ class SocialiteController extends Controller
 
         if (config('sanctumauthstarter.login.notify.user', true)) {
             $now = Carbon::now();
-            $time = $now->isoFormat('MMMM Do YYYY, h:mm:ss a');
+            $time = $now->isoFormat('Do of MMMM YYYY, h:mm:ssa');
             $device = $this->getLoginUserInformation();
 
             $user->notify(new UserLogin($time, $device));

@@ -7,16 +7,21 @@ use Illuminate\Support\Facades\Broadcast;
 /**
  * @group No Auth APIs
  *
- * APIs that do not require User autherntication
+ * APIs that do not require User authentication
  */
 
 /**
  * @group Auth APIs
  *
- * APIs that require User autherntication
+ * APIs that require User authentication
  *
  * @subgroup Require Pin APIs
- * @subgroup Sample Require Pin APIs
+ */
+
+/**
+ * @group Sample APIs
+ *
+ * Sample APIs that require User authentication
  */
 
 Route::prefix('auth')->group(function () {

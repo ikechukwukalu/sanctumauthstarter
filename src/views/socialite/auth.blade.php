@@ -33,6 +33,7 @@
                 localStorage.setItem('user_uuid', userUUID);
             }
 
+            console.log('user_uuid created');
             return userUUID;
         }
 
@@ -45,11 +46,11 @@
         }
 
         const USER_UUID = getUserUUID();
-        const TIMEOUT = "{{ $minutes }}";
+        const TIMEOUT = parseInt("{{ $minutes }}") * 60 * 1000;
 
         window.Echo.channel(`access.token.${USER_UUID}`)
         .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
-            console.log(e);
+            console.log(`payload:`, e);
         });
 
         document.getElementById('googleSignUp').onclick = () => {
