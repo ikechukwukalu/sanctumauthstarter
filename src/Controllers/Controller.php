@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use hisorange\BrowserDetect\Parser as Browser;
+use Stevebauman\Location\Facades\Location;
 
 class Controller extends BaseController
 {
@@ -58,7 +59,11 @@ class Controller extends BaseController
         return $this->throttleKey($request);
     }
 
-    public function getClientIp(Request $request){
+    public function getClientIp(Request $request) {
+        if ($position = Location::get()) {
+            return $position->ip;
+        }
+
         $server_keys = [
                         'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR',
                         'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP',
@@ -107,6 +112,12 @@ class Controller extends BaseController
             $info = [
                 Browser::userAgent()
             ];
+        }
+
+        if ($position = Location::get()) {
+            $info[] = $position->countryName;
+            $info[] = $position->regionName;
+            $info[] = $position->cityName;
         }
 
         return $info;

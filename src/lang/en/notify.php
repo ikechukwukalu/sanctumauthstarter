@@ -27,8 +27,8 @@ return [
 
     'login' => [
         'subject' => 'Login Notification.',
-        'introduction' => 'There has been a successful login into your account at the :time from :device!',
-        'message' => 'If this action was not carried out by you, please click the link below to change your password.',
+        'introduction' => 'There has been a successful login into your account at the :time from :deviceAndLocation!',
+        'message' => 'If this action was not carried out by you, please click the link below to reset your password.',
         'action' => 'Click Here',
         'complimentary_close' => 'Take care!'
     ],

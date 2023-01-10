@@ -123,9 +123,9 @@ class SocialiteController extends Controller
         if (config('sanctumauthstarter.login.notify.user', true)) {
             $now = Carbon::now();
             $time = $now->isoFormat('Do of MMMM YYYY, h:mm:ssa');
-            $device = $this->getLoginUserInformation();
+            $deviceAndLocation = $this->getLoginUserInformation();
 
-            $user->notify(new UserLogin($time, $device));
+            $user->notify(new UserLogin($time, $deviceAndLocation));
         }
 
         SocialiteUserDeviceLogin::where('user_uuid', $userUUID)->update([
