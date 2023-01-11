@@ -15,7 +15,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - Change password
 - Change pin
 - Require pin middleware
-- Edit User profile
+- Edit user profile
 - Notifications
   - Welcome notification
   - Email verification
