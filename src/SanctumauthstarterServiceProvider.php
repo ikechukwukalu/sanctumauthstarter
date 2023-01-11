@@ -27,40 +27,43 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         });
         $this->loadRoutesFrom(__DIR__ . '/routes/channels.php');
+        $this->loadMigrationsFrom(__DIR__. '/migrations');
 
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
         $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');
 
         $this->publishes([
-            __DIR__.'/config' => base_path('config'),
+            __DIR__.'/config/sanctumauthstarter.php' => config_path('sanctumauthstarter.php'),
         ], 'sas-config');
         $this->publishes([
-            __DIR__.'/lang' => base_path('resources/lang/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/migrations' => database_path('migrations'),
+        ], 'sas-migrations');
+        $this->publishes([
+            __DIR__.'/lang' => lang_path('vendor/sanctumauthstarter'),
         ], 'sas-lang');
         $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/views' => resource_path('views/vendor/sanctumauthstarter'),
         ], 'sas-views');
         $this->publishes([
-            __DIR__.'/Controllers' => base_path('app/Http/Controllers/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Controllers' => app_path('Http/Controllers/vendor/sanctumauthstarter'),
         ], 'sas-controllers');
         $this->publishes([
-            __DIR__.'/Models' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Models' => app_path('Models/vendor/sanctumauthstarter'),
         ], 'sas-models');
         $this->publishes([
-            __DIR__.'/Middleware' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Middleware' => app_path('Http/Middleware/vendor/sanctumauthstarter'),
         ], 'sas-middleware');
         $this->publishes([
-            __DIR__.'/Rules' => base_path('app/Models/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Rules' => app_path('Rules/vendor/sanctumauthstarter'),
         ], 'sas-rules');
         $this->publishes([
-            __DIR__.'/routes' => base_path('routes/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/routes' => base_path('routes/vendor/sanctumauthstarter'),
         ], 'sas-routes');
         $this->publishes([
-            __DIR__.'/Tests/Unit' => base_path('tests/Unit/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Tests/Unit' => base_path('tests/Unit/sanctumauthstarter'),
         ], 'sas-unit-tests');
         $this->publishes([
-            __DIR__.'/Tests/Feature' => base_path('tests/Feature/ikechukwukalu/sanctumauthstarter'),
+            __DIR__.'/Tests/Feature' => base_path('tests/Feature/sanctumauthstarter'),
         ], 'sas-feature-tests');
         $this->publishes([
             __DIR__.'/.github/workflows' => base_path('.github/workflows'),
