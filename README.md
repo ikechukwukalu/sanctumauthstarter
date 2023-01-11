@@ -1,6 +1,6 @@
 # SANCTUM AUTH STARTER
 
-This is a very flexible and customisable laravel package (boilerplate) that utilises `laravel/ui` and `laravel-sanctum` to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
+This is a very flexible and customisable laravel package (boilerplate) that utilises [laravel/ui](https://github.com/laravel/ui) and [laravel-sanctum](https://laravel.com/docs/9.x/sanctum) to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
@@ -22,6 +22,8 @@ This is a very flexible and customisable laravel package (boilerplate) that util
   - Login notification
   - Password change notification
   - Pin change notification
+- Generate documentation
+- Backup database
 - Helper CI/CD files for GitHub
 
 ## REQUIREMENTS
@@ -34,7 +36,6 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - `composer require ikechukwukalu/sanctumauthstarter`
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
-- `npm install && npm run dev`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
@@ -149,7 +150,8 @@ PUSHER_APP_CLUSTER=mt1
 ```
 
 - Run `php artisan config:clear`, `php artisan config:cache`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
-- Run `php artisan serve`
+- `php artisan serve`
+- `npm install && npm run dev`
 
 ## ROUTES
 
@@ -161,7 +163,8 @@ Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\Rese
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('auth/socialite', function() {
-        return view('sanctumauthstarter::socialite.auth');
+        return view('sanctumauthstarter::socialite.auth',
+            [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
     Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'setCookie'])->name('set.cookie');
@@ -174,7 +177,7 @@ Route::group(['middleware' => ['web']], function () {
 
 ```php
 Route::prefix('auth')->group(function () {
-    Route::post('register', [Ikechukwukalu\Sanctumauthstarter\Controllers\RegisterController::class, 'register'])->name('register');
+   Route::post('register', [Ikechukwukalu\Sanctumauthstarter\Controllers\RegisterController::class, 'register'])->name('register');
     Route::post('login', [Ikechukwukalu\Sanctumauthstarter\Controllers\LoginController::class, 'login'])->name('login');
     Route::middleware('auth:sanctum')->post('logout', [Ikechukwukalu\Sanctumauthstarter\Controllers\LogoutController::class, 'logout'])->name('logout');
     Route::get('verify/email/{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class, 'verifyUserEmail'])->name('verification.verify');
@@ -206,6 +209,48 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 ```
 
+## BACKUP DATABASE
+
+Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
+
+```shell
+DB_BACKUP_PATH="/db/backup/${APP_NAME}"
+DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} | gzip > "
+DB_BACKUP_SSH_USER=root
+DB_BACKUP_SSH_HOST=127.0.0.1
+DB_BACKUP_FILE="backup-${APP_NAME}-db"
+DB_BACKUP_FILE_EXT=".gz"
+```
+
+## DOCUMENTATION
+
+To generate documentation:
+
+- `php artisan vendor:publish --tag=scribe-config`
+- Change `'prefixes' => ['api/*']` to `'prefixes' => ['*']` if you want to see the docs for APIs for the  `web.php` as well.
+- `php artisan scribe:generate`
+
+Visit your newly generated docs:
+
+- If you're using `static` type, find the `docs/index.html` file in your `public/` folder and open it in your browser.
+- If you're using `laravel` type, start your app (`php artisan serve`), then visit `/docs`.
+
+`example_languages`:
+For each endpoint, an example request is shown in each of the languages specified in this array. Currently, only `bash` (curl), `javascript`(Fetch), `php` (Guzzle) and `python` (requests) are included. You can add extra languages, but you must also create the corresponding Blade view ([see Adding more example languages](https://scribe.knuckles.wtf/laravel/advanced/example-requests)).
+
+Default: `["bash", "javascript"]`
+
+Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
+
+## RESERVED KEYWORDS FOR PAYLOADS
+
+- `_uuid`
+- `_pin`
+- `expires`
+- `signature`
+
+Some of the reserved keywords can be changed from the config file.
+
 ## TESTS
 
 It's recommended that you run the tests before you start adding your custom models and controllers.
@@ -228,48 +273,6 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 - `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
-
-## BACKUP DATABASE
-
-Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
-
-``` shell
-DB_BACKUP_PATH="/db/backup/${APP_NAME}"
-DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} | gzip > "
-DB_BACKUP_SSH_USER=root
-DB_BACKUP_SSH_HOST=127.0.0.1
-DB_BACKUP_FILE="backup-${APP_NAME}-db"
-DB_BACKUP_FILE_EXT=".gz"
-```
-
-## RESERVED KEYWORDS FOR PAYLOADS
-
-- `_uuid`
-- `_pin`
-- `expires`
-- `signature`
-
-Some of the reserved keywords can be changed from the config file.
-
-## DOCUMENTATION
-
-To generate documentation:
-
-- `php artisan vendor:publish --tag=scribe-config`
-- Change `'prefixes' => ['api/*']` to `'prefixes' => ['*']` if you want to see the docs for APIs for the  `web.php` as well.
-- `php artisan scribe:generate`
-
-Visit your newly generated docs:
-
-- If you're using `static` type, find the `docs/index.html` file in your `public/` folder and open it in your browser.
-- If you're using `laravel` type, start your app (`php artisan serve`), then visit `/docs`.
-
-`example_languages`:
-For each endpoint, an example request is shown in each of the languages specified in this array. Currently, only `bash` (curl), `javascript`(Fetch), `php` (Guzzle) and `python` (requests) are included. You can add extra languages, but you must also create the corresponding Blade view ([see Adding more example languages](https://scribe.knuckles.wtf/laravel/advanced/example-requests)).
-
-Default: `["bash", "javascript"]`
-
-Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
 
 ## PUBLISH CONTROLLERS
 
