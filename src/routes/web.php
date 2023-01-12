@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Route;
  * APIs that do not require User autherntication and is performed over a web browser
  */
 
-Route::view('forgot/password', 'sanctumauthstarter::passwords.reset')->name('password.reset');
-Route::post('reset/password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPasswordForm'])->name('password.update');
+Route::view(config('sanctumauthstarter.routes.web.password.reset', 'forgot/password'),
+    'sanctumauthstarter::passwords.reset')->name('password.reset');
+Route::post(config('sanctumauthstarter.routes.web.password.update', 'reset/password'),
+    [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPasswordForm'])
+    ->name('password.update');
 
 Route::group(['middleware' => ['web']], function () {
     /**
@@ -31,12 +34,19 @@ Route::group(['middleware' => ['web']], function () {
      *
      * @group Web URLs
      */
-    Route::get('auth/socialite', function() {
+    Route::get(config('sanctumauthstarter.routes.web.socialite.auth',
+    'auth/socialite'), function() {
         return view('sanctumauthstarter::socialite.auth',
             [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
-    Route::get('set/cookie/{uuid}', [\App\Http\Controllers\Auth\SocialiteController::class, 'setCookie'])->name('set.cookie');
-    Route::get('auth/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'authRedirect'])->name('auth.redirect');
-    Route::get('auth/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'authCallback'])->name('auth.callback');
+    Route::get(config('sanctumauthstarter.routes.web.set.cookie', 'set/cookie/{uuid}'),
+        [\App\Http\Controllers\Auth\SocialiteController::class, 'setCookie'])
+        ->name('set.cookie');
+    Route::get(config('sanctumauthstarter.routes.web.auth.redirect', 'auth/redirect'),
+        [\App\Http\Controllers\Auth\SocialiteController::class, 'authRedirect'])
+        ->name('auth.redirect');
+    Route::get(config('sanctumauthstarter.routes.web.auth.callback', 'auth/callback'),
+        [\App\Http\Controllers\Auth\SocialiteController::class, 'authCallback'])
+        ->name('auth.callback');
 });

@@ -55,8 +55,7 @@ class RequirePin
             config('sanctumauthstarter.pin.duration', null));
 
         $pin_validation_url = URL::temporarySignedRoute(
-            config('sanctumauthstarter.pin.route', 'require_pin'),
-            $expires_at, ['uuid' => $uuid]);
+            'pinRequired', $expires_at, ['uuid' => $uuid]);
 
         RequirePinModel::create([
             "user_id" => $user->id,

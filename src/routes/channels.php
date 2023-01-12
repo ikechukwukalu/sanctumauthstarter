@@ -14,7 +14,7 @@ use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
 |
 */
 
-Broadcast::channel('access.token.{userUUID}', function ($user, $userUUID) {
+Broadcast::channel(config('sanctumauthstarter.channels.access_token', 'access.token.{userUUID}'), function ($user, $userUUID) {
     $id = SocialiteUserDeviceLogin::where('user_uuid', $userUUID)
             ->first()->user_id;
 

@@ -32,10 +32,6 @@ return [
          */
         'param' => '_uuid',
         /**
-         * string - Name of route
-         */
-        'route' => 'require_pin',
-        /**
          * int - Max chars for pin
          */
         'max' => 4,
@@ -185,5 +181,71 @@ return [
          * string - Cookie name.
          */
         'name' => 'user_uuid'
+    ],
+
+    /**
+     * Routes configurations
+     */
+    'routes' => [
+
+        /**
+         * web.php route configurations
+         */
+        'web' => [
+            'password' => [
+                'reset' => 'forgot/password',
+                'update' => 'reset/password',
+            ],
+            'auth' => [
+                'redirect' => 'auth/redirect',
+                'callback' => 'auth/callback',
+            ],
+            'socialite' => [
+                'auth' => 'auth/socialite',
+            ],
+            'set' => [
+                'cookie' => 'set/cookie/{uuid}',
+            ],
+        ],
+
+        /**
+         * api.php route configurations
+         */
+        'api' => [
+            'register' => 'register',
+            'login' => 'login',
+            'logout' => 'logout',
+            'verification' => [
+                'verify' => 'verify/email/{id}',
+                'resend' => 'resend/verify/email'
+            ],
+            'forgotPassword' => 'forgot/password',
+            'resetPassword' => 'reset/password',
+            'changePassword' => 'password',
+            'changePin' => 'pin',
+            'pinRequired' => 'pin/required/{uuid}',
+            'editProfile' => 'edit/profile',
+        ],
+
+        /**
+         * channels.php route configurations
+         */
+        'channels' => [
+            'access_token' => 'access.token.{userUUID}'
+        ],
+
+        /**
+         * prefixes for web.php, api.php and  channels.php route configurations
+         */
+        'prefix' => [
+            'api' => [
+                'auth' => 'auth',
+                'change' => 'change',
+            ],
+
+            'web' => [],
+
+            'channels' => [],
+        ],
     ]
 ];
