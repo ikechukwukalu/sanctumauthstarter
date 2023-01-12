@@ -1,62 +1,22 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+namespace Ikechukwukalu\Sanctumauthstarter\Traits;
 
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
 use hisorange\BrowserDetect\Parser as Browser;
 use Stevebauman\Location\Facades\Location;
+use Illuminate\Http\Request;
 
-class Controller extends BaseController
-{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, AuthenticatesUsers;
+trait Helpers {
 
-    protected $maxAttempts = 5; // change to the max attempt you want.
-    protected $delayMinutes = 1;
-
-    protected function httpJsonResponse(string $status, int $status_code, $data): JsonResponse
+    public function httpJsonResponse(string $status, int $status_code, $data): JsonResponse
     {
         return Response::json([
             'status' => $status,
             'status_code' => $status_code,
             'data' => $data
         ]);
-    }
-
-    protected function hasTooManyAttempts (Request $request)
-    {
-        return $this->hasTooManyLoginAttempts($request);
-    }
-
-    protected function incrementAttempts (Request $request)
-    {
-        return $this->incrementLoginAttempts($request);
-    }
-
-    protected function clearAttempts (Request $request)
-    {
-        return $this->clearLoginAttempts($request);
-    }
-
-    protected function _fireLockoutEvent (Request $request)
-    {
-        return $this->fireLockoutEvent($request);
-    }
-
-    protected function _limiter ()
-    {
-        return $this->limiter();
-    }
-
-    protected function _throttleKey (Request $request)
-    {
-        return $this->throttleKey($request);
     }
 
     public function getClientIp(Request $request) {
@@ -89,7 +49,7 @@ class Controller extends BaseController
         return $request->ip(); // it will return server ip when no client ip found
     }
 
-    protected function getLoginUserInformation(): array
+    public function getLoginUserInformation(): array
     {
         $info = [];
 
@@ -122,4 +82,40 @@ class Controller extends BaseController
 
         return $info;
     }
+
+    public function pinRequestTerminated(): JsonResponse
+    {
+        return $this->httpJsonResponse(
+            trans('sanctumauthstarter::general.fail'), 401,
+            [
+                'message' => trans('sanctumauthstarter::pin.terminated')
+            ]
+        );
+    }
+
+    public function pinValidationURL(string $url, null|string $redirect): JsonResponse
+    {
+        return $this->httpJsonResponse(
+            trans('sanctumauthstarter::general.success'), 200,
+            [
+                'message' => trans('sanctumauthstarter::pin.require_pin'),
+                'url' => $url,
+                'redirect' => $redirect
+            ]
+        );
+    }
+
+    public function updateRequest(Request $request, array $payload): void
+    {
+        $request->merge([
+            'expires' => null,
+            'signature' => null,
+            config('sanctumauthstarter.pin.input', '_pin') => null
+        ]);
+
+        foreach($payload as $key => $item) {
+            $request->merge([$key => $payload[$key]]);
+        }
+    }
+
 }

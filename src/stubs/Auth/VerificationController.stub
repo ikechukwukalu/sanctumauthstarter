@@ -1,17 +1,20 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
+use App\Http\Controllers\Auth\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Ikechukwukalu\Sanctumauthstarter\Events\EmailVerification;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 use App\Models\User;
 
 class VerificationController extends Controller
 {
+
+    use Helpers;
 
     /**
      * User email verification.

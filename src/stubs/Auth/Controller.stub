@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Http\Request;
+use hisorange\BrowserDetect\Parser as Browser;
+use Stevebauman\Location\Facades\Location;
+
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, AuthenticatesUsers;
+
+    protected $maxAttempts = 5; // change to the max attempt you want.
+    protected $delayMinutes = 1;
+
+    protected function hasTooManyAttempts (Request $request)
+    {
+        return $this->hasTooManyLoginAttempts($request);
+    }
+
+    protected function incrementAttempts (Request $request)
+    {
+        return $this->incrementLoginAttempts($request);
+    }
+
+    protected function clearAttempts (Request $request)
+    {
+        return $this->clearLoginAttempts($request);
+    }
+
+    protected function _fireLockoutEvent (Request $request)
+    {
+        return $this->fireLockoutEvent($request);
+    }
+
+    protected function _limiter ()
+    {
+        return $this->limiter();
+    }
+
+    protected function _throttleKey (Request $request)
+    {
+        return $this->throttleKey($request);
+    }
+}

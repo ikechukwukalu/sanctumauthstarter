@@ -1,17 +1,19 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 use Ikechukwukalu\Sanctumauthstarter\Models\Book;
 
 class BookController extends Controller
 {
+    use Helpers;
 
     /**
      * Create Book.

@@ -25,33 +25,33 @@ use Illuminate\Support\Facades\Broadcast;
  */
 
 Route::prefix('auth')->group(function () {
-   Route::post('register', [Ikechukwukalu\Sanctumauthstarter\Controllers\RegisterController::class, 'register'])->name('register');
-    Route::post('login', [Ikechukwukalu\Sanctumauthstarter\Controllers\LoginController::class, 'login'])->name('login');
-    Route::middleware('auth:sanctum')->post('logout', [Ikechukwukalu\Sanctumauthstarter\Controllers\LogoutController::class, 'logout'])->name('logout');
-    Route::get('verify/email/{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class, 'verifyUserEmail'])->name('verification.verify');
-    Route::middleware('auth:sanctum')->post('resend/verify/email', [Ikechukwukalu\Sanctumauthstarter\Controllers\VerificationController::class, 'resendUserEmailVerification'])->name('verification.resend');
-    Route::post('forgot/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
-    Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPassword'])->name('resetPassword');
+   Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
+    Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
+    Route::middleware('auth:sanctum')->post('logout', [\App\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
+    Route::get('verify/email/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verifyUserEmail'])->name('verification.verify');
+    Route::middleware('auth:sanctum')->post('resend/verify/email', [\App\Http\Controllers\Auth\VerificationController::class, 'resendUserEmailVerification'])->name('verification.resend');
+    Route::post('forgot/password', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('reset/password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPassword'])->name('resetPassword');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('change')->group(function () {
-        Route::post('password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ChangePasswordController::class, 'changePassword'])->name('changePassword');
-        Route::post('pin', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'changePin'])->name('changePin');
+        Route::post('password', [\App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])->name('changePassword');
+        Route::post('pin', [\App\Http\Controllers\Auth\PinController::class, 'changePin'])->name('changePin');
     });
-    Route::post('pin/required/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
-    Route::post('edit/profile', [Ikechukwukalu\Sanctumauthstarter\Controllers\ProfileController::class, 'editProfile'])->name('editProfile');
+    Route::post('pin/required/{uuid}', [\App\Http\Controllers\Auth\PinController::class, 'pinRequired'])->name(config('sanctumauthstarter.pin.route', 'require_pin'));
+    Route::post('edit/profile', [\App\Http\Controllers\Auth\ProfileController::class, 'editProfile'])->name('editProfile');
 
 
     // Sample Book APIs
     Route::prefix('v1/sample/books')->group(function () {
-        Route::get('{id?}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'listBooks'])->name('listBooksTest');
+        Route::get('{id?}', [\App\Http\Controllers\Auth\BookController::class, 'listBooks'])->name('listBooksTest');
 
         // These APIs require a user's pin before requests are processed
         Route::middleware(['require.pin'])->group(function () {
-            Route::post('/', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'createBook'])->name('createBookTest');
-            Route::patch('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'updateBook'])->name('updateBookTest');
-            Route::delete('{id}', [Ikechukwukalu\Sanctumauthstarter\Controllers\BookController::class, 'deleteBook'])->name('deleteBookTest');
+            Route::post('/', [\App\Http\Controllers\Auth\BookController::class, 'createBook'])->name('createBookTest');
+            Route::patch('{id}', [\App\Http\Controllers\Auth\BookController::class, 'updateBook'])->name('updateBookTest');
+            Route::delete('{id}', [\App\Http\Controllers\Auth\BookController::class, 'deleteBook'])->name('deleteBookTest');
         });
     });
 });

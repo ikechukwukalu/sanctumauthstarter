@@ -1,6 +1,6 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -13,6 +13,7 @@ use hisorange\BrowserDetect\Parser as Browser;
 use Ikechukwukalu\Sanctumauthstarter\Events\SocialiteLogin;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Cookie;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 use App\Models\User;
 use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
@@ -20,6 +21,7 @@ use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
 class SocialiteController extends Controller
 {
 
+    use Helpers;
 
     /**
      * Set user uuid cookie.

@@ -4,7 +4,7 @@ namespace Ikechukwukalu\Sanctumauthstarter\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Ikechukwukalu\Sanctumauthstarter\Controllers\PinController;
+use App\Http\Controllers\Auth\PinController;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;

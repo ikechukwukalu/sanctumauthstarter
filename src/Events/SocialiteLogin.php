@@ -36,7 +36,7 @@ class SocialiteLogin implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'user_id' => $this->user->id,
+            'user' => $this->user,
             'access_token' => $this->accessToken->plainTextToken
         ];
     }

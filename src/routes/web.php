@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::view('forgot/password', 'sanctumauthstarter::passwords.reset')->name('password.reset');
-Route::post('reset/password', [Ikechukwukalu\Sanctumauthstarter\Controllers\ResetPasswordController::class, 'resetPasswordForm'])->name('password.update');
+Route::post('reset/password', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPasswordForm'])->name('password.update');
 
 Route::group(['middleware' => ['web']], function () {
     /**
@@ -36,7 +36,7 @@ Route::group(['middleware' => ['web']], function () {
             [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
-    Route::get('set/cookie/{uuid}', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'setCookie'])->name('set.cookie');
-    Route::get('auth/redirect', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'authRedirect'])->name('auth.redirect');
-    Route::get('auth/callback', [Ikechukwukalu\Sanctumauthstarter\Controllers\SocialiteController::class, 'authCallback'])->name('auth.callback');
+    Route::get('set/cookie/{uuid}', [\App\Http\Controllers\Auth\SocialiteController::class, 'setCookie'])->name('set.cookie');
+    Route::get('auth/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'authRedirect'])->name('auth.redirect');
+    Route::get('auth/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'authCallback'])->name('auth.callback');
 });

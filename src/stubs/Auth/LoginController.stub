@@ -1,22 +1,24 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Ikechukwukalu\Sanctumauthstarter\Controllers\Controller;
+use App\Http\Controllers\Auth\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
 use Carbon\Carbon;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 use App\Models\User;
 
 class LoginController extends Controller
 {
+    use Helpers;
 
     public function __construct()
     {
