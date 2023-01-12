@@ -196,16 +196,6 @@ Route::group(['middleware' => ['web']], function () {
 - `api.php`
 
 ```php
-Route::prefix('auth')->group(function () {
-   Route::post('register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
-    Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
-    Route::middleware('auth:sanctum')->post('logout', [App\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
-    Route::get('verify/email/{id}', [App\Http\Controllers\Auth\VerificationController::class, 'verifyUserEmail'])->name('verification.verify');
-    Route::middleware('auth:sanctum')->post('resend/verify/email', [App\Http\Controllers\Auth\VerificationController::class, 'resendUserEmailVerification'])->name('verification.resend');
-    Route::post('forgot/password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
-    Route::post('reset/password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPassword'])->name('resetPassword');
-});
-
 Route::prefix(config('sanctumauthstarter.routes.prefix.api.auth', 'auth'))
 ->group(function () {
     Route::post(config('sanctumauthstarter.routes.api.register', 'register'),
