@@ -51,8 +51,8 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 
 Social media login utilizes laravel websockets to pass `access_token` to the client after authentication. First, you must setup your laravel app for [websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction). In order to do that run the following:
 
-- Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
-- Run `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
+- `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
+- `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
 - Set `REDIS_CLIENT=predis` and `BROADCAST_DRIVER=pusher` within your `.env` file.
 - Your `laravel echo` config should look similar to this:
 
