@@ -39,6 +39,10 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
+### GENERATE CONTROLLERS
+
+- `php artisan sas:controllers`
+
 ### PUBLISH MIGRATIONS
 
 - `php artisan vendor:publish --tag=sas-migrations`
@@ -157,7 +161,7 @@ PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
 ```
 
-- Run `php artisan config:clear`, `php artisan config:cache`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
+- Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
 - `php artisan serve`
 - `npm install && npm run dev`
 
