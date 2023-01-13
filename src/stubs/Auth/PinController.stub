@@ -71,6 +71,12 @@ class PinController extends Controller
     public function changePin(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            /**
+             * You must allow default pin for RULE `CurrentPin`
+             * so that the pin can be changed from the default value.
+             * In order to do that we set it to receive a boolean
+             * value TRUE as a first parameter
+             */
             'current_pin' => ['required', 'string', new CurrentPin(true)],
             'pin' => [
                         'required', 'string',
@@ -167,7 +173,7 @@ class PinController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            config('sanctumauthstarter.pin.input', '_pin') => ['required', 'string', new CurrentPin],
+            config('sanctumauthstarter.pin.input', '_pin') => ['required', 'string', new CurrentPin(config('sanctumauthstarter.pin.allow_default_pin', false))],
         ]);
 
         if ($validator->fails()) {

@@ -22,7 +22,7 @@ class BookController extends Controller
      *
      * @bodyParam name string required Example: Once upon a time
      * @bodyParam isbn string required Example: 978-3-16-148410-0
-     * @bodyParam authors string[] required Example: ['John Doe', 'Jane Doe']
+     * @bodyParam authors string required Example: John Doe, Jane Doe
      * @bodyParam country string required Example: Nigeria
      * @bodyParam number_of_pages int required Example: 1090
      * @bodyParam publisher string required Example: Walt Disney

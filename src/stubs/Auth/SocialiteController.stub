@@ -48,6 +48,8 @@ class SocialiteController extends Controller
      */
     public function setCookie(Request $request) {
         $socialiteUser = SocialiteUserDeviceLogin::where("user_uuid", $request->uuid)
+                            ->whereNotNull('user_id')
+                            ->whereNotNull('user_email')
                             ->first();
 
         if (isset($socialiteUser->user_uuid))

@@ -10,6 +10,10 @@ return [
          */
         'default' => '0000',
         /**
+         * bool - Allow a user to authenticate using the default pin
+         */
+        'allow_default_pin' => false,
+        /**
          * int - Uses seconds. Make sure to update the 'expires_at'
          * column if you changed this value after migration
          */
