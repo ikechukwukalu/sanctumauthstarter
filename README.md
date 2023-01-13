@@ -1,6 +1,6 @@
 # SANCTUM AUTH STARTER
 
-This is a very flexible and customisable laravel package (boilerplate) that utilises [laravel/ui](https://github.com/laravel/ui) and [laravel-sanctum](https://laravel.com/docs/9.x/sanctum) to create Basic Authetication classes for REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
+This is a very flexible and customisable laravel package (boilerplate) that utilises [laravel/ui](https://github.com/laravel/ui) and [laravel-sanctum](https://laravel.com/docs/9.x/sanctum) to create Basic Authetication classes and other helpful functionalities to give you a quick start when building REST APIs using [Laravel](https://laravel.com/). The following functionalities are made available:
 
 - User registration
 - User login
