@@ -169,7 +169,7 @@ return [
         /**
          * boolean - Backup db via SSH access
          */
-        'remote_access' => false,
+        'remote_access' => env('DB_REMOTE_ACCESS'),
     ],
 
     /**
@@ -201,14 +201,11 @@ return [
                 'update' => 'reset/password',
             ],
             'auth' => [
-                'redirect' => 'auth/redirect',
+                'redirect' => 'auth/redirect/{uuid}',
                 'callback' => 'auth/callback',
             ],
             'socialite' => [
                 'auth' => 'auth/socialite',
-            ],
-            'set' => [
-                'cookie' => 'set/cookie/{uuid}',
             ],
         ],
 

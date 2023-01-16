@@ -65,9 +65,10 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     wsHost: window.location.hostname,
-    wsPort: 6001,
-    forceTLS: false,
-    encrypted: false,
+    wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+    wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
+    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+    encrypted: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     enabledTransports: ['ws', 'wss'],
     authorizer: (channel, options) => {
         return {
@@ -132,7 +133,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 
     document.getElementById('googleSignUp').onclick = () => {
         window.open(
-            "{{ url('set/cookie') }}/" + USER_UUID,
+            "{{ url('auth/redirect') }}/" + USER_UUID,
             '_blank'
         )
     }
@@ -151,6 +152,8 @@ You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker
 - Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
 - Your `.env` should look similar to this
 
+#### Local Dev
+
 ```shell
 PUSHER_APP_KEY=app-key
 PUSHER_APP_ID=app-id
@@ -159,6 +162,35 @@ PUSHER_HOST=127.0.0.1
 PUSHER_PORT=6001
 PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
+```
+
+#### HTTP
+
+```shell
+PUSHER_APP_KEY=app-key
+PUSHER_APP_ID=app-id
+PUSHER_APP_SECRET=app-secret
+PUSHER_HOST=example.com
+PUSHER_PORT=80
+PUSHER_SCHEME=http
+PUSHER_APP_CLUSTER=mt1
+```
+
+#### HTTPS
+
+```shell
+PUSHER_APP_KEY=app-key
+PUSHER_APP_ID=app-id
+PUSHER_APP_SECRET=app-secret
+PUSHER_HOST=example.com
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
+```
+
+```apache
+    ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
+    ProxyPass "/app/" "http://127.0.0.1:6001/app/"
 ```
 
 - Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
@@ -185,10 +217,7 @@ Route::group(['middleware' => ['web']], function () {
             [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
-    Route::get(config('sanctumauthstarter.routes.web.set.cookie', 'set/cookie/{uuid}'),
-        [\App\Http\Controllers\Auth\SocialiteController::class, 'setCookie'])
-        ->name('set.cookie');
-    Route::get(config('sanctumauthstarter.routes.web.auth.redirect', 'auth/redirect'),
+    Route::get(config('sanctumauthstarter.routes.web.auth.redirect', 'auth/redirect/{uuid}'),
         [\App\Http\Controllers\Auth\SocialiteController::class, 'authRedirect'])
         ->name('auth.redirect');
     Route::get(config('sanctumauthstarter.routes.web.auth.callback', 'auth/callback'),
@@ -273,6 +302,7 @@ DB_BACKUP_SSH_USER=root
 DB_BACKUP_SSH_HOST=127.0.0.1
 DB_BACKUP_FILE="backup-${APP_NAME}-db"
 DB_BACKUP_FILE_EXT=".gz"
+DB_REMOTE_ACCESS=false
 ```
 
 ## DOCUMENTATION

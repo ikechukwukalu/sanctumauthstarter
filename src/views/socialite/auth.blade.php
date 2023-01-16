@@ -55,7 +55,7 @@
 
         document.getElementById('googleSignUp').onclick = () => {
             window.open(
-                "{{ url('set/cookie') }}/" + USER_UUID,
+                "{{ url('auth/redirect') }}/" + USER_UUID,
                 '_blank'
             )
         }
