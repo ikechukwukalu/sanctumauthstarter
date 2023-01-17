@@ -65,10 +65,9 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     wsHost: window.location.hostname,
-    wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-    wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-    forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-    encrypted: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
+    wsPort: 6001,
+    forceTLS: false,
+    encrypted: false,
     enabledTransports: ['ws', 'wss'],
     authorizer: (channel, options) => {
         return {
@@ -152,8 +151,6 @@ You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker
 - Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
 - Your `.env` should look similar to this
 
-#### Local Dev
-
 ```shell
 PUSHER_APP_KEY=app-key
 PUSHER_APP_ID=app-id
@@ -164,29 +161,7 @@ PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
 ```
 
-#### HTTP
-
-```shell
-PUSHER_APP_KEY=app-key
-PUSHER_APP_ID=app-id
-PUSHER_APP_SECRET=app-secret
-PUSHER_HOST=example.com
-PUSHER_PORT=80
-PUSHER_SCHEME=http
-PUSHER_APP_CLUSTER=mt1
-```
-
-#### HTTPS
-
-```shell
-PUSHER_APP_KEY=app-key
-PUSHER_APP_ID=app-id
-PUSHER_APP_SECRET=app-secret
-PUSHER_HOST=example.com
-PUSHER_PORT=443
-PUSHER_SCHEME=https
-PUSHER_APP_CLUSTER=mt1
-```
+- For SSL using apache
 
 ```apache
     ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
