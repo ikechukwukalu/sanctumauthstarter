@@ -161,7 +161,7 @@ PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
 ```
 
-- For SSL using apache
+- For SSL using apache. The snippet below should be placed with the `virtualhost` SSL config.
 
 ```apache
     ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
