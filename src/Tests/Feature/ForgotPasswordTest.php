@@ -21,14 +21,11 @@ class ForgotPasswordTest extends TestCase
     public function testErrorValidationForForgotPassword()
     {
         $postData = [
-            'email' => '0000000000@gmail.com', //Email doesn't exist
+            'email' => '0000000000.com', //Wrong email format
         ];
 
         $response = $this->post('/api/auth/forgot/password', $postData);
-        $responseArray = json_decode($response->getContent(), true);
-
-        $this->assertEquals(500, $responseArray['status_code']);
-        $this->assertEquals('fail', $responseArray['status']);
+        $response->assertStatus(302);
     }
 
     public function testForgotPassword()

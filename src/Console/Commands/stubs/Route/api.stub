@@ -1,6 +1,3 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
 
 /**
  * @group No Auth APIs
@@ -69,16 +66,16 @@ Route::middleware('auth:sanctum')->group(function () {
     // Sample Book APIs
     Route::prefix('v1/sample/books')->group(function () {
         Route::get('{id?}', [\App\Http\Controllers\Auth\BookController::class,
-        'listBooks']);
+        'listBooks'])->name('listBooksTest');
 
         // These APIs require a user's pin before requests are processed
         Route::middleware(['require.pin'])->group(function () {
             Route::post('/', [\App\Http\Controllers\Auth\BookController::class,
-                'createBook']);
+                'createBook'])->name('createBookTest');
             Route::patch('{id}', [\App\Http\Controllers\Auth\BookController::class,
-                'updateBook']);
+                'updateBook'])->name('updateBookTest');
             Route::delete('{id}', [\App\Http\Controllers\Auth\BookController::class,
-                'deleteBook']);
+                'deleteBook'])->name('deleteBookTest');
         });
     });
 });

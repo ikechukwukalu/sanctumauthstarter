@@ -60,7 +60,7 @@ class RequirePin
         RequirePinModel::create([
             "user_id" => $user->id,
             "uuid" => $uuid,
-            "ip" => $pinController->getClientIp($request),
+            "ip" => $pinController->getUserIp($request),
             "device" => $request->userAgent(),
             "method" => $request->method(),
             "route_arrested" => $request->path(),

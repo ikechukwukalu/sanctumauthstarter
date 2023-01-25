@@ -4,8 +4,11 @@ namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Ikechukwukalu\Sanctumauthstarter\Console\Commands\DatabaseBackUp;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\DatabaseBackUpCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ControllersCommand;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ServiceMakeCommand;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\RoutesCommand;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\SetupCommand;
 
 class SanctumauthstarterServiceProvider extends ServiceProvider
 {
@@ -18,19 +21,22 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                DatabaseBackUp::class,
+                DatabaseBackUpCommand::class,
                 ControllersCommand::class,
+                ServiceMakeCommand::class,
+                RoutesCommand::class,
+                SetupCommand::class,
             ]);
         }
 
-        Route::middleware('api')->prefix('api')->group(function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
-        });
-        Route::middleware('web')->group(function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        });
+        // Route::middleware('api')->prefix('api')->group(function () {
+        //     $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
+        // });
+        // Route::middleware('web')->group(function () {
+        //     $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+        // });
 
-        $this->loadRoutesFrom(__DIR__ . '/routes/channels.php');
+        // $this->loadRoutesFrom(__DIR__ . '/routes/channels.php');
 
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
         $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');

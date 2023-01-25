@@ -26,10 +26,7 @@ class LoginTest extends TestCase
         ];
 
         $response = $this->post('/api/auth/login', $postData);
-        $responseArray = json_decode($response->getContent(), true);
-
-        $this->assertEquals(500, $responseArray['status_code']);
-        $this->assertEquals('fail', $responseArray['status']);
+        $response->assertStatus(302);
     }
 
     public function testLoginThrottling()

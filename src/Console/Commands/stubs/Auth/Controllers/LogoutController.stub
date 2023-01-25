@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Auth\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +15,7 @@ class LogoutController extends Controller
     /**
      * User logout.
      *
-     * This API logs a user out and clears all user tokens
+     * This API logs a user out of a single session
      *
      * @header Authorization Bearer {Your key}
      *
@@ -33,6 +33,38 @@ class LogoutController extends Controller
      * @group Auth APIs
      */
     public function logout(Request $request): JsonResponse
+    {
+        $user = Auth::user();
+        $request->user()->currentAccessToken()->delete();
+
+        $data = [
+            'access_token' => null,
+            'message' => trans('sanctumauthstarter::auth.logout')
+        ];
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
+    }
+
+    /**
+     * User logout.
+     *
+     * This API logs a user out of every session and clears all user tokens
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function logoutFromAllSession(): JsonResponse
     {
         $user = Auth::user();
         $user->tokens()->delete();

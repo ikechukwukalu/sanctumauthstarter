@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\Auth\EditProfileRequest;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Services\Auth\EditProfileService;
+
+class ProfileController extends Controller
+{
+
+    use Helpers;
+
+    /**
+     * User edit profile.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @bodyParam name string required The user fullname. Example: John Doe
+     * @bodyParam email string required The user email. Example: johndoe@example.com
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+
+    public function editProfile(EditProfileRequest $request): JsonResponse
+    {
+        if ($data = EditProfileService::handleEditProfile($request)) {
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        return $this->unknownErrorResponse();
+    }
+}

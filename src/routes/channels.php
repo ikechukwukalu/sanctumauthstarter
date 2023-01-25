@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +13,11 @@ use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
 |
 */
 
-Broadcast::channel(config('sanctumauthstarter.channels.access_token', 'access.token.{userUUID}'), function ($user, $userUUID) {
-    $id = SocialiteUserDeviceLogin::where('user_uuid', $userUUID)
+Broadcast::channel(
+    config('sanctumauthstarter.channels.access_token',
+        'access.token.{userUUID}'),
+function ($user, $userUUID) {
+    $id = \Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin::where('user_uuid', $userUUID)
             ->first()->user_id;
 
     return $user->id === $id;

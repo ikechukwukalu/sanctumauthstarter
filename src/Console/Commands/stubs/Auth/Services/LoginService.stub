@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Services\Auth;
+
+use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Auth\ThrottleRequestsService;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
+use Carbon\Carbon;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+
+class LoginService {
+
+    use Helpers;
+
+    private ThrottleRequestsService $throttleRequestsService;
+
+    public function __construct()
+    {
+        $this->throttleRequestsService = new ThrottleRequestsService(
+            config('sanctumauthstarter.login.maxAttempts', 3),
+            config('sanctumauthstarter.login.delayMinutes', 1)
+        );
+    }
+
+    public function handleLogin(LoginRequest $request): ?array
+    {
+        $validated = $request->validated();
+        $remember = isset($validated['remember_me']) ? true : false;
+
+        if (!Auth::attempt([
+                'email' => $validated['email'],
+                'password' => $validated['password']
+            ], $remember))
+        {
+            return null;
+        }
+
+        $this->throttleRequestsService->clearAttempts($request);
+
+        $user = Auth::user();
+        $token = $user->createToken($validated['email']);
+
+        if (config('sanctumauthstarter.login.notify.user', true)) {
+            $now = Carbon::now();
+            $time = $now->isoFormat('Do of MMMM YYYY, h:mm:ssa');
+            $deviceAndLocation = $this->getLoginUserInformation();
+
+            $user->notify(new UserLogin($time, $deviceAndLocation));
+        }
+
+        return [
+            'access_token' => $token->plainTextToken,
+            'message' => trans('sanctumauthstarter::auth.success')
+        ];
+    }
+
+    public function loginRequestAttempts(Request $request): ?array
+    {
+        if ($this->throttleRequestsService->hasTooManyAttempts($request)) {
+            $this->throttleRequestsService->_fireLockoutEvent($request);
+
+            return ["message" => trans('sanctumauthstarter::auth.throttle',
+                        ['seconds' =>
+                            $this->throttleRequestsService->_limiter()
+                            ->availableIn(
+                                    $this->throttleRequestsService
+                                        ->_throttleKey($request)
+                                )
+                        ])
+                    ];
+        }
+
+        $this->throttleRequestsService->incrementAttempts($request);
+
+        return null;
+    }
+}

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Console\Input\InputOption;
 
 class ControllersCommand extends Command
 {
@@ -14,7 +15,7 @@ class ControllersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sas:controllers';
+    protected $signature = 'sas:controllers {--s|sample}';
 
     /**
      * The console command description.
@@ -34,9 +35,17 @@ class ControllersCommand extends Command
             mkdir($directory, 0755, true);
         }
 
+        if (! is_dir($directory = app_path('Http/Requests/Auth'))) {
+            mkdir($directory, 0755, true);
+        }
+
+        if (! is_dir($directory = app_path('Services/Auth'))) {
+            mkdir($directory, 0755, true);
+        }
+
         $filesystem = new Filesystem;
 
-        collect($filesystem->allFiles(__DIR__.'/../../stubs/Auth'))
+        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Controllers'))
             ->each(function (SplFileInfo $file) use ($filesystem) {
                 $filesystem->copy(
                     $file->getPathname(),
@@ -44,6 +53,32 @@ class ControllersCommand extends Command
                 );
             });
 
-        $this->components->info('Authentication scaffolding generated successfully.');
+        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Requests'))
+            ->each(function (SplFileInfo $file) use ($filesystem) {
+                $filesystem->copy(
+                    $file->getPathname(),
+                    app_path('Http/Requests/Auth/'.Str::replaceLast('.stub', '.php', $file->getFilename()))
+                );
+            });
+
+        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Services'))
+            ->each(function (SplFileInfo $file) use ($filesystem) {
+                $filesystem->copy(
+                    $file->getPathname(),
+                    app_path('Services/Auth/'.Str::replaceLast('.stub', '.php', $file->getFilename()))
+                );
+            });
+
+        if ($this->option('sample')) {
+            collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Controllers/Sample'))
+                ->each(function (SplFileInfo $file) use ($filesystem) {
+                    $filesystem->copy(
+                        $file->getPathname(),
+                        app_path('Http/Controllers/Auth/'.Str::replaceLast('.stub', '.php', $file->getFilename()))
+                    );
+                });
+        }
+
+        $this->components->info('Controllers, requests and services scaffolding generated successfully.');
     }
 }

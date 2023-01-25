@@ -136,7 +136,17 @@ return [
              * has been a login
              */
             'user' => true,
-        ]
+        ],
+        /**
+         * int - Number of times a user is allowed to authenticate
+         * when trying to login
+         */
+        'maxAttempts' => 3,
+        /**
+         * int - Number of times a user is allowed to authenticate
+         * when trying to login
+         */
+        'delayMinutes' => 1,
     ],
 
     /**

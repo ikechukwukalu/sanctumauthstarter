@@ -34,10 +34,7 @@ class ResetPasswordTest extends TestCase
         ];
 
         $response = $this->post('/api/auth/reset/password', $postData);
-        $responseArray = json_decode($response->getContent(), true);
-
-        $this->assertEquals(500, $responseArray['status_code']);
-        $this->assertEquals('fail', $responseArray['status']);
+        $response->assertStatus(302);
 
         //This test would also run correctly if an existing email is passed
     }

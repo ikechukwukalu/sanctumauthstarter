@@ -35,10 +35,7 @@ class ChangePasswordTest extends TestCase
         ];
 
         $response = $this->post('/api/change/password', $postData);
-        $responseArray = json_decode($response->getContent(), true);
-
-        $this->assertEquals(500, $responseArray['status_code']);
-        $this->assertEquals('fail', $responseArray['status']);
+        $response->assertStatus(302);
     }
 
     public function testChangePassword()

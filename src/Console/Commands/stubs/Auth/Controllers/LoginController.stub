@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Validation\Rule;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Services\Auth\LoginService;
+
+class LoginController extends Controller
+{
+    use Helpers;
+
+    private LoginService $loginService;
+
+    public function __construct()
+    {
+        $this->middleware('guest');
+        $this->loginService = new LoginService;
+    }
+
+    /**
+     * User form login.
+     *
+     * You can choose to notify a User whenever there has been a Login by setting
+     * <b>password.notify.change</b> to <b>TRUE</b> Within the config file,
+     *
+     * Make sure to retrieve <small class="badge badge-blue">access_token</small> after login for User authentication
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @bodyParam email string required The email of the user. Example: johndoe@xyz.com
+     * @bodyParam password string required The password for user authentication must contain uppercase, lowercase, symbols, numbers. Example: Ex@m122p$%l6E
+     * @bodyParam remember_me int Could be set to 0 or 1. Example: 1
+     *
+     * @response 200 {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string
+     *      "access_token": string
+     *  }
+     * }
+     *
+     * @group No Auth APIs
+     */
+    public function login(LoginRequest $request): JsonResponse
+    {
+        if ($data = $this->loginService->loginRequestAttempts($request)) {
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.fail'), 500, $data);
+        }
+
+        if ($data = $this->loginService->handleLogin($request)) {
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        $data = ['message' => trans('sanctumauthstarter::auth.failed')];
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+    }
+}

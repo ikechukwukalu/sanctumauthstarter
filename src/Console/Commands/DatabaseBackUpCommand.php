@@ -4,7 +4,7 @@ namespace Ikechukwukalu\Sanctumauthstarter\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class DatabaseBackUp extends Command
+class DatabaseBackUpCommand extends Command
 {
     /**
      * The name and signature of the console command.

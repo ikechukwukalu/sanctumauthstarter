@@ -19,7 +19,7 @@ trait Helpers {
         ]);
     }
 
-    public function getClientIp(Request $request) {
+    public function getUserIp(Request $request) {
         if ($position = Location::get()) {
             return $position->ip;
         }
@@ -105,17 +105,13 @@ trait Helpers {
         );
     }
 
-    public function updateRequest(Request $request, array $payload): void
+    public function unknownErrorResponse(): JsonResponse
     {
-        $request->merge([
-            'expires' => null,
-            'signature' => null,
-            config('sanctumauthstarter.pin.input', '_pin') => null
-        ]);
+        $data = ['message' =>
+        trans('sanctumauthstarter::general.unknown_error')];
 
-        foreach($payload as $key => $item) {
-            $request->merge([$key => $payload[$key]]);
-        }
+        return $this->httpJsonResponse(
+            trans('sanctumauthstarter::general.fail'), 500, $data);
     }
 
 }

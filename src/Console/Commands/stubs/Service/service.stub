@@ -1,0 +1,23 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ requestNamespace }};
+use Illuminate\Http\Request;
+
+class {{ class }}
+{
+
+    /**
+     * Handle the request.
+     *
+     * @param  \{{ requestNamespace }}  $request
+     * @return ?array
+     */
+    public static function handle({{ request }} $request): ?array
+    {
+        $validated = $request->validated();
+
+        return null;
+    }
+}

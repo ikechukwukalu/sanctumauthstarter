@@ -3,7 +3,7 @@ name: Pull Repo WorkFlow
 on:
   pull_request:
     branches:
-      - main
+      - production
       - staging
 
 jobs:
@@ -11,26 +11,34 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8.0
+        image: mariadb:10.4.27
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: ci_cd
+          MARIADB_ROOT_PASSWORD: ${{ secrets.DB_STAGING_PASSWORD }}
+          MARIADB_DATABASE: ${{ secrets.DB_STAGING_NAME }}
         ports:
-          - 3306
+          - 3307:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v1
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install NPM Dependencies
+        run: |
+          npm install
+          npm run build
       - name: Install Composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist  --ignore-platform-reqs
-      - name: Install NPM Dependencies
-        run: npm install
       - name: Generate key
         run: php artisan key:generate
       - name: Execute tests (Unit and Feature tests) using PHPUnit
         env:
-          DB_PORT: ${{ job.services.mysql.ports[3306] }}
-        run: ./vendor/bin/phpunit
+          DB_CONNECTION: mysql
+          DB_PORT: 3307
+          DB_USER: root
+          DB_PASSWORD: ${{ secrets.DB_STAGING_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_STAGING_NAME }}
+        run: |
+          php artisan migrate --seed
+          php artisan test
       - name: Execute tests (Unit and Feature tests) using JEST
         run: node_modules/.bin/jest

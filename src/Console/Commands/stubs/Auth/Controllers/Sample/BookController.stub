@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Http\Controllers\Controller;
 
 use Ikechukwukalu\Sanctumauthstarter\Models\Book;
 
@@ -82,7 +83,7 @@ class BookController extends Controller
      *        [
      *          'name': string,
      *          'isbn': string,
-     *          'authors': array,
+     *          'authors': string,
      *          'number_of_pages': int,
      *          'publisher': string,
      *          'country': string,
@@ -91,7 +92,7 @@ class BookController extends Controller
      *        [
      *          'name': string,
      *          'isbn': string,
-     *          'authors': array,
+     *          'authors': string,
      *          'number_of_pages': int,
      *          'publisher': string,
      *          'country': string,
@@ -125,7 +126,7 @@ class BookController extends Controller
      * @bodyParam id string required This ID is gotten from the URL param Example: Once upon a time
      * @bodyParam name string Example: Once upon a time
      * @bodyParam isbn string Example: 978-3-16-148410-0
-     * @bodyParam authors string[] Example: ['John Doe', 'Jane Doe']
+     * @bodyParam authors string Example: John Doe, Jane Doe
      * @bodyParam country string Example: Nigeria
      * @bodyParam number_of_pages int Example: 1090
      * @bodyParam publisher string Example: Walt Disney
@@ -141,7 +142,7 @@ class BookController extends Controller
      * "data": {
      *          'name': string,
      *          'isbn': string,
-     *          'authors': array,
+     *          'authors': string,
      *          'number_of_pages': int,
      *          'publisher': string,
      *          'country': string,
@@ -218,7 +219,7 @@ class BookController extends Controller
      * "data": {
      *          'name': string,
      *          'isbn': string,
-     *          'authors': array,
+     *          'authors': string,
      *          'number_of_pages': int,
      *          'publisher': string,
      *          'country': string,

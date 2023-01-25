@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Services\Auth;
+
+use App\Http\Requests\Auth\EditProfileRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class EditProfileService
+{
+    /**
+     * Handle the request.
+     *
+     * @param  \App\Http\Requests\EditProfileRequest  $request
+     * @return ?array
+     */
+    public static function handleEditProfile(EditProfileRequest $request): ?array
+    {
+        $validated = $request->validated();
+        $user = Auth::user();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+
+        if (empty($user->getDirty())) {
+            return ['message' => trans('sanctumauthstarter::general.no_changes')];
+        }
+
+        if ($user->save()) {
+            return ['message' => trans('sanctumauthstarter::profile.changed')];
+        }
+
+        return null;
+    }
+}
