@@ -3,7 +3,6 @@
 namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\DatabaseBackUpCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ControllersCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ServiceMakeCommand;
@@ -28,15 +27,6 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
                 SetupCommand::class,
             ]);
         }
-
-        // Route::middleware('api')->prefix('api')->group(function () {
-        //     $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
-        // });
-        // Route::middleware('web')->group(function () {
-        //     $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
-        // });
-
-        // $this->loadRoutesFrom(__DIR__ . '/routes/channels.php');
 
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
         $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');

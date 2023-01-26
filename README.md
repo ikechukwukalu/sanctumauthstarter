@@ -39,9 +39,31 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
-### GENERATE CONTROLLERS
+### GENERATE AUTH CONTROLLERS, REQUESTS, SERVICES AND ROUTES
+
+You can run `php artisan sas:setup` to generate them at once. You can also call generate them separately:
 
 - `php artisan sas:controllers`
+- `php artisan sas:routes`
+
+This package comes with an example `BookController` and it's respective api routes for the provided `require.pin` middleware. To generate them alongside the controllers and routes, run the following command `php artisan sas:setup --sample`. You can also call generate them separately:
+
+- `php artisan sas:controllers --sample`
+- `php artisan sas:routes --sample`
+
+#### Note
+
+All routes are customisable from the config file.
+
+To generate a new service class.
+
+- `php artisan make:service SampleService`
+- `php artisan make:service SampleService --force`. This will overwrite and existing service class.
+
+To generate a new service class for a particular request class.
+
+- `php artisan make:request SampleRequest`
+- `php artisan make:service SampleService --request=SampleRequest`
 
 ### PUBLISH MIGRATIONS
 
@@ -98,7 +120,7 @@ window.Echo = new Echo({
 ],
 ```
 
-- Navigate to `auth/socialite` view sample Google sign up page. Below is the script that is called within the page.
+- Navigate to `auth/socialite` to view sample Google sign up page. Below is the script that is called within that page.
 
 ```js
 window.addEventListener('DOMContentLoaded',  () => {
@@ -161,7 +183,7 @@ PUSHER_SCHEME=http
 PUSHER_APP_CLUSTER=mt1
 ```
 
-- For SSL using apache. The snippet below should be placed with the `virtualhost` SSL config.
+- For SSL using apache. The snippet below should be placed within the `virtualhost` SSL config.
 
 ```apache
     ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
@@ -171,100 +193,6 @@ PUSHER_APP_CLUSTER=mt1
 - Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
 - `php artisan serve`
 - `npm install && npm run dev`
-
-## ROUTES
-
-All routes are customisable from the config file. To override the routes copy the following routes below into your `web.php` and `api.php` respectively file.
-
-- `web.php`
-
-```php
-Route::view(config('sanctumauthstarter.routes.web.password.reset', 'forgot/password'),
-    'sanctumauthstarter::passwords.reset')->name('password.reset');
-Route::post(config('sanctumauthstarter.routes.web.password.update', 'reset/password'),
-    [\App\Http\Controllers\Auth\ResetPasswordController::class, 'resetPasswordForm'])
-    ->name('password.update');
-
-Route::group(['middleware' => ['web']], function () {
-    Route::get(config('sanctumauthstarter.routes.web.socialite.auth',
-    'auth/socialite'), function() {
-        return view('sanctumauthstarter::socialite.auth',
-            [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
-    })->name('socialite.auth');
-
-    Route::get(config('sanctumauthstarter.routes.web.auth.redirect', 'auth/redirect/{uuid}'),
-        [\App\Http\Controllers\Auth\SocialiteController::class, 'authRedirect'])
-        ->name('auth.redirect');
-    Route::get(config('sanctumauthstarter.routes.web.auth.callback', 'auth/callback'),
-        [\App\Http\Controllers\Auth\SocialiteController::class, 'authCallback'])
-        ->name('auth.callback');
-});
-```
-
-- `api.php`
-
-```php
-Route::prefix(config('sanctumauthstarter.routes.prefix.api.auth', 'auth'))
-->group(function () {
-    Route::post(config('sanctumauthstarter.routes.api.register', 'register'),
-        [\App\Http\Controllers\Auth\RegisterController::class, 'register'])
-        ->name('register');
-    Route::post(config('sanctumauthstarter.routes.api.login', 'login'),
-        [\App\Http\Controllers\Auth\LoginController::class, 'login'])
-        ->name('login');
-    Route::middleware('auth:sanctum')->post(
-        config('sanctumauthstarter.routes.api.logout', 'logout'),
-        [\App\Http\Controllers\Auth\LogoutController::class, 'logout'])
-        ->name('logout');
-    Route::get(config('sanctumauthstarter.routes.api.verification.verify', 'verify/email/{id}'),
-        [\App\Http\Controllers\Auth\VerificationController::class,
-        'verifyUserEmail'])->name('verification.verify');
-    Route::middleware('auth:sanctum')->post(
-        config('sanctumauthstarter.routes.api.verification.resend', 'resend/verify/email'),
-        [\App\Http\Controllers\Auth\VerificationController::class,
-        'resendUserEmailVerification'])->name('verification.resend');
-    Route::post(config('sanctumauthstarter.routes.api.forgotPassword', 'forgot/password'),
-        [\App\Http\Controllers\Auth\ForgotPasswordController::class,
-        'forgotPassword'])->name('forgotPassword');
-    Route::post(config('sanctumauthstarter.routes.api.resetPassword', 'reset/password'),
-    [\App\Http\Controllers\Auth\ResetPasswordController::class,
-    'resetPassword'])->name('resetPassword');
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix(config('sanctumauthstarter.routes.prefix.api.change',
-    'change'))->group(function () {
-        Route::post(config('sanctumauthstarter.routes.api.changePassword', 'password'),
-            [\App\Http\Controllers\Auth\ChangePasswordController::class, 'changePassword'])
-            ->name('changePassword');
-        Route::post(config('sanctumauthstarter.routes.api.changePin', 'pin'),
-            [\App\Http\Controllers\Auth\PinController::class, 'changePin'])
-            ->name('changePin');
-    });
-    Route::post(config('sanctumauthstarter.routes.api.pinRequired', 'pin/required/{uuid}'),
-        [\App\Http\Controllers\Auth\PinController::class, 'pinRequired'])
-        ->name('pinRequired');
-    Route::post(config('sanctumauthstarter.routes.api.editProfile', 'edit/profile'),
-        [\App\Http\Controllers\Auth\ProfileController::class, 'editProfile'])
-        ->name('editProfile');
-
-    // Sample Book APIs
-    Route::prefix('v1/sample/books')->group(function () {
-        Route::get('{id?}', [\App\Http\Controllers\Auth\BookController::class,
-        'listBooks'])->name('listBooksTest');
-
-        // These APIs require a user's pin before requests are processed
-        Route::middleware(['require.pin'])->group(function () {
-            Route::post('/', [\App\Http\Controllers\Auth\BookController::class,
-                'createBook'])->name('createBookTest');
-            Route::patch('{id}', [\App\Http\Controllers\Auth\BookController::class,
-                'updateBook'])->name('updateBookTest');
-            Route::delete('{id}', [\App\Http\Controllers\Auth\BookController::class,
-                'deleteBook'])->name('deleteBookTest');
-        });
-    });
-});
-```
 
 ## BACKUP DATABASE
 
@@ -350,4 +278,4 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 ## LICENSE
 
-The Laravel package is an open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The SAS package is an open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
