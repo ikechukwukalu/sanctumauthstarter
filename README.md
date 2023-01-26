@@ -33,7 +33,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 
 ## STEPS TO INSTALL
 
-- `composer require ikechukwukalu/sanctumauthstarter`
+- `composer require ikechukwukalu/sanctumauthstarter -W`
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
 - Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
@@ -212,6 +212,7 @@ DB_REMOTE_ACCESS=false
 
 To generate documentation:
 
+- `composer require --dev knuckleswtf/scribe`
 - `php artisan vendor:publish --tag=scribe-config`
 - Change `'prefixes' => ['api/*']` to `'prefixes' => ['*']` if you want to see the docs for APIs for the  `web.php` as well.
 - `php artisan scribe:generate`
