@@ -19,7 +19,6 @@
         "beyondcode/laravel-websockets": "^1.13",
         "pusher/pusher-php-server": "7.0",
         "predis/predis": "^2.0",
-        "knuckleswtf/scribe": "dev-master",
         "stevebauman/location": "^6.5"
     },
     "require-dev": {
