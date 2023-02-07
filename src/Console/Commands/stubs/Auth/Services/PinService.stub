@@ -85,15 +85,6 @@ class PinService {
         return null;
     }
 
-    public function getPinRequiredURL(string $uuid): ?RequirePin
-    {
-        return RequirePin::whereBelongsTo(Auth::user())
-                        ->where('uuid', $uuid)
-                        ->whereNull('approved_at')
-                        ->whereNull('cancelled_at')
-                        ->first();
-    }
-
     public function pinUrlHasValidSignature(Request $request): ?array
     {
         if (!$request->hasValidSignature()) {
@@ -145,6 +136,15 @@ class PinService {
         foreach($payload as $key => $item) {
             $request->merge([$key => $payload[$key]]);
         }
+    }
+
+    private function getPinRequiredURL(string $uuid): ?RequirePin
+    {
+        return RequirePin::whereBelongsTo(Auth::user())
+                        ->where('uuid', $uuid)
+                        ->whereNull('approved_at')
+                        ->whereNull('cancelled_at')
+                        ->first();
     }
 
 }

@@ -59,6 +59,13 @@ class SocialiteController extends Controller
     public function authCallback(Request $request)
     {
         $user = $this->socialiteService->handleAuthCallback($request);
+
+        if (!$user) {
+            $request->session()->flash('fail',
+                trans('sanctumauthstarter::auth.failed'));
+            return redirect(route('socialite.auth'));
+        }
+
         return view('sanctumauthstarter::socialite.callback', ['user'
                     => $user]);
     }

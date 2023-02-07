@@ -5,17 +5,22 @@ namespace Ikechukwukalu\Sanctumauthstarter\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SocialiteUserDeviceLogin extends Model
+class WebViewLogin extends Model
 {
     use HasFactory;
 
-    protected $table = 'socialite_user_device_logins';
+    protected $table = 'web_view_logins';
 
     protected $fillable = [
         'user_uuid',
         'user_id',
+        'email',
         'ip_address',
         'user_agent',
+        'used',
+        'password',
+        'salt',
+        'type',
     ];
 
     protected $hidden = [];

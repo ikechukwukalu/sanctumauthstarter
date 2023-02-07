@@ -27,8 +27,6 @@ class RequirePin extends Model
         'expires_at',
     ];
 
-    protected $hidden = [];
-
     public function user()
     {
         return $this->belongsTo(User::class);

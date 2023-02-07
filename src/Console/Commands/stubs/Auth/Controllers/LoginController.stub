@@ -19,7 +19,6 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest');
         $this->loginService = new LoginService;
     }
 
@@ -52,7 +51,7 @@ class LoginController extends Controller
     {
         if ($data = $this->loginService->loginRequestAttempts($request)) {
             return $this->httpJsonResponse(
-                trans('sanctumauthstarter::general.fail'), 500, $data);
+                trans('sanctumauthstarter::general.fail'), 400, $data);
         }
 
         if ($data = $this->loginService->handleLogin($request)) {
@@ -61,6 +60,32 @@ class LoginController extends Controller
         }
 
         $data = ['message' => trans('sanctumauthstarter::auth.failed')];
-        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 422, $data);
+    }
+
+    public function twoFactorLogin(Request $request)
+    {
+        if ($data = $this->loginService->loginRequestAttempts($request)) {
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.fail'), 400, $data);
+        }
+
+        if ($data = $this->loginService->twoFactorLoginUrlHasValidUUID($request->uuid)) {
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.fail'), 401, $data);
+        }
+
+        if ($data = $this->loginService->handleTwoFactorLogin($request)) {
+            if (is_null($data['access_token'])) {
+                return view('sanctumauthstarter::twofactor.callback', ['user'
+                            => $data['user']]);
+            }
+
+            return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        $data = ['message' => trans('sanctumauthstarter::auth.failed')];
+        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 422, $data);
     }
 }

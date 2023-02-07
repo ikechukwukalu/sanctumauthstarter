@@ -6,7 +6,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - User login
 - Auto login after registration
 - Login throttling
-- Login 2FA (pending)
+- Login 2FA
 - Social media login
 - Forgot password
 - Email verification

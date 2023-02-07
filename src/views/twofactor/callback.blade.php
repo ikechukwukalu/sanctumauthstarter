@@ -9,7 +9,7 @@
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
                             <h3>
-                                {{ trans('sanctumauthstarter::socialite.user.welcome', ['name' => $user->name]) }}
+                                {{ trans('sanctumauthstarter::twofactor.welcome', ['name' => $user->name]) }}
                             </h3>
                         </div>
                     </div>
@@ -18,14 +18,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-    window.addEventListener('DOMContentLoaded',  () => {
-        if (localStorage.getItem('user_uuid')) {
-            localStorage.removeItem('user_uuid');
-        }
-    });
-</script>
 @endsection

@@ -5,12 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                <div class="card-header">{{ trans('sanctumauthstarter::twofactor.header') }}</div>
+
                 <div class="card-body">
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
-                            <h3>
-                                {{ trans('sanctumauthstarter::socialite.user.welcome', ['name' => $user->name]) }}
-                            </h3>
+                            <h5 align="center">Access token will be console logged!</h5>
                         </div>
                     </div>
                 </div>
@@ -23,9 +23,14 @@
 @section('scripts')
 <script>
     window.addEventListener('DOMContentLoaded',  () => {
-        if (localStorage.getItem('user_uuid')) {
-            localStorage.removeItem('user_uuid');
-        }
+        const USER_UUID = "{{ Route::input('uuid') }}";
+
+        console.log(USER_UUID);
+
+        window.Echo.channel(`access.token.twofactor.${USER_UUID}`)
+        .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\TwoFactorLogin', (e) => {
+            console.log(`payload:`, e);
+        });
     });
 </script>
 @endsection

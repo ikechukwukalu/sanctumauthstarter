@@ -111,7 +111,47 @@ trait Helpers {
         trans('sanctumauthstarter::general.unknown_error')];
 
         return $this->httpJsonResponse(
-            trans('sanctumauthstarter::general.fail'), 500, $data);
+            trans('sanctumauthstarter::general.fail'), 422, $data);
+    }
+
+    public function generateSalt(int $length = 9, bool $add_dashes = false, string $available_sets = 'luds'): string
+    {
+        $sets = [];
+        if(strpos($available_sets, 'l') !== false)
+            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        if(strpos($available_sets, 'u') !== false)
+            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+        if(strpos($available_sets, 'd') !== false)
+            $sets[] = '23456789';
+        if(strpos($available_sets, 's') !== false)
+            $sets[] = '!@#$%&*?';
+
+        $all = '';
+        $salt = '';
+        foreach($sets as $set)
+        {
+            $salt .= $set[array_rand(str_split($set))];
+            $all .= $set;
+        }
+
+        $all = str_split($all);
+        for($i = 0; $i < $length - count($sets); $i++)
+            $salt .= $all[array_rand($all)];
+
+        $salt = str_shuffle($salt);
+
+        if(!$add_dashes)
+            return $salt;
+
+        $dash_len = floor(sqrt($length));
+        $dash_str = '';
+        while(strlen($salt) > $dash_len)
+        {
+            $dash_str .= substr($salt, 0, $dash_len) . '-';
+            $salt = substr($salt, $dash_len);
+        }
+        $dash_str .= $salt;
+        return $dash_str;
     }
 
 }

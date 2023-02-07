@@ -10,15 +10,16 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "laravel/ui": "^4.0",
-        "laravel/sanctum": "^3.0",
-        "laravel/framework": "^9.19",
-        "hisorange/browser-detect": "^4.5",
-        "laravel/socialite": "^5.5",
-        "doctrine/dbal": "^3.5",
         "beyondcode/laravel-websockets": "^1.13",
-        "pusher/pusher-php-server": "7.0",
+        "doctrine/dbal": "^3.5",
+        "hisorange/browser-detect": "^4.5",
+        "laravel/framework": "^9.19",
+        "laravel/sanctum": "^3.0",
+        "laravel/socialite": "^5.5",
+        "laragear/two-factor": "^1.1",
+        "laravel/ui": "^4.0",
         "predis/predis": "^2.0",
+        "pusher/pusher-php-server": "7.0",
         "stevebauman/location": "^6.5"
     },
     "require-dev": {
@@ -43,10 +44,5 @@
                 "Ikechukwukalu\\Sanctumauthstarter\\SanctumauthstarterServiceProvider"
             ]
         }
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "@php artisan sas:controllers"
-        ]
     }
 }

@@ -4,14 +4,15 @@ namespace App\Services\Auth;
 
 use Illuminate\Http\Request;
 use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
-use Ikechukwukalu\Sanctumauthstarter\Events\SocialiteLogin;
+use Ikechukwukalu\Sanctumauthstarter\Events\SocialiteLogin as SocialiteLoginEvent;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
 use Carbon\Carbon;
-use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteUserDeviceLogin;
+use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteLogin;
 use App\Models\User;
+use Laragear\TwoFactor\Facades\Auth2FA;
 
 class SocialiteService
 {
@@ -19,46 +20,48 @@ class SocialiteService
 
     public function handleAuthRedirect(Request $request): void
     {
-        $socialiteUser = SocialiteUserDeviceLogin::where("user_uuid", $request->uuid ?? null)
-                            ->whereNotNull('user_id')
-                            ->whereNotNull('user_email')
-                            ->first();
-
-        if (isset($socialiteUser->user_uuid))
-        {
-            abort(440, trans('sanctumauthstarter::cookie.error_440'));
-        }
-
-        SocialiteUserDeviceLogin::create([
-                "user_uuid" => $request->uuid,
-                "ip_address" => $this->getUserIp($request),
-                "user_agent" => $request->userAgent(),
+        SocialiteLogin::firstOrCreate(
+            [
+                'user_uuid' => $request->uuid,
+                'used' => false,
+            ],
+            [
+                'user_uuid' => $request->uuid,
+                'ip_address' => $this->getUserIp($request),
+                'user_agent' => $request->userAgent(),
             ]
         );
 
         session(['user_uuid' => $request->uuid]);
     }
 
-    public function handleAuthCallback(Request $request): User
+    public function handleAuthCallback(Request $request): ?User
     {
         $userUUID = session('user_uuid');
         if (!$userUUID) {
             abort(440, trans('sanctumauthstarter::cookie.error_440'));
         }
 
-        session()->forget('user_uuid');
-        $google = Socialite::driver('google')->user();
-
-        $user = User::firstOrCreate([
-            'email' => $google->email,
-        ], [
-            'name' => $google->name,
-            'email' => $google->email,
-            'socialite_signup' => true,
-            'form_signup' => false
+        $user = $this->getUserDetails();
+        $tempPassword = $this->generateSalt();
+        $user->update([
+            'password' => Hash::make($tempPassword)
         ]);
 
-        Auth::login($user);
+        if (!Auth2FA::attempt([
+                'email' => $user->email,
+                'password' => $tempPassword
+            ], true)) {
+            return null;
+        }
+
+        $user->update([
+            'password' => null
+        ]);
+
+        session()->forget('user_uuid');
+        session()->forget('user');
+
         $token = $user->createToken($user->email);
 
         if (config('sanctumauthstarter.login.notify.user', true)) {
@@ -68,12 +71,37 @@ class SocialiteService
             $user->notify(new UserLogin($time, $deviceAndLocation));
         }
 
-        SocialiteUserDeviceLogin::where('user_uuid', $userUUID)->update([
-            "user_id" => $user->id,
-            "user_email" => $user->email
+        SocialiteLoginEvent::dispatch($user, $token, $userUUID);
+
+        SocialiteLogin::where('user_uuid', $userUUID)->update([
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'used' => true
         ]);
-        SocialiteLogin::dispatch($user, $token, $userUUID);
 
         return $user;
+    }
+
+    private function getUserDetails(): User
+    {
+        if (!session('user')) {
+            $google = Socialite::driver('google')->user();
+            $user = User::firstOrCreate(
+                [
+                    'email' => $google->email,
+                ],
+                [
+                    'name' => $google->name,
+                    'email' => $google->email,
+                    'socialite_signup' => true,
+                    'form_signup' => false
+                ]);
+
+            session(['user' => $user]);
+
+            return $user;
+        }
+
+        return session('user');
     }
 }

@@ -47,7 +47,7 @@ class LoginTest extends TestCase
 
         $responseArray = json_decode($response->getContent(), true);
 
-        $this->assertEquals(500, $responseArray['status_code']);
+        $this->assertEquals(400, $responseArray['status_code']);
         $this->assertEquals('fail', $responseArray['status']);
     }
 

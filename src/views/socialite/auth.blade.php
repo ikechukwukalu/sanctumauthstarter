@@ -8,8 +8,14 @@
                 <div class="card-header">{{ trans('sanctumauthstarter::socialite.google.header') }}</div>
 
                 <div class="card-body">
+                    @if(session()->has('fail'))
+                        <div class="alert alert-danger m-5">
+                        {!! session('fail') !!}
+                        </div>
+                    @endif
                     <div class="row mb-0">
                         <div class="col-md-6 offset-md-4">
+                            <h5 align="center">Access token will be console logged!</h5>
                             <button type="click" id="googleSignUp" class="btn btn-primary">
                                 {{ trans('sanctumauthstarter::socialite.google.button') }}
                             </button>
@@ -33,7 +39,7 @@
                 localStorage.setItem('user_uuid', userUUID);
             }
 
-            console.log('user_uuid created');
+            console.log('user_uuid created', userUUID);
             return userUUID;
         }
 
@@ -48,7 +54,7 @@
         const USER_UUID = getUserUUID();
         const TIMEOUT = parseInt("{{ $minutes }}") * 60 * 1000;
 
-        window.Echo.channel(`access.token.${USER_UUID}`)
+        window.Echo.channel(`access.token.socialite.${USER_UUID}`)
         .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
             console.log(`payload:`, e);
         });

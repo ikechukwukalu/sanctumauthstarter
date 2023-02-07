@@ -48,12 +48,6 @@ class RoutesCommand extends Command
             );
         }
 
-        file_put_contents(
-            base_path('routes/channels.php'),
-            file_get_contents(__DIR__.'/stubs/Route/channels.stub'),
-            FILE_APPEND
-        );
-
         $this->components->info('Routes scaffolding generated successfully.');
     }
 }

@@ -107,7 +107,7 @@ class PinController extends Controller
 
         if ($data = $this->pinService->pinValidation($request)) {
             return $this->httpJsonResponse(
-                trans('sanctumauthstarter::general.fail'), 422, $data);
+                trans('sanctumauthstarter::general.fail'), 400, $data);
         }
 
         return $this->pinService->handlePinRequired($request, $uuid);
