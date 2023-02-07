@@ -36,7 +36,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - `composer require ikechukwukalu/sanctumauthstarter -W`
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
-- Add `pin` column to the `fillable` and `hidden` arrays within the `User` model class
+- Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
 ### GENERATE AUTH CONTROLLERS, REQUESTS, SERVICES AND ROUTES
