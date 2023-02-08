@@ -1,0 +1,128 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Auth\TwoFactorService;
+use App\Http\Requests\Auth\ConFirmTwoFactorRequest;
+
+class TwoFactorController extends Controller
+{
+    use Helpers;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
+    /**
+     * Create 2FA.
+     *
+     * To enable Two-Factor Authentication for the User,
+     * he/she must sync the Shared Secret between its Authenticator
+     * app and the application.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "qr_code": string,
+     *      "uri": string,
+     *      "string": string,
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function createTwoFactor(Request $request): JsonResponse
+    {
+        if ($data = TwoFactorService::handleCreateTwoFactor($request)) {
+            return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        return $this->unknownErrorResponse();
+    }
+
+    /**
+     * Confirm 2FA.
+     *
+     * Recovery codes will be generated if code is invalid.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @bodyParam code numeric required The authenticator code. Example: 123 456
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string,
+     *      "codes": array,
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function confirmTwoFactor(ConFirmTwoFactorRequest $request): JsonResponse
+    {
+        if ($data = TwoFactorService::handleConFirmTwoFactor($request))
+        {
+            return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        $data = [
+            'message' => trans('sanctumauthstarter::auth.wrong_code'),
+            'codes' => []
+        ];
+
+        return $this->httpJsonResponse(
+                trans('sanctumauthstarter::general.fail'), 400, $data);
+
+    }
+
+    /**
+     * Disable 2FA.
+     *
+     * To disable Two-Factor Authentication for the User.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string,
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function disableTwoFactor(Request $request): JsonResponse
+    {
+        $data = TwoFactorService::handleDisableTwoFactor($request);
+        return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.success'), 200, $data);
+    }
+}

@@ -66,26 +66,21 @@ class LoginController extends Controller
     public function twoFactorLogin(Request $request)
     {
         if ($data = $this->loginService->loginRequestAttempts($request)) {
-            return $this->httpJsonResponse(
-                trans('sanctumauthstarter::general.fail'), 400, $data);
+            $request->session()->flash('fail', $data['message']);
+            return view('two-factor::login', ['input' => null]);
         }
 
         if ($data = $this->loginService->twoFactorLoginUrlHasValidUUID($request->uuid)) {
-            return $this->httpJsonResponse(
-                trans('sanctumauthstarter::general.fail'), 401, $data);
+            $request->session()->flash('fail', $data['message']);
+            return view('two-factor::login', ['input' => null]);
         }
 
         if ($data = $this->loginService->handleTwoFactorLogin($request)) {
-            if (is_null($data['access_token'])) {
-                return view('sanctumauthstarter::twofactor.callback', ['user'
-                            => $data['user']]);
-            }
-
-            return $this->httpJsonResponse(
-                trans('sanctumauthstarter::general.success'), 200, $data);
+            return view('sanctumauthstarter::twofactor.callback', ['user'
+                        => $data['user']]);
         }
 
-        $data = ['message' => trans('sanctumauthstarter::auth.failed')];
-        return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 422, $data);
+        $request->session()->flash('fail', trans('sanctumauthstarter::auth.failed'));
+        return view('two-factor::login', ['input' => null]);
     }
 }

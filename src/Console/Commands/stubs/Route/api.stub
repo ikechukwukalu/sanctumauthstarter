@@ -46,11 +46,11 @@ Route::middleware('auth:sanctum')->group(function () {
         'pinRequired'])->name('pinRequired');
     Route::post('edit/profile', [\App\Http\Controllers\Auth\ProfileController::class,
         'editProfile'])->name('editProfile');
-    Route::get('enable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
+    Route::post('enable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
         'createTwoFactor'])->name('createTwoFactor');
     Route::post('confirm-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
         'confirmTwoFactor'])->name('confirmTwoFactor');
-    Route::get('disable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
+    Route::post('disable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
         'disableTwoFactor'])->name('disableTwoFactor');
 
     // Sample Book APIs
