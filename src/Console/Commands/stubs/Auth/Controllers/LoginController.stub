@@ -66,21 +66,17 @@ class LoginController extends Controller
     public function twoFactorLogin(Request $request)
     {
         if ($data = $this->loginService->loginRequestAttempts($request)) {
-            $request->session()->flash('fail', $data['message']);
-            return view('two-factor::login', ['input' => null]);
+            return $this->loginService->returnTwoFactorLoginView($data);
         }
 
         if ($data = $this->loginService->twoFactorLoginUrlHasValidUUID($request->uuid)) {
-            $request->session()->flash('fail', $data['message']);
-            return view('two-factor::login', ['input' => null]);
+            return $this->loginService->returnTwoFactorLoginView($data);
         }
 
         if ($data = $this->loginService->handleTwoFactorLogin($request)) {
-            return view('sanctumauthstarter::twofactor.callback', ['user'
-                        => $data['user']]);
+            return view('sanctumauthstarter::twofactor.callback', $data);
         }
 
-        $request->session()->flash('fail', trans('sanctumauthstarter::auth.failed'));
-        return view('two-factor::login', ['input' => null]);
+        return $this->loginService->returnTwoFactorLoginView($data);
     }
 }

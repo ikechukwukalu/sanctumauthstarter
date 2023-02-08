@@ -36,7 +36,53 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - `composer require ikechukwukalu/sanctumauthstarter -W`
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
-- Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class
+- Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
+
+``` php
+use Laravel\Sanctum\HasApiTokens;
+use Laragear\TwoFactor\TwoFactorAuthentication;
+use Laragear\TwoFactor\Contracts\TwoFactorAuthenticatable;
+
+class User extends Authenticatable implements TwoFactorAuthenticatable, MustVerifyEmail
+{
+    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthentication;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'pin',
+        'two_factor'
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'pin',
+        'remember_token',
+        'two_factor',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+}
+```
+
 - Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
 
 ### GENERATE AUTH CONTROLLERS, REQUESTS, SERVICES AND ROUTES
@@ -72,6 +118,56 @@ To generate a new service class for a particular request class.
 ### PUBLISH CONFIG
 
 - `php artisan vendor:publish --tag=sas-config`
+
+### Two Factor Login
+
+Two factor login utilizes laravel websockets to pass `access_token` to the client after authentication. See [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor) for more information. 2fa authentication has been implemented for both password login and social media login.
+
+- php artisan vendor:publish --provider="Laragear\TwoFactor\TwoFactorServiceProvider"
+- Replace the form in `resources/views/vendor/two-factor/login.blade.php` with the code below:
+
+``` php
+<form id="twofactor" method="get">
+    @php
+        foreach ($_GET as $key => $value) {
+            $key = htmlspecialchars($key);
+            $value = htmlspecialchars($value);
+            echo "<input type='hidden' name='$key' value='$value'/>";
+        }
+    @endphp
+    @csrf
+    <p class="text-center">
+        {{ trans('two-factor::messages.continue') }}
+    </p>
+    <div class="form-row justify-content-center py-3">
+        @if($errors->isNotEmpty() || isset($message))
+            <div class="col-12 alert alert-danger pb-0">
+                <ul>
+                    @if (isset($message))
+                        <li>{{ $message }}</li>
+                    @endif
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <div class="col-sm-8 col-8 mb-3">
+            <input type="text" name="{{ $input }}" id="{{ $input }}"
+                    class="@error($input) is-invalid @enderror form-control form-control-lg"
+                    minlength="6" placeholder="123456" required>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-auto mb-3">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ trans('two-factor::messages.confirm') }}
+            </button>
+        </div>
+    </div>
+</form>
+```
+
+- `api/create-two-factor` to create 2fa, `api/confirm-two-factor` to confirm 2fa and activate recovery codes, `api/disable-two-factor` to disable 2fa and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
 
 ### Social Media Login
 

@@ -57,28 +57,29 @@ jobs:
         env:
             DOT_ENV: ${{ secrets.DOT_ENV_PRODUCTION }}
             PAT: ${{ secrets.PAT }}
+            $DEPLOY_PATH_PRODUCTION: ${{ secrets.DEPLOY_PATH_PRODUCTION }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: DOT_ENV, PAT
+          envs: DOT_ENV, PAT, DEPLOY_PATH_PRODUCTION
           script: |
             sudo mkdir -p /tmp/production/repo
             sudo chmod -R 777 /tmp/production/repo
             cd /tmp/production && git clone https://$PAT@github.com/monitecture/repo.git
             cd /tmp/production/repo
             sudo git checkout production
-            sudo chmod -R 777 /tmp/production/repo
             sudo touch .env
             echo "$DOT_ENV" | sudo tee /tmp/production/repo/.env
             composer install
             sudo php artisan migrate --force
             sudo php artisan config:clear
-            sudo rm -r /apps/www/repo-old
-            sudo mv /apps/www/repo /apps/www/repo-old
-            sudo mkdir -p /apps/www/repo
-            sudo cp -r /tmp/production/repo/* /apps/www/repo
+            sudo rm -r $DEPLOY_PATH_PRODUCTION/repo-old
+            sudo mv $DEPLOY_PATH_PRODUCTION/repo $DEPLOY_PATH_PRODUCTION/repo-old
+            sudo mkdir -p $DEPLOY_PATH_PRODUCTION/repo
+            sudo cp -r /tmp/production/repo/* $DEPLOY_PATH_PRODUCTION/repo
             sudo rm -r /tmp/production/repo
-            echo "$DOT_ENV" | sudo tee /apps/www/repo/.env
-            sudo chmod -R 777 /apps/www/repo/storage
+            echo "$DOT_ENV" | sudo tee $DEPLOY_PATH_PRODUCTION/repo/.env
+            sudo chmod -R 0755 $DEPLOY_PATH_PRODUCTION/repo
+            sudo chmod -R ugo+rw $DEPLOY_PATH_PRODUCTION/repo/storage
 

@@ -17,6 +17,7 @@ use Ikechukwukalu\Sanctumauthstarter\Models\TwoFactorLogin;
 use Illuminate\Support\Facades\Crypt;
 use Ikechukwukalu\Sanctumauthstarter\Events\TwoFactorLogin as TwoFactorLoginEvent;
 use App\Models\User;
+use Illuminate\View\View;
 
 class LoginService {
 
@@ -121,6 +122,17 @@ class LoginService {
         }
 
         return null;
+    }
+
+    public function returnTwoFactorLoginView(array $data): View
+    {
+        $data['input'] = '2fa_code';
+
+        if (!array_key_exists("message", $data)) {
+            $data['message'] = trans('sanctumauthstarter::auth.failed');
+        }
+
+        return view('two-factor::login', $data);
     }
 
     private function generateTwoFactorURL(Request $request, array $validated, User $user): array

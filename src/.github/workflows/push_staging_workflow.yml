@@ -57,29 +57,31 @@ jobs:
         env:
             DOT_ENV: ${{ secrets.DOT_ENV_STAGING }}
             PAT: ${{ secrets.PAT }}
+            DEPLOY_PATH_STAGING: ${{ secrets.DEPLOY_PATH_STAGING }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: DOT_ENV, PAT
+          envs: DOT_ENV, PAT, DEPLOY_PATH_STAGING
           script: |
             sudo mkdir -p /tmp/staging/repo
             sudo chmod -R 777 /tmp/staging/repo
             cd /tmp/staging && git clone https://$PAT@github.com/monitecture/repo.git
             cd /tmp/staging/repo
             sudo git checkout staging
-            sudo chmod -R 777 /tmp/staging/repo
             sudo touch .env
             echo "$DOT_ENV" | sudo tee /tmp/staging/repo/.env
             composer install
             sudo php artisan migrate:refresh --seed && sudo php artisan test
+            composer require --dev knuckleswtf/scribe
             sudo php artisan scribe:generate && php artisan config:clear
-            sudo rm -r /tests/www/repo-old
-            sudo mv /tests/www/repo /tests/www/repo-old
-            sudo mkdir -p /tests/www/repo
-            sudo cp -r /tmp/staging/repo/* /tests/www/repo
+            sudo rm -r $DEPLOY_PATH_STAGING/repo-old
+            sudo mv $DEPLOY_PATH_STAGING/repo $DEPLOY_PATH_STAGING/repo-old
+            sudo mkdir -p $DEPLOY_PATH_STAGING/repo
+            sudo cp -r /tmp/staging/repo/* $DEPLOY_PATH_STAGING/repo
             sudo rm -r /tmp/staging/repo
-            echo "$DOT_ENV" | sudo tee /tests/www/repo/.env
-            sudo chmod -R 777 /tests/www/repo/storage
+            echo "$DOT_ENV" | sudo tee $DEPLOY_PATH_STAGING/repo/.env
+            sudo chmod -R 0755 $DEPLOY_PATH_STAGING/repo
+            sudo chmod -R ugo+rw $DEPLOY_PATH_STAGING/repo/storage
 
 

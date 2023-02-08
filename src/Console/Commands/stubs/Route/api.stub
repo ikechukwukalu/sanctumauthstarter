@@ -52,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         'confirmTwoFactor'])->name('confirmTwoFactor');
     Route::post('disable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
         'disableTwoFactor'])->name('disableTwoFactor');
+    Route::post('new-recovery-codes', [App\Http\Controllers\Auth\TwoFactorController::class,
+        'newRecoveryCodes'])->name('newRecoveryCodes');
 
     // Sample Book APIs
     Route::prefix('v1/sample/books')->group(function () {
