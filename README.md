@@ -256,6 +256,7 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 2fa authentication has been implemented for both password login and social media login.
 
 - `php artisan vendor:publish --provider="Laragear\TwoFactor\TwoFactorServiceProvider"`
+- `php artisan migrate`
 - Replace the form in `resources/views/vendor/two-factor/login.blade.php` with the code below:
 
 ``` php
