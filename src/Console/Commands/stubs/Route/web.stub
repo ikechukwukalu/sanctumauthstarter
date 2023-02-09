@@ -31,10 +31,10 @@ Route::group(['middleware' => ['web']], function () {
      * @group Web URLs
      */
 
-    Route::get('auth/socialite', function() {
-        return view('sanctumauthstarter::socialite.auth',
-            [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
-    })->name('socialite.auth');
+    //Route::get('auth/socialite', function() {
+    //    return view('sanctumauthstarter::socialite.auth',
+    //        [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
+    //})->name('socialite.auth');
 
     //Route::get('auth/twofactor/{uuid}', function() {
     //    return view('sanctumauthstarter::twofactor.auth');
@@ -44,9 +44,6 @@ Route::group(['middleware' => ['web']], function () {
         'authRedirect'])->name('auth.redirect');
     Route::get('auth/callback', [\App\Http\Controllers\Auth\SocialiteController::class,
         'authCallback'])->name('auth.callback');
-    Route::get('auth/twofactor/{uuid}', function() {
-        return view('sanctumauthstarter::twofactor.auth');
-    })->name('twofactor.auth');
 
     Route::get('twofactor/required/{email}/{uuid}', [\App\Http\Controllers\Auth\LoginController::class,
         'twoFactorLogin'])->name('twofactor.required');

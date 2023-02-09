@@ -24,9 +24,10 @@ class EditProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $user_id = isset(Auth::user()->id) ? Auth::user()->id : null;
         return [
             'name' => ['required', 'string','max:100'],
-            'email' => ['required', 'email', 'max:100', 'unique:users,email,' . Auth::user()->id],
+            'email' => ['required', 'email', 'max:100', 'unique:users,email,' . $user_id ],
         ];
     }
 }

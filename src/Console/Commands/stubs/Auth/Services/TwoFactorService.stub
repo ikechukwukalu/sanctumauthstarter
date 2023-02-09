@@ -28,10 +28,7 @@ class TwoFactorService
             'two_factor' => true
         ]);
 
-        return [
-            'message' => trans('sanctumauthstarter::auth.download_code'),
-            'codes' => $request->user()->generateRecoveryCodes()
-        ];
+        return self::generateRecoveryCodes($request);
     }
 
     public static function handleCreateTwoFactor(Request $request): ?array
@@ -57,6 +54,32 @@ class TwoFactorService
 
         return [
             'message' => trans('sanctumauthstarter::auth.disabled_2fa'),
+        ];
+    }
+
+    public static function handleCurrentRecoveryCodes(Request $request): array
+    {
+        return [
+            'message' => trans('sanctumauthstarter::auth.download_code'),
+            'codes' => $request->user()->getRecoveryCodes()
+        ];
+    }
+
+    public static function handleNewRecoveryCodes(Request $request): array
+    {
+        return self::generateRecoveryCodes($request);
+    }
+
+    public static function isTwoFactorEnabled(): bool
+    {
+        return Auth::user()->two_factor;
+    }
+
+    private static function generateRecoveryCodes(Request $request): array
+    {
+        return [
+            'message' => trans('sanctumauthstarter::auth.download_code'),
+            'codes' => $request->user()->generateRecoveryCodes()
         ];
     }
 }

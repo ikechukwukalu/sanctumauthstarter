@@ -10,18 +10,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Crypt;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Services\Auth\PinService;
 
 use Ikechukwukalu\Sanctumauthstarter\Models\RequirePin as RequirePinModel;
 
 class RequirePin
 {
+    use Helpers;
 
     public function handle(Request $request, Closure $next)
     {
         $pinController = new PinController();
 
         if (!Auth::check()) {
-            return $pinController->pinRequestTerminated();
+            return $this->httpJsonResponse(...PinService::pinRequestTerminated());
         }
 
         $user = Auth::user();
@@ -70,7 +73,7 @@ class RequirePin
             "expires_at" => $expires_at
         ]);
 
-        return $pinController->pinValidationURL($pin_validation_url, $redirect_to);
+        return $this->httpJsonResponse(...PinService::pinValidationURL($pin_validation_url, $redirect_to));
     }
 
 }

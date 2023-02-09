@@ -46,12 +46,14 @@ Route::middleware('auth:sanctum')->group(function () {
         'pinRequired'])->name('pinRequired');
     Route::post('edit/profile', [\App\Http\Controllers\Auth\ProfileController::class,
         'editProfile'])->name('editProfile');
-    Route::post('enable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
-        'createTwoFactor'])->name('createTwoFactor');
-    Route::post('confirm-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
-        'confirmTwoFactor'])->name('confirmTwoFactor');
-    Route::post('disable-two-factor', [App\Http\Controllers\Auth\TwoFactorController::class,
-        'disableTwoFactor'])->name('disableTwoFactor');
-    Route::post('new-recovery-codes', [App\Http\Controllers\Auth\TwoFactorController::class,
-        'newRecoveryCodes'])->name('newRecoveryCodes');
+    Route::post('create-two-factor',
+        [App\Http\Controllers\Auth\TwoFactorController::class, 'createTwoFactor'])->name('createTwoFactor');
+    Route::post('confirm-two-factor',
+        [App\Http\Controllers\Auth\TwoFactorController::class, 'confirmTwoFactor'])->name('confirmTwoFactor');
+    Route::post('disable-two-factor',
+        [App\Http\Controllers\Auth\TwoFactorController::class, 'disableTwoFactor'])->name('disableTwoFactor');
+    Route::post('current-recovery-codes',
+        [App\Http\Controllers\Auth\TwoFactorController::class, 'currentRecoveryCodes'])->name('currentRecoveryCodes');
+    Route::post('new-recovery-codes',
+        [App\Http\Controllers\Auth\TwoFactorController::class, 'newRecoveryCodes'])->name('newRecoveryCodes');
 });

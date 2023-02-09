@@ -83,6 +83,16 @@ class TwoFactorController extends Controller
      */
     public function confirmTwoFactor(ConFirmTwoFactorRequest $request): JsonResponse
     {
+        if (TwoFactorService::isTwoFactorEnabled()) {
+            $data = [
+                'message' => trans('sanctumauthstarter::auth.2fa_is_enabled'),
+                'codes' => []
+            ];
+
+            return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.fail'), 400, $data);
+        }
+
         if ($data = TwoFactorService::handleConFirmTwoFactor($request))
         {
             return $this->httpJsonResponse(
@@ -124,5 +134,70 @@ class TwoFactorController extends Controller
         $data = TwoFactorService::handleDisableTwoFactor($request);
         return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);
+    }
+
+    /**
+     * Get 2FA recovery codes.
+     *
+     * The User can retrieve current recovery codes.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string,
+     *      "codes": array,
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function currentRecoveryCodes(Request $request)
+    {
+        if ($data = TwoFactorService::handleCurrentRecoveryCodes($request))
+        {
+            return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        return $this->unknownErrorResponse();
+    }
+
+    /**
+     * New 2FA recovery codes.
+     *
+     * The User can generate a fresh batch of codes which replaces
+     * the previous batch.
+     *
+     * @header Authorization Bearer {Your key}
+     *
+     * @response 200
+     *
+     * {
+     * "status": "success",
+     * "status_code": 200,
+     * "data": {
+     *      "message": string,
+     *      "codes": array,
+     *  }
+     * }
+     *
+     * @authenticated
+     * @group Auth APIs
+     */
+    public function newRecoveryCodes(Request $request)
+    {
+        if ($data = TwoFactorService::handleNewRecoveryCodes($request))
+        {
+            return $this->httpJsonResponse(
+                    trans('sanctumauthstarter::general.success'), 200, $data);
+        }
+
+        return $this->unknownErrorResponse();
     }
 }

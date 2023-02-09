@@ -15,10 +15,11 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Ikechukwukalu\Sanctumauthstarter\Rules\CurrentPin;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 class PinService {
 
-    private ThrottleRequestsService $throttleRequestsService;
+    use Helpers;
 
     public function __construct()
     {
@@ -66,23 +67,7 @@ class PinService {
 
     public function pinRequestAttempts(Request $request): ?array
     {
-        if ($this->throttleRequestsService->hasTooManyAttempts($request)) {
-            $this->throttleRequestsService->_fireLockoutEvent($request);
-
-            return ["message" => trans('sanctumauthstarter::pin.throttle',
-                        ['seconds' =>
-                            $this->throttleRequestsService->_limiter()
-                            ->availableIn(
-                                    $this->throttleRequestsService
-                                        ->_throttleKey($request)
-                                )
-                        ])
-                    ];
-        }
-
-        $this->throttleRequestsService->incrementAttempts($request);
-
-        return null;
+        return $this->requestAttempts($request, 'sanctumauthstarter::pin.throttle');
     }
 
     public function pinUrlHasValidSignature(Request $request): ?array
@@ -145,6 +130,22 @@ class PinService {
                         ->whereNull('approved_at')
                         ->whereNull('cancelled_at')
                         ->first();
+    }
+
+    public static function pinRequestTerminated(): array
+    {
+        return [trans('sanctumauthstarter::general.fail'), 401,
+            ['message' => trans('sanctumauthstarter::pin.terminated')]];
+    }
+
+    public static function pinValidationURL(string $url, null|string $redirect): array
+    {
+        return [trans('sanctumauthstarter::general.success'), 200,
+            [
+                'message' => trans('sanctumauthstarter::pin.require_pin'),
+                'url' => $url,
+                'redirect' => $redirect
+            ]];
     }
 
 }

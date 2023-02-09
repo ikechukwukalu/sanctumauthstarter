@@ -55,6 +55,8 @@ class SocialiteService
             return null;
         }
 
+        $this->throttleRequestsService->clearAttempts($request);
+
         $user->update([
             'password' => null
         ]);
@@ -80,6 +82,11 @@ class SocialiteService
         ]);
 
         return $user;
+    }
+
+    public function loginRequestAttempts(Request $request): ?array
+    {
+        return $this->requestAttempts($request, 'sanctumauthstarter::auth.throttle');
     }
 
     private function getUserDetails(): User

@@ -17,21 +17,10 @@ use Ikechukwukalu\Sanctumauthstarter\Models\TwoFactorLogin;
 use Illuminate\Support\Facades\Crypt;
 use Ikechukwukalu\Sanctumauthstarter\Events\TwoFactorLogin as TwoFactorLoginEvent;
 use App\Models\User;
-use Illuminate\View\View;
 
 class LoginService {
 
     use Helpers;
-
-    private ThrottleRequestsService $throttleRequestsService;
-
-    public function __construct()
-    {
-        $this->throttleRequestsService = new ThrottleRequestsService(
-            config('sanctumauthstarter.login.maxAttempts', 3),
-            config('sanctumauthstarter.login.delayMinutes', 1)
-        );
-    }
 
     public function handleLogin(LoginRequest $request): ?array
     {
@@ -95,23 +84,7 @@ class LoginService {
 
     public function loginRequestAttempts(Request $request): ?array
     {
-        if ($this->throttleRequestsService->hasTooManyAttempts($request)) {
-            $this->throttleRequestsService->_fireLockoutEvent($request);
-
-            return ["message" => trans('sanctumauthstarter::auth.throttle',
-                        ['seconds' =>
-                            $this->throttleRequestsService->_limiter()
-                            ->availableIn(
-                                    $this->throttleRequestsService
-                                        ->_throttleKey($request)
-                                )
-                        ])
-                    ];
-        }
-
-        $this->throttleRequestsService->incrementAttempts($request);
-
-        return null;
+        return $this->requestAttempts($request, 'sanctumauthstarter::auth.throttle');
     }
 
     public function twoFactorLoginUrlHasValidUUID(string $uuid): ?array
@@ -122,17 +95,6 @@ class LoginService {
         }
 
         return null;
-    }
-
-    public function returnTwoFactorLoginView(array $data): View
-    {
-        $data['input'] = '2fa_code';
-
-        if (!array_key_exists("message", $data)) {
-            $data['message'] = trans('sanctumauthstarter::auth.failed');
-        }
-
-        return view('two-factor::login', $data);
     }
 
     private function generateTwoFactorURL(Request $request, array $validated, User $user): array

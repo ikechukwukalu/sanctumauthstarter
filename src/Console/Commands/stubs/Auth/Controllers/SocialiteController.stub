@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 use App\Services\Auth\SocialiteService;
 
 class SocialiteController extends Controller
 {
+    use Helpers;
 
     private SocialiteService $socialiteService;
 
@@ -58,6 +60,10 @@ class SocialiteController extends Controller
      */
     public function authCallback(Request $request)
     {
+        if ($data = $this->socialiteService->loginRequestAttempts($request)) {
+            return $this->socialiteService->returnTwoFactorLoginView($data);
+        }
+
         $user = $this->socialiteService->handleAuthCallback($request);
 
         if (!$user) {

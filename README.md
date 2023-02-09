@@ -36,6 +36,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - `composer require ikechukwukalu/sanctumauthstarter -W`
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
+- Uncomment `use Illuminate\Contracts\Auth\MustVerifyEmail;` in `User` model class
 - Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
 
 ``` php
@@ -97,9 +98,7 @@ This package comes with an example `BookController` and it's respective api rout
 - `php artisan sas:controllers --sample`
 - `php artisan sas:routes --sample`
 
-#### Note
-
-All routes are customisable from the config file.
+#### Service class
 
 To generate a new service class.
 
@@ -119,64 +118,14 @@ To generate a new service class for a particular request class.
 
 - `php artisan vendor:publish --tag=sas-config`
 
-### Two Factor Login
-
-Two factor login utilizes laravel websockets to pass `access_token` to the client after authentication. See [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor) for more information. 2fa authentication has been implemented for both password login and social media login.
-
-- php artisan vendor:publish --provider="Laragear\TwoFactor\TwoFactorServiceProvider"
-- Replace the form in `resources/views/vendor/two-factor/login.blade.php` with the code below:
-
-``` php
-<form id="twofactor" method="get">
-    @php
-        foreach ($_GET as $key => $value) {
-            $key = htmlspecialchars($key);
-            $value = htmlspecialchars($value);
-            echo "<input type='hidden' name='$key' value='$value'/>";
-        }
-    @endphp
-    @csrf
-    <p class="text-center">
-        {{ trans('two-factor::messages.continue') }}
-    </p>
-    <div class="form-row justify-content-center py-3">
-        @if($errors->isNotEmpty() || isset($message))
-            <div class="col-12 alert alert-danger pb-0">
-                <ul>
-                    @if (isset($message))
-                        <li>{{ $message }}</li>
-                    @endif
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="col-sm-8 col-8 mb-3">
-            <input type="text" name="{{ $input }}" id="{{ $input }}"
-                    class="@error($input) is-invalid @enderror form-control form-control-lg"
-                    minlength="6" placeholder="123456" required>
-        </div>
-        <div class="w-100"></div>
-        <div class="col-auto mb-3">
-            <button type="submit" class="btn btn-primary btn-lg">
-                {{ trans('two-factor::messages.confirm') }}
-            </button>
-        </div>
-    </div>
-</form>
-```
-
-- `api/create-two-factor` to create 2fa, `api/confirm-two-factor` to confirm 2fa and activate recovery codes, `api/disable-two-factor` to disable 2fa and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
-
 ### Social Media Login
 
-Social media login utilizes laravel websockets to pass `access_token` to the client after authentication. First, you must setup your laravel app for [websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction). In order to do that run the following:
+This package utilizes laravel [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication. First, you must setup your laravel app for broadcasts. In order to do that run the following:
 
 - `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="migrations"`
 - `php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"`
 - Set `REDIS_CLIENT=predis` and `BROADCAST_DRIVER=pusher` within your `.env` file.
-- Your `laravel echo` config should look similar to this:
+- Your `laravel-echo` config should look similar to this:
 
 ```js
 window.Echo = new Echo({
@@ -216,7 +165,7 @@ window.Echo = new Echo({
 ],
 ```
 
-- Navigate to `auth/socialite` to view sample Google sign up page. Below is the script that is called within that page.
+- Navigate to `auth/socialite` to view a sample Google sign-up/sign-in page and the consoled `access_token` after sign up. Uncomment the route within the `web.php`. Below is the script that is called within the view `resources/views/vendor/sanctumauthstarter/socialite/auth.blade.php`.
 
 ```js
 window.addEventListener('DOMContentLoaded',  () => {
@@ -228,7 +177,7 @@ window.addEventListener('DOMContentLoaded',  () => {
             localStorage.setItem('user_uuid', userUUID);
         }
 
-        console.log('user_uuid created');
+        console.log('user_uuid created', userUUID);
         return userUUID;
     }
 
@@ -243,7 +192,7 @@ window.addEventListener('DOMContentLoaded',  () => {
     const USER_UUID = getUserUUID();
     const TIMEOUT = parseInt("{{ $minutes }}") * 60 * 1000;
 
-    window.Echo.channel(`access.token.${USER_UUID}`)
+    window.Echo.channel(`access.token.socialite.${USER_UUID}`)
     .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
         console.log(`payload:`, e);
     });
@@ -258,6 +207,16 @@ window.addEventListener('DOMContentLoaded',  () => {
     setTimeout(() => {
         removeUserUUID();
     }, TIMEOUT);
+});
+```
+
+- After a successful authentication, this view is displayed `resources/views/vendor/sanctumauthstarter/socialite/callback.blade.php` and it contains the following script:
+
+```js
+window.addEventListener('DOMContentLoaded',  () => {
+    if (localStorage.getItem('user_uuid')) {
+        localStorage.removeItem('user_uuid');
+    }
 });
 ```
 
@@ -290,6 +249,135 @@ PUSHER_APP_CLUSTER=mt1
 - `php artisan serve`
 - `npm install && npm run dev`
 
+### Two Factor Login
+
+This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor) to power 2fa login and [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication.
+
+2fa authentication has been implemented for both password login and social media login.
+
+- `php artisan vendor:publish --provider="Laragear\TwoFactor\TwoFactorServiceProvider"`
+- Replace the form in `resources/views/vendor/two-factor/login.blade.php` with the code below:
+
+``` php
+<form method="get">
+    @php
+        foreach ($_GET as $key => $value) {
+            $key = htmlspecialchars($key);
+            $value = htmlspecialchars($value);
+            echo "<input type='hidden' name='$key' value='$value'/>";
+        }
+    @endphp
+    @csrf
+    <p class="text-center">
+        {{ trans('two-factor::messages.continue') }}
+    </p>
+    <div class="form-row justify-content-center py-3">
+        @if($errors->isNotEmpty() || isset($message))
+            <div class="col-12 alert alert-danger pb-0">
+                <ul>
+                    @if (isset($message))
+                        <li>{{ $message }}</li>
+                    @endif
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <div class="col-sm-8 col-8 mb-3">
+            <input type="text" name="{{ $input }}" id="{{ $input }}"
+                    class="@error($input) is-invalid @enderror form-control form-control-lg"
+                    minlength="6" placeholder="123456" required>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-auto mb-3">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {{ trans('two-factor::messages.confirm') }}
+            </button>
+        </div>
+    </div>
+</form>
+```
+
+- Call `api/create-two-factor` to create 2fa.
+
+```json
+{
+    "status": "success",
+    "status_code": 200,
+    "data": {
+        "qr_code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg...",
+        "uri": "otpauth://totp/%3Ajohndoe@xyz.com?label=johndoe%40xyz.com&secret=EQGRSNGAE3TREOT7XOLB5VVRS42LLXYS&algorithm=SHA1&digits=6",
+        "string": "EQGRSNGAE3TREOT7XOLB5VVRS42LLXYS"
+    }
+}
+```
+
+- Call `api/confirm-two-factor` to confirm 2fa and get recovery codes.
+
+```json
+{
+    "status": "success",
+    "status_code": 200,
+    "data": {
+        "message": "Download your recover codes and keep them safe!",
+        "codes": [
+            {
+                "code": "SV6OH71D",
+                "used_at": null
+            },
+            {
+                "code": "62KEBSNE",
+                "used_at": null
+            },
+            {
+                "code": "YSVHOG9X",
+                "used_at": null
+            },
+            ...
+        ]
+    }
+}
+```
+
+- Call `api/disable-two-factor` to disable 2fa, `api/current-recovery-codes` to retrieve current recovery codes and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
+
+#### Two factor enabled for password login
+
+When 2fa has been enabled and a user attempts to login, a payload would be returned that contains a `user_uuid` and a `twofactor_url`.
+
+```json
+{
+    "status": "success",
+    "status_code": 200,
+    "data": {
+        "twofactor_url": "http://127.0.0.1:8000/twofactor/required/johndoe@xyz.com/0220dbe7-08dc-470e-b1e2-4411ba155bc1",
+        "user_uuid": "0220dbe7-08dc-470e-b1e2-4411ba155bc1",
+        "access_token": null,
+        "message": "Two-Factor Authentication is required!"
+    }
+}
+```
+
+The `user_uuid` is used to create a `laravel-echo` channel that would listen to a laravel broadcast. Navigate to `auth/twofactor/{uuid}` to view the consoled `access_token` after uncommenting the route within the `web.php`. This view `resources/views/vendor/sanctumauthstarter/twofactor/auth.blade.php` contains a sample `javascript` that works it out.
+
+```js
+window.addEventListener('DOMContentLoaded',  () => {
+    const USER_UUID = "{{ Route::input('uuid') }}";
+
+    console.log(USER_UUID);
+
+    window.Echo.channel(`access.token.twofactor.${USER_UUID}`)
+    .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\TwoFactorLogin', (e) => {
+        console.log(`payload:`, e);
+    });
+});
+```
+
+#### Two factor enabled for social media login
+
+When 2fa has been enabled a 2fa page will pop up over your browser.
+
 ## BACKUP DATABASE
 
 Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
@@ -301,6 +389,18 @@ DB_BACKUP_SSH_USER=root
 DB_BACKUP_SSH_HOST=127.0.0.1
 DB_BACKUP_FILE="backup-${APP_NAME}-db"
 DB_BACKUP_FILE_EXT=".gz"
+DB_REMOTE_ACCESS=false
+```
+
+Or this
+
+```shell
+DB_BACKUP_PATH="/db/backup/${APP_NAME}"
+DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} > "
+DB_BACKUP_SSH_USER=root
+DB_BACKUP_SSH_HOST=127.0.0.1
+DB_BACKUP_FILE="backup-${APP_NAME}-db"
+DB_BACKUP_FILE_EXT=".sql"
 DB_REMOTE_ACCESS=false
 ```
 

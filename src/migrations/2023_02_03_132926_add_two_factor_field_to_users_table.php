@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('2fa')->after('default_pin')->default(0);
+            $table->tinyInteger('two_factor')->after('default_pin')->default(0);
         });
     }
 

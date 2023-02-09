@@ -7,8 +7,20 @@ use Illuminate\Support\Facades\Response;
 use hisorange\BrowserDetect\Parser as Browser;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Request;
+use App\Services\Auth\ThrottleRequestsService;
+use Illuminate\View\View;
 
 trait Helpers {
+
+    public ThrottleRequestsService $throttleRequestsService;
+
+    public function __construct()
+    {
+        $this->throttleRequestsService = new ThrottleRequestsService(
+            config('sanctumauthstarter.login.maxAttempts', 3),
+            config('sanctumauthstarter.login.delayMinutes', 1)
+        );
+    }
 
     public function httpJsonResponse(string $status, int $status_code, $data): JsonResponse
     {
@@ -83,28 +95,6 @@ trait Helpers {
         return $info;
     }
 
-    public function pinRequestTerminated(): JsonResponse
-    {
-        return $this->httpJsonResponse(
-            trans('sanctumauthstarter::general.fail'), 401,
-            [
-                'message' => trans('sanctumauthstarter::pin.terminated')
-            ]
-        );
-    }
-
-    public function pinValidationURL(string $url, null|string $redirect): JsonResponse
-    {
-        return $this->httpJsonResponse(
-            trans('sanctumauthstarter::general.success'), 200,
-            [
-                'message' => trans('sanctumauthstarter::pin.require_pin'),
-                'url' => $url,
-                'redirect' => $redirect
-            ]
-        );
-    }
-
     public function unknownErrorResponse(): JsonResponse
     {
         $data = ['message' =>
@@ -152,6 +142,38 @@ trait Helpers {
         }
         $dash_str .= $salt;
         return $dash_str;
+    }
+
+    public function requestAttempts(Request $request, string $trans = 'sanctumauthstarter::auth.throttle'): ?array
+    {
+        if ($this->throttleRequestsService->hasTooManyAttempts($request)) {
+            $this->throttleRequestsService->_fireLockoutEvent($request);
+
+            return ["message" => trans($trans,
+                        ['seconds' =>
+                            $this->throttleRequestsService->_limiter()
+                            ->availableIn(
+                                    $this->throttleRequestsService
+                                        ->_throttleKey($request)
+                                )
+                        ])
+                    ];
+        }
+
+        $this->throttleRequestsService->incrementAttempts($request);
+
+        return null;
+    }
+
+    public function returnTwoFactorLoginView(array $data): View
+    {
+        $data['input'] = '2fa_code';
+
+        if (!array_key_exists("message", $data)) {
+            $data['message'] = trans('sanctumauthstarter::auth.failed');
+        }
+
+        return view('two-factor::login', $data);
     }
 
 }

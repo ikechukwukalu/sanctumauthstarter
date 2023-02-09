@@ -12,5 +12,6 @@ return [
     'download_code' => 'Download your recover codes and keep them safe!',
     'disabled_2fa' => 'Two-Factor Authentication has been disabled!',
     'enter_2fa' => 'Two-Factor Authentication is required!',
+    '2fa_is_enabled' => 'Two-Factor Authentication is already enabled!',
 
 ];
