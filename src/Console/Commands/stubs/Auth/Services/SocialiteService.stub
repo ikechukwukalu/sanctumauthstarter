@@ -105,6 +105,8 @@ class SocialiteService
                                 ->first();
 
         if (!isset($userPasswordHolder->user_id)) {
+            session(['holds_user_password' => true]);
+
             return UserPasswordHolder::create([
                     'user_id' => $user->id,
                     'password' => $user->password
