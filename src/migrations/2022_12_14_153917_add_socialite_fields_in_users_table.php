@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('password')->nullable()->change();
             $table->tinyInteger('socialite_signup')->default(false);
-            $table->tinyInteger('form_signup')->default(true);
+            $table->tinyInteger('form_signup')->default(false);
         });
     }
 

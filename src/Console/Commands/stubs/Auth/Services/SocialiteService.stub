@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteLogin;
 use App\Models\User;
 use Laragear\TwoFactor\Facades\Auth2FA;
+use Ikechukwukalu\Sanctumauthstarter\Models\UserPasswordHolder;
 
 class SocialiteService
 {
@@ -43,38 +44,25 @@ class SocialiteService
         }
 
         $user = $this->getUserDetails();
-        $tempPassword = $this->generateSalt();
-        $user->update([
-            'password' => Hash::make($tempPassword)
-        ]);
+        $userPasswordHolder = $this->holdUserPassword($user);
+        $tempPassword = $this->replaceUserPassword($user);
 
         if (!Auth2FA::attempt([
                 'email' => $user->email,
                 'password' => $tempPassword
-            ], true)) {
-            return null;
+            ], true))
+        {
+                $this->forgetSessions();
+                return null;
         }
 
         $this->throttleRequestsService->clearAttempts($request);
-
-        $user->update([
-            'password' => null
-        ]);
-
-        session()->forget('user_uuid');
-        session()->forget('user');
-
+        $this->normaliseUserPassword($user, $userPasswordHolder);
+        $this->forgetSessions();
         $token = $user->createToken($user->email);
-
-        if (config('sanctumauthstarter.login.notify.user', true)) {
-            $now = Carbon::now();
-            $time = $now->isoFormat('Do of MMMM YYYY, h:mm:ssa');
-            $deviceAndLocation = $this->getLoginUserInformation();
-            $user->notify(new UserLogin($time, $deviceAndLocation));
-        }
+        $this->userLoginNotification($user);
 
         SocialiteLoginEvent::dispatch($user, $token, $userUUID);
-
         SocialiteLogin::where('user_uuid', $userUUID)->update([
             'user_id' => $user->id,
             'email' => $user->email,
@@ -100,8 +88,7 @@ class SocialiteService
                 [
                     'name' => $google->name,
                     'email' => $google->email,
-                    'socialite_signup' => true,
-                    'form_signup' => false
+                    'socialite_signup' => true
                 ]);
 
             session(['user' => $user]);
@@ -110,5 +97,58 @@ class SocialiteService
         }
 
         return session('user');
+    }
+
+    private function holdUserPassword(User $user): UserPasswordHolder
+    {
+        $userPasswordHolder = UserPasswordHolder::whereBelongsTo($user)
+                                ->first();
+
+        if (!isset($userPasswordHolder->user_id)) {
+            return UserPasswordHolder::create([
+                    'user_id' => $user->id,
+                    'password' => $user->password
+                ]);
+        }
+
+        if (!session('holds_user_password')) {
+            $userPasswordHolder->update([
+                'password' => $user->password
+            ]);
+
+            session(['holds_user_password' => true]);
+        }
+
+        return $userPasswordHolder;
+    }
+
+    private function replaceUserPassword(User $user): string
+    {
+        $tempPassword = $this->generateSalt();
+
+        $user->update([
+            'password' => Hash::make($tempPassword)
+        ]);
+
+        return $tempPassword;
+    }
+
+    private function normaliseUserPassword(User $user, UserPasswordHolder $userPasswordHolder): void
+    {
+        $user->update([
+            'password' => $userPasswordHolder->password
+        ]);
+
+        $userPasswordHolder->update([
+            'password' => null
+        ]);
+
+        session()->forget('holds_user_password');
+    }
+
+    private function forgetSessions(): void
+    {
+        session()->forget('user_uuid');
+        session()->forget('user');
     }
 }

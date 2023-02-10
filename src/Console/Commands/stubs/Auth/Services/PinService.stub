@@ -108,6 +108,22 @@ class PinService {
         return null;
     }
 
+    public static function pinRequestTerminated(): array
+    {
+        return [trans('sanctumauthstarter::general.fail'), 401,
+            ['message' => trans('sanctumauthstarter::pin.terminated')]];
+    }
+
+    public static function pinValidationURL(string $url, null|string $redirect): array
+    {
+        return [trans('sanctumauthstarter::general.success'), 200,
+            [
+                'message' => trans('sanctumauthstarter::pin.require_pin'),
+                'url' => $url,
+                'redirect' => $redirect
+            ]];
+    }
+
     private function updatePinRequest(Request $request, RequirePin $requirePin): void
     {
         $payload = unserialize(Crypt::decryptString($requirePin->payload));
@@ -130,22 +146,6 @@ class PinService {
                         ->whereNull('approved_at')
                         ->whereNull('cancelled_at')
                         ->first();
-    }
-
-    public static function pinRequestTerminated(): array
-    {
-        return [trans('sanctumauthstarter::general.fail'), 401,
-            ['message' => trans('sanctumauthstarter::pin.terminated')]];
-    }
-
-    public static function pinValidationURL(string $url, null|string $redirect): array
-    {
-        return [trans('sanctumauthstarter::general.success'), 200,
-            [
-                'message' => trans('sanctumauthstarter::pin.require_pin'),
-                'url' => $url,
-                'redirect' => $redirect
-            ]];
     }
 
 }

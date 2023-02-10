@@ -9,6 +9,9 @@ use Stevebauman\Location\Facades\Location;
 use Illuminate\Http\Request;
 use App\Services\Auth\ThrottleRequestsService;
 use Illuminate\View\View;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
+use Carbon\Carbon;
+use App\Models\User;
 
 trait Helpers {
 
@@ -61,7 +64,7 @@ trait Helpers {
         return $request->ip(); // it will return server ip when no client ip found
     }
 
-    public function getLoginUserInformation(): array
+    public function getUserLoginInformation(): array
     {
         $info = [];
 
@@ -174,6 +177,15 @@ trait Helpers {
         }
 
         return view('two-factor::login', $data);
+    }
+
+    public function userLoginNotification(User $user): void
+    {
+        if (config('sanctumauthstarter.login.notify.user', true)) {
+            $time = Carbon::now()->isoFormat('Do of MMMM YYYY, h:mm:ssa');
+            $deviceAndLocation = $this->getUserLoginInformation();
+            $user->notify(new UserLogin($time, $deviceAndLocation));
+        }
     }
 
 }

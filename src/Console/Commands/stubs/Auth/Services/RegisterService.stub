@@ -25,7 +25,8 @@ class RegisterService
         $user =  User::create([
             'email' => $validated['email'],
             'name' => $validated['name'],
-            'password' => Hash::make($validated['password'])
+            'password' => Hash::make($validated['password']),
+            'form_signup' => true,
         ]);
 
         if (!isset($user->id)) {

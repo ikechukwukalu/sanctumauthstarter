@@ -29,25 +29,13 @@ class SetupCommand extends Command
     public function handle()
     {
         if ($this->option('sample')) {
-            $this->callSilent('sas:controllers', ['sample']);
-            $this->callSilent('sas:routes', ['sample']);
+            $this->callSilently('sas:controllers', ['--sample' => null]);
+            $this->callSilently('sas:routes', ['--sample' => null]);
         } else {
-            $this->callSilent('sas:controllers');
-            $this->callSilent('sas:routes');
+            $this->callSilently('sas:controllers');
+            $this->callSilently('sas:routes');
         }
 
         $this->components->info('Controllers, routes, requests and services scaffolding generated successfully.');
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['sample', 's', InputOption::VALUE_NONE, 'Scaffold samples for controllers and routes'],
-        ];
     }
 }
