@@ -2,26 +2,16 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 use App\Models\User;
 
-class WelcomeUser extends Notification implements ShouldQueue
+class WelcomeUser extends UserNotification
 {
-    use Queueable;
-
     private User $user;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-    public function via($notifiable)
-    {
-        return ['mail'];
     }
 
     public function toMail($notifiable)
@@ -32,12 +22,5 @@ class WelcomeUser extends Notification implements ShouldQueue
                     ->line(trans('sanctumauthstarter::notify.welcome.message'))
                     ->action(trans('sanctumauthstarter::notify.welcome.action'), url('/'))
                     ->line(trans('sanctumauthstarter::notify.welcome.complimentary_close'));
-    }
-
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
     }
 }

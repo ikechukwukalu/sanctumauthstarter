@@ -3,22 +3,15 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Listeners;
 
 use Ikechukwukalu\Sanctumauthstarter\Events\ForgotPassword;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Password;
 
-class SendResetLink implements ShouldQueue
+class SendResetLink extends UserEventListener
 {
-    public $queue = 'high';
-    public $tries = 5;
+    private ForgotPassword $event;
 
-    public function viaConnection()
+    public function handle($event)
     {
-        return env('QUEUE_CONNECTION', 'redis');
-    }
-
-    public function handle(ForgotPassword $event)
-    {
-        Password::sendResetLink(['email' => $event->user->email]);
+        $this->event = $event;
+        Password::sendResetLink(['email' => $this->event->user->email]);
     }
 }

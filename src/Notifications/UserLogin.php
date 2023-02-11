@@ -2,15 +2,10 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class UserLogin extends Notification implements ShouldQueue
+class UserLogin extends UserNotification
 {
-    use Queueable;
-
     private string $time;
     private string $deviceAndLocation;
 
@@ -18,11 +13,6 @@ class UserLogin extends Notification implements ShouldQueue
     {
         $this->time = $time;
         $this->deviceAndLocation = implode(", ", $deviceAndLocation);
-    }
-
-    public function via($notifiable)
-    {
-        return ['mail'];
     }
 
     public function toMail($notifiable)
@@ -33,12 +23,5 @@ class UserLogin extends Notification implements ShouldQueue
             ->line(trans('sanctumauthstarter::notify.login.message'))
             ->action(trans('sanctumauthstarter::notify.login.action'), route('password.reset'))
             ->line(trans('sanctumauthstarter::notify.login.complimentary_close'));
-    }
-
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
     }
 }

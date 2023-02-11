@@ -3,21 +3,14 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Listeners;
 
 use Ikechukwukalu\Sanctumauthstarter\Events\EmailVerification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
-class SendEmailVerificationNotification implements ShouldQueue
+class SendEmailVerificationNotification extends UserEventListener
 {
-    public $queue = 'high';
-    public $tries = 5;
+    private EmailVerification $event;
 
-    public function viaConnection()
+    public function handle($event)
     {
-        return env('QUEUE_CONNECTION', 'redis');
-    }
-
-    public function handle(EmailVerification $event)
-    {
-        $event->user->sendEmailVerificationNotification();
+        $this->event = $event;
+        $this->event->user->sendEmailVerificationNotification();
     }
 }

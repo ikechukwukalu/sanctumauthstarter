@@ -9,6 +9,12 @@ use App\Services\Auth\VerificationService;
 
 class VerificationController extends Controller
 {
+    private VerificationService $verificationService;
+
+    public function __construct()
+    {
+        $this->verificationService = new VerificationService;
+    }
 
     /**
      * User email verification.
@@ -34,7 +40,7 @@ class VerificationController extends Controller
      */
     public function verifyUserEmail(Request $request): JsonResponse
     {
-        return VerificationService::handleVerifyUserEmail($request);
+        return $this->verificationService->handleVerifyUserEmail($request);
     }
 
     /**
@@ -59,6 +65,6 @@ class VerificationController extends Controller
      */
     public function resendUserEmailVerification(Request $reques): JsonResponse
     {
-        return VerificationService::resendUserEmailVerification();
+        return $this->verificationService->resendUserEmailVerification();
     }
 }
