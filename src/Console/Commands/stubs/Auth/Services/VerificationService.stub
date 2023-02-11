@@ -35,7 +35,7 @@ class VerificationService
         $user = Auth::user();
         if ($user->hasVerifiedEmail()) {
             $data = ['message' => trans('sanctumauthstarter::verify.already_verified')];
-            return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 500, $data);
+            return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
         }
 
         EmailVerification::dispatch($user);
