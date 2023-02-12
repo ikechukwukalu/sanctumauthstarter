@@ -4,7 +4,6 @@ namespace Ikechukwukalu\Sanctumauthstarter\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Auth\PinController;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -21,8 +20,6 @@ class RequirePin
 
     public function handle(Request $request, Closure $next)
     {
-        $pinController = new PinController();
-
         if (!Auth::check()) {
             return $this->httpJsonResponse(...PinService::pinRequestTerminated());
         }
@@ -63,7 +60,7 @@ class RequirePin
         RequirePinModel::create([
             "user_id" => $user->id,
             "uuid" => $uuid,
-            "ip" => $pinController->getUserIp($request),
+            "ip" => $this->getUserIp($request),
             "device" => $request->userAgent(),
             "method" => $request->method(),
             "route_arrested" => $request->path(),
