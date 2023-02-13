@@ -33,7 +33,10 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 
 ## STEPS TO INSTALL
 
-- `composer require ikechukwukalu/sanctumauthstarter -W`
+``` shell
+composer require ikechukwukalu/sanctumauthstarter -W
+```
+
 - `php artisan ui bootstrap`
 - `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
 - Uncomment `use Illuminate\Contracts\Auth\MustVerifyEmail;` in `User` model class
