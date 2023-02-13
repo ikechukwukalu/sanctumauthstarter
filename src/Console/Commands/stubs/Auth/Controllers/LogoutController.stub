@@ -45,7 +45,7 @@ class LogoutController extends Controller
     }
 
     /**
-     * User logout.
+     * User logout from all sessions.
      *
      * This API logs a user out of every session and clears all user tokens
      *
@@ -64,7 +64,7 @@ class LogoutController extends Controller
      * @authenticated
      * @group Auth APIs
      */
-    public function logoutFromAllSession(): JsonResponse
+    public function logoutFromAllSessions(): JsonResponse
     {
         $user = Auth::user();
         $user->tokens()->delete();

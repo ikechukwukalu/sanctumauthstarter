@@ -77,6 +77,6 @@ class LoginController extends Controller
             return view('sanctumauthstarter::twofactor.callback', $data);
         }
 
-        return $this->loginService->returnTwoFactorLoginView($data);
+        return $this->loginService->returnTwoFactorLoginView();
     }
 }

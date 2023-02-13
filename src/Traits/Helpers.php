@@ -168,7 +168,7 @@ trait Helpers {
         return null;
     }
 
-    public function returnTwoFactorLoginView(array $data): View
+    public function returnTwoFactorLoginView(array $data = []): View
     {
         $data['input'] = '2fa_code';
 

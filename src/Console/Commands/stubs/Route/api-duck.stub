@@ -26,6 +26,8 @@ Route::prefix('auth')->group(function () {
         'login'])->name('login');
     Route::middleware('auth:sanctum')->post('logout', [\App\Http\Controllers\Auth\LogoutController::class,
         'logout'])->name('logout');
+    Route::middleware('auth:sanctum')->post('logout-from-all-sessions', [\App\Http\Controllers\Auth\LogoutController::class,
+        'logoutFromAllSessions'])->name('logoutFromAllSessions');
     Route::get('verify/email/{id}', [\App\Http\Controllers\Auth\VerificationController::class,
         'verifyUserEmail'])->name('verification.verify');
     Route::middleware('auth:sanctum')->post('resend/verify/email', [\App\Http\Controllers\Auth\VerificationController::class,
