@@ -22,8 +22,6 @@ class EventServiceProvider extends ServiceProvider
         EmailVerification::class => [
             SendEmailVerificationNotification::class
         ],
-        WebViewLogin::class => [
-        ],
         TwoFactorLogin::class => [
         ],
         SocialiteLogin::class => [

@@ -31,14 +31,22 @@ Route::group(['middleware' => ['web']], function () {
      * @group Web URLs
      */
 
-    //Route::get('auth/socialite', function() {
-    //    return view('sanctumauthstarter::socialite.auth',
-    //        [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
-    //})->name('socialite.auth');
+    Route::get('auth/socialite', function() {
+        if (env('APP_ENV') === 'production') {
+            abort(404, trans('sanctumauthstarter::general.not_found'));
+        }
 
-    //Route::get('auth/twofactor/{uuid}', function() {
-    //    return view('sanctumauthstarter::twofactor.auth');
-    //})->name('twofactor.auth');
+        return view('sanctumauthstarter::socialite.auth',
+            [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
+    })->name('socialite.auth');
+
+    Route::get('auth/twofactor/{uuid}', function() {
+        if (env('APP_ENV') === 'production') {
+            abort(404, trans('sanctumauthstarter::general.not_found'));
+        }
+
+        return view('sanctumauthstarter::twofactor.auth');
+    })->name('twofactor.auth');
 
     Route::get('auth/redirect/{uuid}', [\App\Http\Controllers\Auth\SocialiteController::class,
         'authRedirect'])->name('auth.redirect');
