@@ -38,7 +38,7 @@ composer require ikechukwukalu/sanctumauthstarter
 ```
 
 - `php artisan ui bootstrap`
-- `npm install --save-dev laravel-echo pusher-js`
+- `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
 - Uncomment `use Illuminate\Contracts\Auth\MustVerifyEmail;` in `User` model class
 - Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
 
