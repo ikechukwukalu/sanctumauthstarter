@@ -10,7 +10,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "beyondcode/laravel-websockets": "^1.13",
+        "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.5",
         "hisorange/browser-detect": "^4.5",
         "laravel/framework": "^9.19",
@@ -18,9 +18,9 @@
         "laravel/socialite": "^5.5",
         "laragear/two-factor": "^1.1",
         "laravel/ui": "^4.0",
-        "predis/predis": "^2.0",
-        "pusher/pusher-php-server": "7.0",
-        "stevebauman/location": "^6.5"
+        "predis/predis": "^2.1",
+        "pusher/pusher-php-server": "7.2",
+        "stevebauman/location": "^6.6"
     },
     "require-dev": {
         "knuckleswtf/scribe": "dev-master"

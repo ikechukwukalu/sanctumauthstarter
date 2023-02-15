@@ -34,11 +34,11 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 ## STEPS TO INSTALL
 
 ``` shell
-composer require ikechukwukalu/sanctumauthstarter -W
+composer require ikechukwukalu/sanctumauthstarter
 ```
 
 - `php artisan ui bootstrap`
-- `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
+- `npm install --save-dev laravel-echo pusher-js`
 - Uncomment `use Illuminate\Contracts\Auth\MustVerifyEmail;` in `User` model class
 - Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
 
