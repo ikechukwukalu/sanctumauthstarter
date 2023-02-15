@@ -13,7 +13,7 @@
         "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.5",
         "hisorange/browser-detect": "^4.5",
-        "laravel/framework": "^9.19",
+        "laravel/framework": "^9.0|^10.0",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",
         "laragear/two-factor": "^1.1",
