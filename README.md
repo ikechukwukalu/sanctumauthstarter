@@ -29,7 +29,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 ## REQUIREMENTS
 
 - PHP 8+
-- Laravel 9+
+- Laravel 9
 
 ## STEPS TO INSTALL
 
