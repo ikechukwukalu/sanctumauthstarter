@@ -28,6 +28,7 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
             ]);
         }
 
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
         $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');
 

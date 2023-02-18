@@ -28,7 +28,7 @@
     "autoload": {
         "psr-4": {
             "Ikechukwukalu\\Sanctumauthstarter\\": "src/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Traits\\": "src/Traits",
+            "Ikechukwukalu\\Sanctumauthstarter\\Traits\\": "src/Traits/",
             "Ikechukwukalu\\Sanctumauthstarter\\Rule\\": "src/Rule/",
             "Ikechukwukalu\\Sanctumauthstarter\\Model\\": "src/Models/",
             "Ikechukwukalu\\Sanctumauthstarter\\Middleware\\": "src/Middleware/",
