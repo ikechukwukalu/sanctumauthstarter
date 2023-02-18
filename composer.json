@@ -19,7 +19,7 @@
         "laragear/two-factor": "^1.1",
         "laravel/ui": "^4.0",
         "predis/predis": "^2.1",
-        "pusher/pusher-php-server": "7.2",
+        "pusher/pusher-php-server": "^7.2",
         "stevebauman/location": "^6.6"
     },
     "require-dev": {
