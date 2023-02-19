@@ -19,6 +19,3 @@ build:
                 override:
                     - php-scrutinizer-run
 
-tools:
-    external_code_coverage:
-        timeout: 600
