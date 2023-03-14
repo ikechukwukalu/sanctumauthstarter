@@ -1,21 +1,20 @@
-checks:
-    php: true
-
-coding_style:
-    php:
-        spaces:
-            before_parentheses:
-                closure_definition: true
-            around_operators:
-                concatenation: true
-
 build:
     nodes:
         analysis:
+            project_setup:
+                override:
+                    - 'true'
             image: default-bionic
             environment:
-                php: 8.1
+                php: 8.1.2
             tests:
                 override:
                     - php-scrutinizer-run
-
+checks:
+    php: true
+coding_style:
+    php:
+        spaces:
+            within:
+                brackets: true
+filter: {  }
