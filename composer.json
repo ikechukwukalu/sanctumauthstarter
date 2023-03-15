@@ -11,21 +11,18 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.0",
         "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.5",
         "hisorange/browser-detect": "^4.5",
         "laravel/framework": "^9.0|^10.0",
         "laravel/sanctum": "^3.0",
         "laravel/socialite": "^5.5",
-        "laragear/two-factor": "^1.1",
+        "laragear/two-factor": "^1.2",
         "laravel/ui": "^4.0",
         "predis/predis": "^2.1",
         "pusher/pusher-php-server": "^7.2",
         "stevebauman/location": "^6.6"
-    },
-    "require-dev": {
-        "knuckleswtf/scribe": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -33,12 +30,26 @@
             "Ikechukwukalu\\Sanctumauthstarter\\Traits\\": "src/Traits/",
             "Ikechukwukalu\\Sanctumauthstarter\\Rule\\": "src/Rule/",
             "Ikechukwukalu\\Sanctumauthstarter\\Model\\": "src/Models/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Middleware\\": "src/Middleware/",
             "Ikechukwukalu\\Sanctumauthstarter\\Notifications\\": "src/Notifications/",
             "Ikechukwukalu\\Sanctumauthstarter\\Console\\Commands\\": "src/Console/Commands/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Unit\\": "src/Tests/Unit/"
+            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\": "Tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "require-dev": {
+        "knuckleswtf/scribe": "dev-master",
+        "mockery/mockery": "^1.4.4",
+        "orchestra/testbench": "^7.0|^8.0",
+        "phpunit/phpunit": "^9.0|^10.0",
+        "php-parallel-lint/php-parallel-lint": "dev-develop"
     },
     "extra": {
         "laravel": {

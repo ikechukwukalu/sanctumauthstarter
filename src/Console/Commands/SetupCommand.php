@@ -12,7 +12,7 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sas:setup {--s|sample}';
+    protected $signature = 'sas:setup';
 
     /**
      * The console command description.
@@ -28,13 +28,8 @@ class SetupCommand extends Command
      */
     public function handle()
     {
-        if ($this->option('sample')) {
-            $this->callSilently('sas:controllers', ['--sample' => null]);
-            $this->callSilently('sas:routes', ['--sample' => null]);
-        } else {
-            $this->callSilently('sas:controllers');
-            $this->callSilently('sas:routes');
-        }
+        $this->callSilently('sas:controllers');
+        $this->callSilently('sas:routes');
 
         $this->components->info('Controllers, routes, requests and services scaffolding generated successfully.');
     }

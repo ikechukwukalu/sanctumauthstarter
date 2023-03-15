@@ -27,7 +27,8 @@ class CurrentPassword implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Hash::check($value, Auth::user()->password);
+        $user = Auth::user();
+        return Hash::check($value, $user->password) || is_null($user->password);
     }
 
     /**

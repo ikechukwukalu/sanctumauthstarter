@@ -23,5 +23,5 @@ This feature/fix allows to...
 # Code samples
 
 ```php
-Route::requirePin();
+Route::sanctumAuthStarter();
 ```

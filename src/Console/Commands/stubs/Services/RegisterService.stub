@@ -3,8 +3,8 @@
 namespace App\Services\Auth;
 
 use App\Http\Requests\Auth\RegisterRequest;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser;

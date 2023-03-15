@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Auth\TwoFactorService;
 use App\Http\Requests\Auth\ConFirmTwoFactorRequest;
+use App\Services\Auth\TwoFactorService;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TwoFactorController extends Controller
 {

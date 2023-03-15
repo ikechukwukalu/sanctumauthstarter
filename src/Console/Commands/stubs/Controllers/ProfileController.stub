@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\Auth\EditProfileRequest;
+use App\Services\Auth\EditProfileService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\Auth\EditProfileRequest;
 use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
-use App\Services\Auth\EditProfileService;
 
 class ProfileController extends Controller
 {

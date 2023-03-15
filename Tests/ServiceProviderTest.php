@@ -1,9 +1,8 @@
 <?php
 
-namespace Ikechukwukalu\Requirepin\Tests;
+namespace Ikechukwukalu\Sanctumauthstarter\Tests;
 
-use Ikechukwukalu\Requirepin\RequirePinServiceProvider;
-use Ikechukwukalu\Requirepin\Middleware\RequirePin;
+use Ikechukwukalu\Sanctumauthstarter\SanctumauthstarterServiceProvider;
 
 class ServiceProviderTest extends TestCase
 {
@@ -11,23 +10,15 @@ class ServiceProviderTest extends TestCase
     {
         static::assertSame(
             $this->app->make('files')
-                ->getRequire(RequirePinServiceProvider::CONFIG),
-            $this->app->make('config')->get('require-pin')
+                ->getRequire(SanctumauthstarterServiceProvider::CONFIG),
+            $this->app->make('config')->get('sanctumauthstarter')
         );
     }
 
     public function test_loads_translations(): void
     {
-        static::assertArrayHasKey('requirepin',
+        static::assertArrayHasKey('sanctumauthstarter',
             $this->app->make('translator')->getLoader()->namespaces());
-    }
-
-    public function test_publishes_middleware(): void
-    {
-        $middleware = $this->app->make('router')->getMiddleware();
-
-        static::assertSame(RequirePin::class, $middleware['require.pin']);
-        static::assertArrayHasKey('require.pin', $middleware);
     }
 
 }

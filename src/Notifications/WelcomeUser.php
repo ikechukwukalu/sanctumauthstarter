@@ -3,13 +3,14 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Ikechukwukalu\Sanctumauthstarter\Models\TestUser;
 use App\Models\User;
 
 class WelcomeUser extends UserNotification
 {
-    private User $user;
+    private TestUser|User $user;
 
-    public function __construct(User $user)
+    public function __construct(TestUser|User $user)
     {
         $this->user = $user;
     }

@@ -2,18 +2,18 @@
 
 namespace App\Services\Auth;
 
-use Illuminate\Http\Request;
-use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use App\Models\User;
+use Carbon\Carbon;
 use Ikechukwukalu\Sanctumauthstarter\Events\SocialiteLogin as SocialiteLoginEvent;
-use Laravel\Socialite\Facades\Socialite;
+use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteLogin;
+use Ikechukwukalu\Sanctumauthstarter\Models\UserPasswordHolder;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
+use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
-use Carbon\Carbon;
-use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteLogin;
-use App\Models\User;
 use Laragear\TwoFactor\Facades\Auth2FA;
-use Ikechukwukalu\Sanctumauthstarter\Models\UserPasswordHolder;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteService
 {

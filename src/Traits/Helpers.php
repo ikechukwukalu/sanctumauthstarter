@@ -109,42 +109,18 @@ trait Helpers {
 
     public function generateSalt(int $length = 9, bool $add_dashes = false, string $available_sets = 'luds'): string
     {
-        $sets = [];
-        if(strpos($available_sets, 'l') !== false)
-            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
-        if(strpos($available_sets, 'u') !== false)
-            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
-        if(strpos($available_sets, 'd') !== false)
-            $sets[] = '23456789';
-        if(strpos($available_sets, 's') !== false)
-            $sets[] = '!@#$%&*?';
+        [$sets, $salt, $all] = $this->saltsAllVar($available_sets);
 
-        $all = '';
-        $salt = '';
-        foreach($sets as $set)
-        {
-            $salt .= $set[array_rand(str_split($set))];
-            $all .= $set;
-        }
-
-        $all = str_split($all);
-        for($i = 0; $i < $length - count($sets); $i++)
+        for($i = 0; $i < $length - count($sets); $i++) {
             $salt .= $all[array_rand($all)];
+        }
 
         $salt = str_shuffle($salt);
-
-        if(!$add_dashes)
+        if (!$add_dashes) {
             return $salt;
-
-        $dash_len = floor(sqrt($length));
-        $dash_str = '';
-        while(strlen($salt) > $dash_len)
-        {
-            $dash_str .= substr($salt, 0, $dash_len) . '-';
-            $salt = substr($salt, $dash_len);
         }
-        $dash_str .= $salt;
-        return $dash_str;
+
+        return $this->addDashes($salt, $length);
     }
 
     public function requestAttempts(Request $request, string $trans = 'sanctumauthstarter::auth.throttle'): ?array
@@ -188,4 +164,57 @@ trait Helpers {
         }
     }
 
+    private function stringSets(string $available_sets): array
+    {
+        $sets = [];
+
+        if (strpos($available_sets, 'l') !== false) {
+            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        }
+
+        if (strpos($available_sets, 'u') !== false) {
+            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+        }
+
+        if (strpos($available_sets, 'd') !== false) {
+            $sets[] = '23456789';
+        }
+
+        if (strpos($available_sets, 's') !== false) {
+            $sets[] = '!@#$%&*?';
+        }
+
+        return $sets;
+    }
+
+    private function saltsAllVar(string $available_sets): array
+    {
+        $sets = $this->stringSets($available_sets);
+        $salt = '';
+        $all = '';
+
+        foreach ($sets as $set)
+        {
+            $salt .= $set[array_rand(str_split($set))];
+            $all .= $set;
+        }
+
+        return [$sets, $salt, str_split($all)];
+    }
+
+    private function addDashes(string $salt, int $length): string
+    {
+        $dash_len = floor(sqrt($length));
+        $dash_str = '';
+
+        while(strlen($salt) > $dash_len)
+        {
+            $dash_str .= substr($salt, 0, $dash_len) . '-';
+            $salt = substr($salt, $dash_len);
+        }
+
+        $dash_str .= $salt;
+
+        return $dash_str;
+    }
 }

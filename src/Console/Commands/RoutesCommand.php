@@ -12,7 +12,7 @@ class RoutesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sas:routes {--s|sample}';
+    protected $signature = 'sas:routes';
 
     /**
      * The console command description.
@@ -34,19 +34,11 @@ class RoutesCommand extends Command
             FILE_APPEND
         );
 
-        if ($this->option('sample')) {
-            file_put_contents(
-                base_path('routes/api.php'),
-                file_get_contents(__DIR__.'/stubs/Route/api.stub'),
-                FILE_APPEND
-            );
-        } else {
-            file_put_contents(
-                base_path('routes/api.php'),
-                file_get_contents(__DIR__.'/stubs/Route/api-duck.stub'),
-                FILE_APPEND
-            );
-        }
+        file_put_contents(
+            base_path('routes/api.php'),
+            file_get_contents(__DIR__.'/stubs/Route/api.stub'),
+            FILE_APPEND
+        );
 
         $this->components->info('Routes scaffolding generated successfully.');
     }

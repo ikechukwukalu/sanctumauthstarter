@@ -18,17 +18,13 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 - Resend email verification
 - Reset password
 - Change password
-- Change pin
-- Require pin middleware
 - Edit user profile
 - Notifications
   - Welcome notification
   - Email verification
   - Login notification
   - Password change notification
-  - Pin change notification
 - Generate documentation
-- Backup database
 - Helper CI/CD files for GitHub
 
 ## REQUIREMENTS
@@ -43,9 +39,9 @@ composer require ikechukwukalu/sanctumauthstarter
 ```
 
 - `php artisan ui bootstrap`
-- `npm install --save-dev laravel-echo@1.14.2 pusher-js@7.6.0`
+- `npm install --save-dev laravel-echo pusher-js`
 - Uncomment `use Illuminate\Contracts\Auth\MustVerifyEmail;` in `User` model class
-- Add `pin` and `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
+- Add `two_factor` columns to the `fillable` and `hidden` arrays within the `User` model class. At the end the `User` should look similar to this:
 
 ``` php
 use Laravel\Sanctum\HasApiTokens;
@@ -65,8 +61,9 @@ class User extends Authenticatable implements TwoFactorAuthenticatable, MustVeri
         'name',
         'email',
         'password',
-        'pin',
-        'two_factor'
+        'two_factor',
+        'socialite_signup',
+        'form_signup'
     ];
 
     /**
@@ -76,7 +73,6 @@ class User extends Authenticatable implements TwoFactorAuthenticatable, MustVeri
      */
     protected $hidden = [
         'password',
-        'pin',
         'remember_token',
         'two_factor',
     ];
@@ -92,41 +88,19 @@ class User extends Authenticatable implements TwoFactorAuthenticatable, MustVeri
 }
 ```
 
-- Add `'require.pin' => \Ikechukwukalu\Sanctumauthstarter\Middleware\RequirePin::class` to the `$routeMiddleware` in `kernel.php`
-
-### GENERATE AUTH CONTROLLERS, REQUESTS, SERVICES AND ROUTES
+## GENERATE AUTH CONTROLLERS, REQUESTS, SERVICES AND ROUTES
 
 You can run `php artisan sas:setup` to generate them at once. You can also call generate them separately:
 
 - `php artisan sas:controllers`
 - `php artisan sas:routes`
 
-This package comes with an example `BookController` and it's respective api routes for the provided `require.pin` middleware. To generate them alongside the controllers and routes, run the following command `php artisan sas:setup --sample`. You can also call generate them separately:
-
-- `php artisan sas:controllers --sample`
-- `php artisan sas:routes --sample`
-
-#### Service class
-
-To generate a new service class.
-
-- `php artisan make:service SampleService`
-- `php artisan make:service SampleService --force`. This will overwrite and existing service class.
-
-To generate a new service class for a particular request class.
-
-- `php artisan make:request SampleRequest`
-- `php artisan make:service SampleService --request=SampleRequest`
-
-### PUBLISH MIGRATIONS
+## PUBLISH MIGRATIONS AND CONFIG
 
 - `php artisan vendor:publish --tag=sas-migrations`
-
-### PUBLISH CONFIG
-
 - `php artisan vendor:publish --tag=sas-config`
 
-### Social Media Login
+## SOCIAL MEDIA LOGIN
 
 This package utilizes laravel [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication. First, you must setup your laravel app for broadcasts. In order to do that run the following:
 
@@ -144,6 +118,8 @@ window.Echo = new Echo({
     forceTLS: false,
     encrypted: false,
     enabledTransports: ['ws', 'wss'],
+    disableStats: true,
+    cluster:import.meta.env.VITE_PUSHER_APP_CLUSTER,
     authorizer: (channel, options) => {
         return {
             authorize: (socketId, callback) => {
@@ -228,7 +204,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 });
 ```
 
-### Websockets and Queues
+## WEBSOCKETS AND QUEUES
 
 You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
 
@@ -257,7 +233,7 @@ PUSHER_APP_CLUSTER=mt1
 - `php artisan serve`
 - `npm install && npm run dev`
 
-### Two Factor Login
+## TWO FACTOR LOGIN
 
 This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor) to power 2fa login and [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication.
 
@@ -351,7 +327,7 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 
 - Call `api/disable-two-factor` to disable 2fa, `api/current-recovery-codes` to retrieve current recovery codes and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
 
-#### Two factor enabled for password login
+### Two factor enabled for password login
 
 When 2fa has been enabled and a user attempts to login, a payload would be returned that contains a `user_uuid` and a `twofactor_url`.
 
@@ -383,35 +359,9 @@ window.addEventListener('DOMContentLoaded',  () => {
 });
 ```
 
-#### Two factor enabled for social media login
+### Two factor enabled for social media login
 
 When 2fa has been enabled a 2fa page will pop up over your browser.
-
-## BACKUP DATABASE
-
-Set the following parameters in your `.env` file and run `php artisan database:backup` to backup database.
-
-```shell
-DB_BACKUP_PATH="/db/backup/${APP_NAME}"
-DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} | gzip > "
-DB_BACKUP_SSH_USER=root
-DB_BACKUP_SSH_HOST=127.0.0.1
-DB_BACKUP_FILE="backup-${APP_NAME}-db"
-DB_BACKUP_FILE_EXT=".gz"
-DB_REMOTE_ACCESS=false
-```
-
-Or this
-
-```shell
-DB_BACKUP_PATH="/db/backup/${APP_NAME}"
-DB_BACKUP_COMMAND="sudo mysqldump --user=${DB_USERNAME} --password=${DB_PASSWORD} --host=${DB_HOST} ${DB_DATABASE} > "
-DB_BACKUP_SSH_USER=root
-DB_BACKUP_SSH_HOST=127.0.0.1
-DB_BACKUP_FILE="backup-${APP_NAME}-db"
-DB_BACKUP_FILE_EXT=".sql"
-DB_REMOTE_ACCESS=false
-```
 
 ## DOCUMENTATION
 
@@ -433,15 +383,6 @@ For each endpoint, an example request is shown in each of the languages specifie
 Default: `["bash", "javascript"]`
 
 Please visit [scribe](https://scribe.knuckles.wtf/) for more details.
-
-## RESERVED KEYWORDS FOR PAYLOADS
-
-- `_uuid`
-- `_pin`
-- `expires`
-- `signature`
-
-Some of the reserved keywords can be changed from the config file.
 
 ## TESTS
 
@@ -465,6 +406,13 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 - `php artisan vendor:publish --tag=sas-feature-tests`
 - `php artisan serve`
 - `php artisan test`
+
+## RECOMMENED PACKAGES
+
+- [ikechukwu/makeservice](https://github.com/ikechukwukalu/makeservice)
+- [ikechukwu/databasebackup](https://github.com/ikechukwukalu/databasebackup)
+- [ikechukwu/requirepin](https://github.com/ikechukwukalu/requirepin)
+- [ikechukwu/clamavfileupload](https://github.com/ikechukwukalu/clamavfileupload)
 
 ## PUBLISH VIEWS
 

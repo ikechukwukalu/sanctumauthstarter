@@ -15,7 +15,7 @@ class ControllersCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sas:controllers {--s|sample}';
+    protected $signature = 'sas:controllers';
 
     /**
      * The console command description.
@@ -45,7 +45,7 @@ class ControllersCommand extends Command
 
         $filesystem = new Filesystem;
 
-        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Controllers'))
+        collect($filesystem->allFiles(__DIR__.'/stubs/Controllers'))
             ->each(function (SplFileInfo $file) use ($filesystem) {
                 $filesystem->copy(
                     $file->getPathname(),
@@ -53,7 +53,7 @@ class ControllersCommand extends Command
                 );
             });
 
-        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Requests'))
+        collect($filesystem->allFiles(__DIR__.'/stubs/Requests'))
             ->each(function (SplFileInfo $file) use ($filesystem) {
                 $filesystem->copy(
                     $file->getPathname(),
@@ -61,23 +61,13 @@ class ControllersCommand extends Command
                 );
             });
 
-        collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Services'))
+        collect($filesystem->allFiles(__DIR__.'/stubs/Services'))
             ->each(function (SplFileInfo $file) use ($filesystem) {
                 $filesystem->copy(
                     $file->getPathname(),
                     app_path('Services/Auth/'.Str::replaceLast('.stub', '.php', $file->getFilename()))
                 );
             });
-
-        if ($this->option('sample')) {
-            collect($filesystem->allFiles(__DIR__.'/stubs/Auth/Controllers/Sample'))
-                ->each(function (SplFileInfo $file) use ($filesystem) {
-                    $filesystem->copy(
-                        $file->getPathname(),
-                        app_path('Http/Controllers/Auth/'.Str::replaceLast('.stub', '.php', $file->getFilename()))
-                    );
-                });
-        }
 
         $this->components->info('Controllers, requests and services scaffolding generated successfully.');
     }

@@ -2,8 +2,9 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use Ikechukwukalu\Sanctumauthstarter\Models\OldPassword;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,6 +18,7 @@ class DisallowOldPassword implements Rule
 
     private int|bool $checkAll;
     private int $number;
+    private $user;
 
     public function __construct($checkAll = true, $number = 4)
     {
@@ -27,6 +29,8 @@ class DisallowOldPassword implements Rule
         if (is_int($this->checkAll) && !empty($this->checkAll)) {
             $this->number = $checkAll;
         }
+
+        $this->user = Auth::user();
     }
 
     /**
@@ -38,21 +42,10 @@ class DisallowOldPassword implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = Auth::user();
-
-        if ($this->checkAll === true) {
-            $oldpasswords = OldPassword::whereBelongsTo($user)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
-        } else {
-            $oldpasswords = OldPassword::whereBelongsTo($user)
-                                ->orderBy('created_at', 'desc')
-                                ->take($this->number)
-                                ->get();
-        }
+        $oldpasswords = $this->getOldPasswords();
 
         if ($oldpasswords->count() === 0) {
-            return !Hash::check($value, $user->password);
+            return !Hash::check($value, $this->user->password);
         }
 
         foreach ($oldpasswords as $oldpassword) {
@@ -72,5 +65,24 @@ class DisallowOldPassword implements Rule
     public function message()
     {
         return trans_choice('sanctumauthstarter::passwords.exists', intval(is_int($this->checkAll)), ['number' => $this->number]);
+    }
+
+    /**
+     * Get OldPin Model.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getOldPasswords(): EloquentCollection
+    {
+        if ($this->checkAll === true) {
+            return OldPassword::where('user_id', $this->user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+        }
+
+        return OldPassword::where('user_id', $this->user->id)
+                ->orderBy('created_at', 'desc')
+                ->take($this->number)
+                ->get();
     }
 }

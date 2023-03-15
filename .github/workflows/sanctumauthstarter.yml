@@ -1,4 +1,4 @@
-name: RequirePin Unit Tests
+name: SanctumAuthStarter Unit Tests
 
 on:
   push:

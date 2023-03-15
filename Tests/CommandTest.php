@@ -1,6 +1,6 @@
 <?php
 
-namespace Ikechukwukalu\Requirepin\Tests;
+namespace Ikechukwukalu\Sanctumauthstarter\Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -10,14 +10,16 @@ class CommandTest extends TestCase
 
     public function test_fires_require_pin_commands(): void
     {
-        $this->artisan('sample:routes')->assertSuccessful();
+        $this->artisan('sas:controllers')->assertSuccessful();
 
-        $this->artisan('vendor:publish --tag=rp-config')->assertSuccessful();
+        $this->artisan('vendor:publish --tag=sas-config')->assertSuccessful();
 
-        $this->artisan('vendor:publish --tag=rp-migrations')->assertSuccessful();
+        $this->artisan('vendor:publish --tag=sas-migrations')->assertSuccessful();
 
-        $this->artisan('vendor:publish --tag=rp-lang')->assertSuccessful();
+        $this->artisan('vendor:publish --tag=sas-lang')->assertSuccessful();
 
-        $this->artisan('vendor:publish --tag=rp-views')->assertSuccessful();
+        $this->artisan('vendor:publish --tag=sas-views')->assertSuccessful();
+
+        $this->artisan('vendor:publish --tag=sas-feature-tests')->assertSuccessful();
     }
 }

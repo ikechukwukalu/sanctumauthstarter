@@ -3,9 +3,7 @@
 namespace Ikechukwukalu\Sanctumauthstarter;
 
 use Illuminate\Support\ServiceProvider;
-use Ikechukwukalu\Sanctumauthstarter\Console\Commands\DatabaseBackUpCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ControllersCommand;
-use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ServiceMakeCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\RoutesCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\SetupCommand;
 
@@ -16,42 +14,45 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
+    public const LANG = __DIR__.'/lang';
+    public const DB = __DIR__.'/migrations';
+    public const VIEW = __DIR__.'/views';
+    public const CONFIG = __DIR__.'/config/sanctumauthstarter.php';
+    public const TESTS = __DIR__.'/Tests/Feature';
+    public const ACTION = __DIR__.'/.github/workflows';
+
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                DatabaseBackUpCommand::class,
                 ControllersCommand::class,
-                ServiceMakeCommand::class,
                 RoutesCommand::class,
-                SetupCommand::class,
+                SetupCommand::class
             ]);
         }
 
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        $this->loadViewsFrom(__DIR__.'/views', 'sanctumauthstarter');
-        $this->loadTranslationsFrom(__DIR__.'/lang', 'sanctumauthstarter');
+        $this->loadMigrationsFrom(self::DB);
+        $this->loadViewsFrom(self::VIEW, 'sanctumauthstarter');
+        $this->loadTranslationsFrom(self::LANG, 'sanctumauthstarter');
 
         $this->publishes([
-            __DIR__.'/config/sanctumauthstarter.php' => config_path('sanctumauthstarter.php'),
+            self::CONFIG => config_path('sanctumauthstarter.php'),
         ], 'sas-config');
         $this->publishes([
-            __DIR__.'/migrations' => database_path('migrations'),
+            self::DB => database_path('migrations'),
         ], 'sas-migrations');
         $this->publishes([
-            __DIR__.'/lang' => lang_path('vendor/sanctumauthstarter'),
+            self::LANG => lang_path('vendor/sanctumauthstarter'),
         ], 'sas-lang');
         $this->publishes([
-            __DIR__.'/views' => resource_path('views/vendor/sanctumauthstarter'),
+            self::VIEW => resource_path('views/vendor/sanctumauthstarter'),
         ], 'sas-views');
         $this->publishes([
-            __DIR__.'/Tests/Unit' => base_path('tests/Unit/sanctumauthstarter'),
-        ], 'sas-unit-tests');
-        $this->publishes([
-            __DIR__.'/Tests/Feature' => base_path('tests/Feature/sanctumauthstarter'),
+            self::TESTS => base_path('tests/Feature/sanctumauthstarter'),
         ], 'sas-feature-tests');
         $this->publishes([
-            __DIR__.'/.github/workflows' => base_path('.github/workflows'),
+            self::ACTION => base_path('.github/workflows'),
         ], 'github');
     }
 
