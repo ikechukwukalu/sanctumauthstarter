@@ -101,7 +101,7 @@ You can run `php artisan sas:setup` to generate them at once. You can also call 
 - `php artisan vendor:publish --tag=sas-migrations`
 - `php artisan vendor:publish --tag=sas-config`
 
-## SOCIAL MEDIA LOGIN
+## WEBSOCKETS AND QUEUES
 
 This package utilizes laravel [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication. First, you must setup your laravel app for broadcasts. In order to do that run the following:
 
@@ -140,7 +140,41 @@ window.Echo = new Echo({
 });
 ```
 
-- Add the following to your `config/services.php` file.
+You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
+
+- Set `QUEUE_CONNECTION=redis` within your `.env` file.
+- Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
+- Your `.env` should look similar to this
+
+```shell
+PUSHER_APP_KEY=app-key
+PUSHER_APP_ID=app-id
+PUSHER_APP_SECRET=app-secret
+PUSHER_HOST=127.0.0.1
+PUSHER_PORT=6001
+PUSHER_SCHEME=http
+PUSHER_APP_CLUSTER=mt1
+```
+
+- For SSL using apache. The snippet below should be placed within the `virtualhost` SSL config.
+
+```shell
+    ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
+    ProxyPass "/app/" "http://127.0.0.1:6001/app/"
+```
+
+- Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
+- `php artisan serve`
+- `npm install && npm run dev`
+
+## WEBVIEW LOGINS
+
+- Social media login
+- Two-factor login
+
+### Social Media Login
+
+Add the following to your `config/services.php` file.
 
 ```php
 'google' => [
@@ -205,36 +239,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 });
 ```
 
-## WEBSOCKETS AND QUEUES
-
-You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker for the notifications and other events.
-
-- Set `QUEUE_CONNECTION=redis` within your `.env` file.
-- Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
-- Your `.env` should look similar to this
-
-```shell
-PUSHER_APP_KEY=app-key
-PUSHER_APP_ID=app-id
-PUSHER_APP_SECRET=app-secret
-PUSHER_HOST=127.0.0.1
-PUSHER_PORT=6001
-PUSHER_SCHEME=http
-PUSHER_APP_CLUSTER=mt1
-```
-
-- For SSL using apache. The snippet below should be placed within the `virtualhost` SSL config.
-
-```shell
-    ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
-    ProxyPass "/app/" "http://127.0.0.1:6001/app/"
-```
-
-- Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
-- `php artisan serve`
-- `npm install && npm run dev`
-
-## TWO FACTOR LOGIN
+### Two-factor Login
 
 This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor) to power 2fa login and [beyondcode/laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) to pass `access_token` to the client after authentication.
 
@@ -328,7 +333,7 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 
 - Call `api/disable-two-factor` to disable 2fa, `api/current-recovery-codes` to retrieve current recovery codes and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
 
-### Two factor enabled for password login
+#### Two factor enabled for password login
 
 When 2fa has been enabled and a user attempts to login, a payload would be returned that contains a `user_uuid` and a `twofactor_url`.
 
@@ -360,7 +365,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 });
 ```
 
-### Two factor enabled for social media login
+#### Two factor enabled for social media login
 
 When 2fa has been enabled a 2fa page will pop up over your browser.
 
