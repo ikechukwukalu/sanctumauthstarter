@@ -8,5 +8,6 @@ Separated the following functionalities into standalone packages:
 
 Additional Changes:
 
-- Added tests for package.
+- Added tests for package
 - Removed migrations and classes related to separated functionalities
+- Added Laravel 10 support
