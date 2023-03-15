@@ -31,7 +31,7 @@ This is a very flexible and customisable laravel package (boilerplate) that util
 ## REQUIREMENTS
 
 - PHP 8+
-- Laravel 9 (Support for Laravel 10 coming soon)
+- Laravel 9+
 
 ## STEPS TO INSTALL
 
