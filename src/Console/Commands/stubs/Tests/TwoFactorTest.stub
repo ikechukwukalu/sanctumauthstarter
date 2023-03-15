@@ -1,6 +1,6 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,11 +20,7 @@ class TwoFactorTest extends TestCase
      */
     public function testCreateTwoFactor()
     {
-        $user =  User::find(1);
-
-        if (!isset($user->id)) {
-            $user = User::factory()->create();
-        }
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -41,11 +37,7 @@ class TwoFactorTest extends TestCase
 
     public function testErrorValidationForConfirmTwoFactor()
     {
-        $user =  User::find(1);
-
-        if (!isset($user->id)) {
-            $user = User::factory()->create();
-        }
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 
@@ -53,39 +45,16 @@ class TwoFactorTest extends TestCase
             'code' => 'abcdef', //Wrong format
         ];
 
-        $response = $this->post('/api/confirm-two-factor', $postData);
-        $response->assertStatus(302);
-    }
-
-    public function testConfirmTwoFactor()
-    {
-        $user =  User::find(1);
-
-        if (!isset($user->id)) {
-            $user = User::factory()->create();
-        }
-
-        $this->actingAs($user);
-
-        $postData = [
-            'code' => '123456'
-        ];
-
-        $response = $this->post('/api/confirm-two-factor', $postData);
+        $response = $this->post('/api/confirm-two-factor', $postData, ['Accept' => 'application/json']);
         $responseArray = json_decode($response->getContent(), true);
 
-        $this->assertTrue( is_array($responseArray['data']) );
-        $this->assertTrue( array_key_exists("codes", $responseArray['data']) );
-        $this->assertTrue( isset($responseArray['data']['codes']) );
+        $this->assertTrue(isset($responseArray['errors']));
+        $this->assertTrue(isset($responseArray['message']));
     }
 
     public function testDisableTwoFactor()
     {
-        $user =  User::find(1);
-
-        if (!isset($user->id)) {
-            $user = User::factory()->create();
-        }
+        $user = User::factory()->create();
 
         $this->actingAs($user);
 

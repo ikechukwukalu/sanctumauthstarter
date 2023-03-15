@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ControllersCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\RoutesCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\SetupCommand;
+use Ikechukwukalu\Sanctumauthstarter\Console\Commands\TestsCommand;
 
 class SanctumauthstarterServiceProvider extends ServiceProvider
 {
@@ -19,7 +20,6 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
     public const DB = __DIR__.'/migrations';
     public const VIEW = __DIR__.'/views';
     public const CONFIG = __DIR__.'/config/sanctumauthstarter.php';
-    public const TESTS = __DIR__.'/Tests/Feature';
     public const ACTION = __DIR__.'/.github/workflows';
 
     public function boot()
@@ -28,7 +28,8 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
             $this->commands([
                 ControllersCommand::class,
                 RoutesCommand::class,
-                SetupCommand::class
+                SetupCommand::class,
+                TestsCommand::class
             ]);
         }
 
@@ -48,9 +49,6 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         $this->publishes([
             self::VIEW => resource_path('views/vendor/sanctumauthstarter'),
         ], 'sas-views');
-        $this->publishes([
-            self::TESTS => base_path('tests/Feature/sanctumauthstarter'),
-        ], 'sas-feature-tests');
         $this->publishes([
             self::ACTION => base_path('.github/workflows'),
         ], 'github');

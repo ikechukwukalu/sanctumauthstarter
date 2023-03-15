@@ -30,7 +30,8 @@ class SetupCommand extends Command
     {
         $this->callSilently('sas:controllers');
         $this->callSilently('sas:routes');
+        $this->callSilently('sas:tests');
 
-        $this->components->info('Controllers, routes, requests and services scaffolding generated successfully.');
+        $this->components->info('Controllers, routes, requests, services and tests scaffolding generated successfully.');
     }
 }

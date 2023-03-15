@@ -95,6 +95,7 @@ You can run `php artisan sas:setup` to generate them at once. You can also call 
 
 - `php artisan sas:controllers`
 - `php artisan sas:routes`
+- `php artisan sas:tests`
 
 ## PUBLISH MIGRATIONS AND CONFIG
 
@@ -110,7 +111,7 @@ This package utilizes laravel [beyondcode/laravel-websockets](https://beyondco.d
 - Set `REDIS_CLIENT=predis` and `BROADCAST_DRIVER=pusher` within your `.env` file.
 - Your `laravel-echo` config should look similar to this:
 
-```js
+``` js
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -146,7 +147,7 @@ You will need a [queue](https://laravel.com/docs/9.x/queues#introduction) worker
 - Uncomment `App\Providers\BroadcastServiceProvider::class` in `config\app.php`
 - Your `.env` should look similar to this
 
-```shell
+``` shell
 PUSHER_APP_KEY=app-key
 PUSHER_APP_ID=app-id
 PUSHER_APP_SECRET=app-secret
@@ -158,7 +159,7 @@ PUSHER_APP_CLUSTER=mt1
 
 - For SSL using apache. The snippet below should be placed within the `virtualhost` SSL config.
 
-```shell
+``` shell
     ProxyPass "/app/" "ws://127.0.0.1:6001/app/"
     ProxyPass "/app/" "http://127.0.0.1:6001/app/"
 ```
@@ -176,7 +177,7 @@ PUSHER_APP_CLUSTER=mt1
 
 Add the following to your `config/services.php` file.
 
-```php
+``` php
 'google' => [
     'client_id' => env('GOOGLE_CLIENT_ID'),
     'client_secret' => env('GOOGLE_CLIENT_SECRET'),
@@ -186,7 +187,7 @@ Add the following to your `config/services.php` file.
 
 - Navigate to `auth/socialite` to view a sample Google sign-up/sign-in page and the consoled `access_token` after sign up. Uncomment the route within the `web.php`. Below is the script that is called within the view `resources/views/vendor/sanctumauthstarter/socialite/auth.blade.php`.
 
-```js
+``` js
 window.addEventListener('DOMContentLoaded',  () => {
     const getUserUUID = () => {
         let userUUID = localStorage.getItem('user_uuid');
@@ -231,7 +232,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 
 - After a successful authentication, this view is displayed `resources/views/vendor/sanctumauthstarter/socialite/callback.blade.php` and it contains the following script:
 
-```js
+``` js
 window.addEventListener('DOMContentLoaded',  () => {
     if (localStorage.getItem('user_uuid')) {
         localStorage.removeItem('user_uuid');
@@ -292,7 +293,7 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 
 - Call `api/create-two-factor` to create 2fa.
 
-```json
+``` json
 {
     "status": "success",
     "status_code": 200,
@@ -306,7 +307,7 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 
 - Call `api/confirm-two-factor` to confirm 2fa and get recovery codes.
 
-```json
+``` json
 {
     "status": "success",
     "status_code": 200,
@@ -333,11 +334,11 @@ This package utilizes [Laragear/TwoFactor](https://github.com/Laragear/TwoFactor
 
 - Call `api/disable-two-factor` to disable 2fa, `api/current-recovery-codes` to retrieve current recovery codes and `api/new-recovery-codes` to generate new recovery codes which replaces the previous batch.
 
-#### Two factor enabled for password login
+### Two factor enabled for password login
 
 When 2fa has been enabled and a user attempts to login, a payload would be returned that contains a `user_uuid` and a `twofactor_url`.
 
-```json
+``` json
 {
     "status": "success",
     "status_code": 200,
@@ -352,7 +353,7 @@ When 2fa has been enabled and a user attempts to login, a payload would be retur
 
 The `user_uuid` is used to create a `laravel-echo` channel that would listen to a laravel broadcast. Navigate to `auth/twofactor/{uuid}` to view the consoled `access_token` after uncommenting the route within the `web.php`. This view `resources/views/vendor/sanctumauthstarter/twofactor/auth.blade.php` contains a sample `javascript` that works it out.
 
-```js
+``` js
 window.addEventListener('DOMContentLoaded',  () => {
     const USER_UUID = "{{ Route::input('uuid') }}";
 
@@ -365,7 +366,7 @@ window.addEventListener('DOMContentLoaded',  () => {
 });
 ```
 
-#### Two factor enabled for social media login
+### Two factor enabled for social media login
 
 When 2fa has been enabled a 2fa page will pop up over your browser.
 
@@ -409,36 +410,33 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 ### Running Tests
 
-- `php artisan vendor:publish --tag=sas-feature-tests`
-- `php artisan serve`
 - `php artisan test`
 
 ## RECOMMENED PACKAGES
 
 - [ikechukwukalu/makeservice](https://github.com/ikechukwukalu/makeservice)
 
-```
+``` shell
 composer require ikechukwukalu/makeservice
 ```
 
 - [ikechukwukalu/databasebackup](https://github.com/ikechukwukalu/databasebackup)
 
-```
+``` shell
 composer require ikechukwukalu/databasebackup
 ```
 
 - [ikechukwukalu/requirepin](https://github.com/ikechukwukalu/requirepin)
 
-```
+``` shell
 composer require ikechukwukalu/requirepin
 ```
 
 - [ikechukwukalu/clamavfileupload](https://github.com/ikechukwukalu/clamavfileupload)
 
-```
+``` shell
 composer require ikechukwukalu/clamavfileupload
 ```
-
 
 ## PUBLISH VIEWS
 

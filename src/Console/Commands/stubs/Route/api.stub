@@ -38,7 +38,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('change\password', [\App\Http\Controllers\Auth\ChangePasswordController::class,
+    Route::post('change/password', [\App\Http\Controllers\Auth\ChangePasswordController::class,
         'changePassword'])->name('changePassword');
     Route::post('edit/profile', [\App\Http\Controllers\Auth\ProfileController::class,
         'editProfile'])->name('editProfile');

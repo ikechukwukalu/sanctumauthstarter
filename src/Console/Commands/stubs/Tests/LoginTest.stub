@@ -1,6 +1,6 @@
 <?php
 
-namespace Ikechukwukalu\Sanctumauthstarter\Tests\Feature;
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -25,8 +25,11 @@ class LoginTest extends TestCase
             'password' => '' //Empty passwords
         ];
 
-        $response = $this->post('/api/auth/login', $postData);
-        $response->assertStatus(302);
+        $response = $this->post('/api/auth/login', $postData, ['Accept' => 'application/json']);
+        $responseArray = json_decode($response->getContent(), true);
+
+        $this->assertTrue(isset($responseArray['errors']));
+        $this->assertTrue(isset($responseArray['message']));
     }
 
     public function testLoginThrottling()

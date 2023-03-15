@@ -10,7 +10,13 @@ class CommandTest extends TestCase
 
     public function test_fires_require_pin_commands(): void
     {
+        $this->artisan('sas:setup')->assertSuccessful();
+
         $this->artisan('sas:controllers')->assertSuccessful();
+
+        $this->artisan('sas:routes')->assertSuccessful();
+
+        $this->artisan('sas:tests')->assertSuccessful();
 
         $this->artisan('vendor:publish --tag=sas-config')->assertSuccessful();
 

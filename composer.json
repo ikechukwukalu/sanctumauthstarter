@@ -31,8 +31,7 @@
             "Ikechukwukalu\\Sanctumauthstarter\\Rule\\": "src/Rule/",
             "Ikechukwukalu\\Sanctumauthstarter\\Model\\": "src/Models/",
             "Ikechukwukalu\\Sanctumauthstarter\\Notifications\\": "src/Notifications/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Console\\Commands\\": "src/Console/Commands/",
-            "Ikechukwukalu\\Sanctumauthstarter\\Tests\\Feature\\": "src/Tests/Feature/"
+            "Ikechukwukalu\\Sanctumauthstarter\\Console\\Commands\\": "src/Console/Commands/"
         }
     },
     "autoload-dev": {
