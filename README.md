@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ikechukwukalu/sanctumauthstarter?style=flat-square)](https://packagist.org/packages/ikechukwukalu/sanctumauthstarter)
 [![Quality Score](https://img.shields.io/scrutinizer/quality/g/ikechukwukalu/sanctumauthstarter/main?style=flat-square)](https://scrutinizer-ci.com/g/ikechukwukalu/sanctumauthstarter/)
+[![Github Workflow Status](https://img.shields.io/github/actions/workflow/status/ikechukwukalu/sanctumauthstarter/sanctumauthstarter.yml?branch=main&style=flat-square)](https://github.com/ikechukwukalu/sanctumauthstarter/actions/workflows/sanctumauthstarter.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/ikechukwukalu/sanctumauthstarter?style=flat-square)](https://packagist.org/packages/ikechukwukalu/sanctumauthstarter)
 [![Licence](https://img.shields.io/packagist/l/ikechukwukalu/sanctumauthstarter?style=flat-square)](https://packagist.org/packages/ikechukwukalu/sanctumauthstarter)
 
