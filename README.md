@@ -410,10 +410,30 @@ The passwords created within the `database/factories/UserFactory.php` Class must
 
 ## RECOMMENED PACKAGES
 
-- [ikechukwu/makeservice](https://github.com/ikechukwukalu/makeservice)
-- [ikechukwu/databasebackup](https://github.com/ikechukwukalu/databasebackup)
-- [ikechukwu/requirepin](https://github.com/ikechukwukalu/requirepin)
-- [ikechukwu/clamavfileupload](https://github.com/ikechukwukalu/clamavfileupload)
+- [ikechukwukalu/makeservice](https://github.com/ikechukwukalu/makeservice)
+
+```
+composer require ikechukwukalu/makeservice
+```
+
+- [ikechukwukalu/databasebackup](https://github.com/ikechukwukalu/databasebackup)
+
+```
+composer require ikechukwukalu/databasebackup
+```
+
+- [ikechukwukalu/requirepin](https://github.com/ikechukwukalu/requirepin)
+
+```
+composer require ikechukwukalu/requirepin
+```
+
+- [ikechukwukalu/clamavfileupload](https://github.com/ikechukwukalu/clamavfileupload)
+
+```
+composer require ikechukwukalu/clamavfileupload
+```
+
 
 ## PUBLISH VIEWS
 
