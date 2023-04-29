@@ -1,4 +1,8 @@
-# v1.3.0
+# v1.3.1
+
+- Improved sample auth blades for 2FA and socialite packages
+
+## v1.3.0
 
 Separated the following functionalities into standalone packages:
 
