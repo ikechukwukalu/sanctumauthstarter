@@ -3,7 +3,7 @@
 return [
     'google' => [
         'header' => 'Google Sign Up',
-        'button' => 'Sign Up with Google',
+        'button' => 'Sign Up',
     ],
 
     'user' => [

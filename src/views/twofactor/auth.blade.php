@@ -9,8 +9,16 @@
 
                 <div class="card-body">
                     <div class="row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <h5 align="center">Access token will be console logged!</h5>
+                        <div class="col-md-6 offset-md-3">
+                            <p align="left">Access token will appear here: <span id="accessToken"></span></p>
+                            <br/>
+                            <p align="left">
+                                <label>Click to test 2FA signin:&nbsp;</label>
+                                <button type="click" id="twoFactorSignIn" class="btn btn-primary">
+                                    {{ trans('sanctumauthstarter::twofactor.button') }}
+                                </button>
+                            </p>
+                            <br/>
                         </div>
                     </div>
                 </div>
@@ -30,7 +38,15 @@
         window.Echo.channel(`access.token.twofactor.${USER_UUID}`)
         .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\TwoFactorLogin', (e) => {
             console.log(`payload:`, e);
+            document.getElementById('accessToken').innerHTML = e.access_token;
         });
+
+        document.getElementById('twoFactorSignIn').onclick = () => {
+            window.open(
+                "{{ route('twofactor.required', ['email' => Route::input('email'), 'uuid' => Route::input('uuid')]) }}",
+                '_blank'
+            )
+        }
     });
 </script>
 @endsection

@@ -40,7 +40,7 @@ Route::group(['middleware' => ['web']], function () {
             [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
-    Route::get('auth/twofactor/{uuid}', function() {
+    Route::get('auth/twofactor/{email}/{uuid}', function() {
         if (env('APP_ENV') === 'production') {
             abort(404, trans('sanctumauthstarter::general.not_found'));
         }

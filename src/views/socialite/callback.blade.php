@@ -22,10 +22,9 @@
 
 @section('scripts')
 <script>
-    window.addEventListener('DOMContentLoaded',  () => {
-        if (localStorage.getItem('user_uuid')) {
-            localStorage.removeItem('user_uuid');
-        }
-    });
+    if (localStorage.getItem('user_uuid')) {
+        localStorage.removeItem('user_uuid');
+    }
+    window.close();
 </script>
 @endsection

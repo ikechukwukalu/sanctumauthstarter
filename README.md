@@ -187,7 +187,7 @@ Add the following to your `config/services.php` file.
 ],
 ```
 
-- Navigate to `auth/socialite` to view a sample Google sign-up/sign-in page and the consoled `access_token` after sign up. Uncomment the route within the `web.php`. Below is the script that is called within the view `resources/views/vendor/sanctumauthstarter/socialite/auth.blade.php`.
+- Navigate to `auth/socialite` to view a sample Google sign-up/sign-in page to view the generated `access_token` after sign up. Uncomment the route within the `web.php`. Below is the script that is called within the view `resources/views/vendor/sanctumauthstarter/socialite/auth.blade.php`.
 
 ``` js
 window.addEventListener('DOMContentLoaded',  () => {
@@ -353,7 +353,7 @@ When 2fa has been enabled and a user attempts to login, a payload would be retur
 }
 ```
 
-The `user_uuid` is used to create a `laravel-echo` channel that would listen to a laravel broadcast. Navigate to `auth/twofactor/{uuid}` to view the consoled `access_token` after uncommenting the route within the `web.php`. This view `resources/views/vendor/sanctumauthstarter/twofactor/auth.blade.php` contains a sample `javascript` that works it out.
+The `user_uuid` is used to create a `laravel-echo` channel that would listen to a laravel broadcast. Navigate to `auth/twofactor/{email}/{uuid}` to view the generated `access_token` after uncommenting the route within the `web.php`. This view `resources/views/vendor/sanctumauthstarter/twofactor/auth.blade.php` contains a sample `javascript` that works it out.
 
 ``` js
 window.addEventListener('DOMContentLoaded',  () => {

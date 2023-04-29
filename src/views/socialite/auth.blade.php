@@ -14,11 +14,15 @@
                         </div>
                     @endif
                     <div class="row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <h5 align="center">Access token will be console logged!</h5>
-                            <button type="click" id="googleSignUp" class="btn btn-primary">
-                                {{ trans('sanctumauthstarter::socialite.google.button') }}
-                            </button>
+                        <div class="col-md-6 offset-md-3">
+                            <p align="left">Access token will appear here: <span id="accessToken"></span></p>
+                            <br/>
+                            <p align="left">
+                                <label>Click to test Google signup:&nbsp;</label>
+                                <button type="click" id="googleSignUp" class="btn btn-primary">
+                                    {{ trans('sanctumauthstarter::socialite.google.button') }}
+                                </button>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -57,6 +61,7 @@
         window.Echo.channel(`access.token.socialite.${USER_UUID}`)
         .listen('.Ikechukwukalu\\Sanctumauthstarter\\Events\\SocialiteLogin', (e) => {
             console.log(`payload:`, e);
+            document.getElementById('accessToken').innerHTML = e.access_token;
         });
 
         document.getElementById('googleSignUp').onclick = () => {

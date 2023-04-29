@@ -19,3 +19,12 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+    if (localStorage.getItem('user_uuid')) {
+        localStorage.removeItem('user_uuid');
+    }
+    window.close();
+</script>
+@endsection
