@@ -12,7 +12,7 @@ class PasswordChange extends UserNotification
             ->subject(trans('sanctumauthstarter::notify.password.subject'))
             ->line(trans('sanctumauthstarter::notify.password.introduction'))
             ->line(trans('sanctumauthstarter::notify.password.message'))
-            ->action(trans('sanctumauthstarter::notify.password.action'), route('changePassword'))
+            ->action(trans('sanctumauthstarter::notify.password.action'), route('password.reset'))
             ->line(trans('sanctumauthstarter::notify.password.complimentary_close'));
     }
 }
