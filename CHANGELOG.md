@@ -1,6 +1,7 @@
 # v1.3.1
 
 - Improved sample auth blades for 2FA and socialite packages
+- Fixed wrong route for email notification
 
 ## v1.3.0
 

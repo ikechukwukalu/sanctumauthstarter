@@ -166,7 +166,7 @@ PUSHER_APP_CLUSTER=mt1
     ProxyPass "/app/" "http://127.0.0.1:6001/app/"
 ```
 
-- Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work --queue=high,default`
+- Run `php artisan config:clear`, `php artisan migrate`, `php artisan websockets:serve` and `php artisan queue:work`
 - `php artisan serve`
 - `npm install && npm run dev`
 
