@@ -1,4 +1,8 @@
-# v1.3.1
+# v1.3.2
+
+- Removed queue name from UserEventListener class
+
+## v1.3.1
 
 - Improved sample auth blades for 2FA and socialite packages
 - Fixed wrong route for email notification
