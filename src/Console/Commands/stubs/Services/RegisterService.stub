@@ -2,45 +2,54 @@
 
 namespace App\Services\Auth;
 
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use App\Http\Requests\Auth\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser;
+use Ikechukwukalu\Sanctumauthstarter\Events\EmailVerification;
 
-class ResetPasswordService
+class RegisterService
 {
-    use Helpers;
 
     /**
      * Handle the request.
      *
-     * @param  \App\Http\Requests\ResetPasswordRequest  $request
+     * @param  \App\Http\Requests\RegisterRequest  $request
      * @return ?array
      */
-    public static function handleResetPassword(ResetPasswordRequest $request): ?array
+    public static function handleRegistration(RegisterRequest $request): ?array
     {
         $validated = $request->validated();
+        $user =  User::create([
+            'email' => $validated['email'],
+            'name' => $validated['name'],
+            'password' => Hash::make($validated['password']),
+            'form_signup' => true,
+        ]);
 
-        $user = User::where('email', $validated['email'])->first();
-        $user->password = Hash::make($validated['password']);
-        if (!$user->save()) {
+        if (!isset($user->id)) {
             return null;
         }
 
-        return [
-            'status' => 'success',
-            'status_code' => 200,
-            'message' => trans('sanctumauthstarter::passwords.reset')
-        ];
-    }
+        $data = [];
+        if (config('sanctumauthstarter.registration.autologin', false)) {
+            Auth::login($user);
+            $token = $user->createToken($validated['email']);
+            $data['access_token'] = $token->plainTextToken;
+        }
 
-    public static function handleResetPasswordForm(ResetPasswordRequest $request): array
-    {
-        $response = json_decode(json_encode(
-            self::handleResetPassword($request)),true);
+        if (config('sanctumauthstarter.registration.notify.welcome', true)) {
+            $user->notify(new WelcomeUser($user));
+        }
 
-        return $response;
+        if (config('sanctumauthstarter.registration.notify.verify', true)) {
+            EmailVerification::dispatch($user);
+        }
+
+        $data['message'] = trans('sanctumauthstarter::register.success');
+
+        return $data;
     }
 }
