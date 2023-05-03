@@ -62,6 +62,26 @@ class LoginController extends Controller
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.fail'), 422, $data);
     }
 
+    /**
+     * User Two-factor login.
+     *
+     * Presents a form were a user must input the generated code.
+     *
+     * Creates user <b>access_token</b> and broadcasts the following payload <b>user_id</b>, <b>access_token</b> to the
+     * unique public channel created with the unique <b>UUID</b>
+     *
+     * @header Accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*\/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+     * @header Content-Type text/html; charset=UTF-8
+     *
+     * @response 200
+     *
+     * {
+     * "access_token": "1|mtnWTrh2Am6PWJ991wYB0rewVtROKxkuSiWEY836",
+     * "user_id": 1,
+     * }
+     *
+     * @group Web URLs
+     */
     public function twoFactorLogin(Request $request)
     {
         if ($data = $this->loginService->loginRequestAttempts($request)) {

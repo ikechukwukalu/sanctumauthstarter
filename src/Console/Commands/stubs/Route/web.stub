@@ -40,6 +40,25 @@ Route::group(['middleware' => ['web']], function () {
             [ 'minutes' => config('sanctumauthstarter.cookie.minutes', 5) ]);
     })->name('socialite.auth');
 
+    /**
+     * User TwoFactor Auth.
+     *
+     * This API opens a view that receives a <b>UUID</b> from the URL and stores it as a localStorage.
+     *
+     * Using the <b>UUID</b>, it subscribes the user to a unique public websocket channel
+     * using laravel <b>Echo</b>, which will receive the <b>access_token</b> and <b>user_id</b>
+     * as return payloads when the twofactor login is completed.
+     *
+     * It also provides a link to a <small class="badge badge-blue">auth/twofactor/{email}/{uuid}</small> using <b>UUID</b>
+     * that starts the twofactor authentication process.
+     *
+     * @header Accept text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*\/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+     * @header Content-Type text/html; charset=UTF-8
+     *
+     * @response 200 return view('sanctumauthstarter::twofactor.auth')
+     *
+     * @group Web URLs
+     */
     Route::get('auth/twofactor/{email}/{uuid}', function() {
         if (env('APP_ENV') === 'production') {
             abort(404, trans('sanctumauthstarter::general.not_found'));

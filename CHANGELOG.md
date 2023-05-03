@@ -1,6 +1,7 @@
 # v1.3.2
 
 - Removed queue name from UserEventListener class
+- Fixed Password reset bug
 
 ## v1.3.1
 
