@@ -104,7 +104,7 @@ return [
              * Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser
              * notifications.
              */
-            'welcome_user' => url('/')
+            'welcome_user' => '/'
         ],
         /**
          * string - Action urls for login notifications.
@@ -115,7 +115,7 @@ return [
              * Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin
              * notifications.
              */
-            'user_login' => url('forgot/password')
+            'user_login' => 'password.reset'
         ],
         /**
          * string - Action urls for change password notifications.
@@ -126,7 +126,7 @@ return [
              * Ikechukwukalu\Sanctumauthstarter\Notifications\PasswordChange
              * notifications.
              */
-            'password_change' => url('forgot/password')
+            'password_change' => 'password.reset'
         ],
     ],
 ];

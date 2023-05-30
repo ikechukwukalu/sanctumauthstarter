@@ -21,7 +21,7 @@ class WelcomeUser extends UserNotification
                     ->subject(trans('sanctumauthstarter::notify.welcome.subject', ['name' => $this->user->name]))
                     ->line(trans('sanctumauthstarter::notify.welcome.introduction', ['name' => $this->user->name]))
                     ->line(trans('sanctumauthstarter::notify.welcome.message'))
-                    ->action(trans('sanctumauthstarter::notify.welcome.action'), config('sanctumauthstarter.notification_url.registration.welcome_user'))
+                    ->action(trans('sanctumauthstarter::notify.welcome.action'), url(config('sanctumauthstarter.notification_url.registration.welcome_user')))
                     ->line(trans('sanctumauthstarter::notify.welcome.complimentary_close'));
     }
 }

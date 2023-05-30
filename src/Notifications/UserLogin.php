@@ -21,7 +21,7 @@ class UserLogin extends UserNotification
             ->subject(trans('sanctumauthstarter::notify.login.subject'))
             ->line(trans('sanctumauthstarter::notify.login.introduction', ['time' => $this->time, 'deviceAndLocation' => $this->deviceAndLocation]))
             ->line(trans('sanctumauthstarter::notify.login.message'))
-            ->action(trans('sanctumauthstarter::notify.login.action'), config('sanctumauthstarter.notification_url.login.user_login'))
+            ->action(trans('sanctumauthstarter::notify.login.action'), route(config('sanctumauthstarter.notification_url.login.user_login')))
             ->line(trans('sanctumauthstarter::notify.login.complimentary_close'));
     }
 }
