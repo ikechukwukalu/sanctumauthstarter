@@ -1,4 +1,9 @@
-# v1.3.2
+# v2.0.0
+
+- Refactored code
+- Removed Static methods
+
+## v1.3.2
 
 - Removed queue name from UserEventListener class
 - Fixed Password reset bug
