@@ -14,13 +14,11 @@ class TwoFactorController extends Controller
 {
     use Helpers;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private TwoFactorService $twoFactorService;
+
+    public function __construct(TwoFactorService $twoFactorService)
     {
+        $this->twoFactorService = $twoFactorService;
         $this->middleware('auth:sanctum');
     }
 
@@ -50,7 +48,7 @@ class TwoFactorController extends Controller
      */
     public function createTwoFactor(Request $request): JsonResponse
     {
-        if ($data = TwoFactorService::handleCreateTwoFactor($request)) {
+        if ($data = $this->twoFactorService->handleCreateTwoFactor($request)) {
             return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);
         }
@@ -83,7 +81,7 @@ class TwoFactorController extends Controller
      */
     public function confirmTwoFactor(ConFirmTwoFactorRequest $request): JsonResponse
     {
-        if (TwoFactorService::isTwoFactorEnabled()) {
+        if ($this->twoFactorService->isTwoFactorEnabled()) {
             $data = [
                 'message' => trans('sanctumauthstarter::auth.2fa_is_enabled'),
                 'codes' => []
@@ -93,7 +91,7 @@ class TwoFactorController extends Controller
                     trans('sanctumauthstarter::general.fail'), 400, $data);
         }
 
-        if ($data = TwoFactorService::handleConFirmTwoFactor($request))
+        if ($data = $this->twoFactorService->handleConFirmTwoFactor($request))
         {
             return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);
@@ -131,7 +129,7 @@ class TwoFactorController extends Controller
      */
     public function disableTwoFactor(Request $request): JsonResponse
     {
-        $data = TwoFactorService::handleDisableTwoFactor($request);
+        $data = $this->twoFactorService->handleDisableTwoFactor($request);
         return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);
     }
@@ -159,7 +157,7 @@ class TwoFactorController extends Controller
      */
     public function currentRecoveryCodes(Request $request)
     {
-        if ($data = TwoFactorService::handleCurrentRecoveryCodes($request))
+        if ($data = $this->twoFactorService->handleCurrentRecoveryCodes($request))
         {
             return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);
@@ -192,7 +190,7 @@ class TwoFactorController extends Controller
      */
     public function newRecoveryCodes(Request $request)
     {
-        if ($data = TwoFactorService::handleNewRecoveryCodes($request))
+        if ($data = $this->twoFactorService->handleNewRecoveryCodes($request))
         {
             return $this->httpJsonResponse(
                     trans('sanctumauthstarter::general.success'), 200, $data);

@@ -11,8 +11,14 @@ use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 
 class ProfileController extends Controller
 {
-
     use Helpers;
+
+    private EditProfileService $editProfileService;
+
+    public function __construct(EditProfileService $editProfileService)
+    {
+        $this->editProfileService = $editProfileService;
+    }
 
     /**
      * User edit profile.
@@ -38,7 +44,7 @@ class ProfileController extends Controller
 
     public function editProfile(EditProfileRequest $request): JsonResponse
     {
-        if ($data = EditProfileService::handleEditProfile($request)) {
+        if ($data = $this->editProfileService->handleEditProfile($request)) {
             return $this->httpJsonResponse(
                 trans('sanctumauthstarter::general.success'), 200, $data);
         }

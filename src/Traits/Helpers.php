@@ -2,27 +2,24 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter\Traits;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Response;
-use hisorange\BrowserDetect\Parser as Browser;
-use Stevebauman\Location\Facades\Location;
-use Illuminate\Http\Request;
-use App\Services\Auth\ThrottleRequestsService;
-use Illuminate\View\View;
-use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
-use Carbon\Carbon;
 use App\Models\User;
+use App\Services\Auth\ThrottleRequestsService;
+use Carbon\Carbon;
+use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
+use hisorange\BrowserDetect\Parser as Browser;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\View\View;
+use Stevebauman\Location\Facades\Location;
 
 trait Helpers {
 
     public ThrottleRequestsService $throttleRequestsService;
 
-    public function __construct()
+    public function __construct(ThrottleRequestsService $throttleRequestsService)
     {
-        $this->throttleRequestsService = new ThrottleRequestsService(
-            config('sanctumauthstarter.login.maxAttempts', 3),
-            config('sanctumauthstarter.login.delayMinutes', 1)
-        );
+        $this->throttleRequestsService = $throttleRequestsService;
     }
 
     public function httpJsonResponse(string $status, int $status_code, $data): JsonResponse

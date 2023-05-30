@@ -11,9 +11,9 @@ class VerificationController extends Controller
 {
     private VerificationService $verificationService;
 
-    public function __construct()
+    public function __construct(VerificationService $verificationService)
     {
-        $this->verificationService = new VerificationService;
+        $this->verificationService = $verificationService;
     }
 
     /**

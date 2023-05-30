@@ -15,8 +15,8 @@ class SocialiteController extends Controller
 
     private SocialiteService $socialiteService;
 
-    public function __construct() {
-        $this->socialiteService = new SocialiteService();
+    public function __construct(SocialiteService $socialiteService) {
+        $this->socialiteService = $socialiteService;
     }
 
     /**

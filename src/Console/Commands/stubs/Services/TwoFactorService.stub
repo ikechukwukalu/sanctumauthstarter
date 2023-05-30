@@ -15,7 +15,7 @@ class TwoFactorService
      * @param  \App\Http\Requests\ConFirmTwoFactorRequest  $request
      * @return ?array
      */
-    public static function handleConFirmTwoFactor(ConFirmTwoFactorRequest $request): ?array
+    public function handleConFirmTwoFactor(ConFirmTwoFactorRequest $request): ?array
     {
         $validated = $request->validated();
 
@@ -28,10 +28,10 @@ class TwoFactorService
             'two_factor' => true
         ]);
 
-        return self::generateRecoveryCodes($request);
+        return $this->generateRecoveryCodes($request);
     }
 
-    public static function handleCreateTwoFactor(Request $request): ?array
+    public function handleCreateTwoFactor(Request $request): ?array
     {
         if ($secret = $request->user()->createTwoFactorAuth()) {
             return [
@@ -44,7 +44,7 @@ class TwoFactorService
         return null;
     }
 
-    public static function handleDisableTwoFactor(Request $request): array
+    public function handleDisableTwoFactor(Request $request): array
     {
         $request->user()->disableTwoFactorAuth();
 
@@ -57,7 +57,7 @@ class TwoFactorService
         ];
     }
 
-    public static function handleCurrentRecoveryCodes(Request $request): array
+    public function handleCurrentRecoveryCodes(Request $request): array
     {
         return [
             'message' => trans('sanctumauthstarter::auth.download_code'),
@@ -65,17 +65,17 @@ class TwoFactorService
         ];
     }
 
-    public static function handleNewRecoveryCodes(Request $request): array
+    public function handleNewRecoveryCodes(Request $request): array
     {
-        return self::generateRecoveryCodes($request);
+        return $this->generateRecoveryCodes($request);
     }
 
-    public static function isTwoFactorEnabled(): bool
+    public function isTwoFactorEnabled(): bool
     {
         return Auth::user()->two_factor;
     }
 
-    private static function generateRecoveryCodes(Request $request): array
+    private function generateRecoveryCodes(Request $request): array
     {
         return [
             'message' => trans('sanctumauthstarter::auth.download_code'),

@@ -4,17 +4,12 @@ namespace App\Services\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use App\Services\Auth\ThrottleRequestsService;
-use Carbon\Carbon;
 use Ikechukwukalu\Sanctumauthstarter\Events\TwoFactorLogin as TwoFactorLoginEvent;
 use Ikechukwukalu\Sanctumauthstarter\Models\TwoFactorLogin;
-use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
 use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Crypt;
 use Laragear\TwoFactor\Facades\Auth2FA;
 

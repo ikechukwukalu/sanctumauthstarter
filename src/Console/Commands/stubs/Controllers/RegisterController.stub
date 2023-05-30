@@ -13,8 +13,11 @@ class RegisterController extends Controller
 {
     use Helpers;
 
-    public function __construct()
+    private RegisterService $registerService;
+
+    public function __construct(RegisterService $registerService)
     {
+        $this->registerService = $registerService;
         $this->middleware('guest');
     }
 
@@ -59,7 +62,7 @@ class RegisterController extends Controller
      */
     protected function register(RegisterRequest $request): JsonResponse
     {
-        if ($data = RegisterService::handleRegistration($request)) {
+        if ($data = $this->registerService->handleRegistration($request)) {
             return $this->httpJsonResponse(
                 trans('sanctumauthstarter::general.success'), 200, $data);
         }

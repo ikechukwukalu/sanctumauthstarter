@@ -2,6 +2,8 @@
 
 namespace Ikechukwukalu\Sanctumauthstarter;
 
+use App\Services\Auth\ThrottleRequestsService;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\ControllersCommand;
 use Ikechukwukalu\Sanctumauthstarter\Console\Commands\RoutesCommand;
@@ -66,5 +68,12 @@ class SanctumauthstarterServiceProvider extends ServiceProvider
         );
 
         $this->app->register(EventServiceProvider::class);
+
+        $this->app->bind(ThrottleRequestsService::class, function (Application $app) {
+            return new ThrottleRequestsService(
+                config('sanctumauthstarter.login.maxAttempts', 3),
+                config('sanctumauthstarter.login.delayMinutes', 1)
+            );
+        });
     }
 }

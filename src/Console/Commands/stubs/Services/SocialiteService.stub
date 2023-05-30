@@ -3,14 +3,11 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Ikechukwukalu\Sanctumauthstarter\Events\SocialiteLogin as SocialiteLoginEvent;
 use Ikechukwukalu\Sanctumauthstarter\Models\SocialiteLogin;
 use Ikechukwukalu\Sanctumauthstarter\Models\UserPasswordHolder;
-use Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin;
 use Ikechukwukalu\Sanctumauthstarter\Traits\Helpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laragear\TwoFactor\Facades\Auth2FA;
 use Laravel\Socialite\Facades\Socialite;

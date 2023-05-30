@@ -90,4 +90,43 @@ return [
          */
         'name' => 'user_uuid'
     ],
+
+    /**
+     * Notification URL
+     */
+    'notification_url' => [
+        /**
+         * string - Action urls for registration notifications.
+         */
+        'registration' => [
+            /**
+             * string - Action urls for
+             * Ikechukwukalu\Sanctumauthstarter\Notifications\WelcomeUser
+             * notifications.
+             */
+            'welcome_user' => url('/')
+        ],
+        /**
+         * string - Action urls for login notifications.
+         */
+        'login' => [
+            /**
+             * string - Action urls for
+             * Ikechukwukalu\Sanctumauthstarter\Notifications\UserLogin
+             * notifications.
+             */
+            'user_login' => url('forgot/password')
+        ],
+        /**
+         * string - Action urls for change password notifications.
+         */
+        'password' => [
+            /**
+             * string - Action urls for
+             * Ikechukwukalu\Sanctumauthstarter\Notifications\PasswordChange
+             * notifications.
+             */
+            'password_change' => url('forgot/password')
+        ],
+    ],
 ];

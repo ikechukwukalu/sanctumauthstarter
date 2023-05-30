@@ -16,9 +16,9 @@ class LoginController extends Controller
 
     private LoginService $loginService;
 
-    public function __construct()
+    public function __construct(LoginService $loginService)
     {
-        $this->loginService = new LoginService;
+        $this->loginService = $loginService;
     }
 
     /**

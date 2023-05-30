@@ -34,13 +34,13 @@ class LogoutController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $user = Auth::user();
         $request->user()->currentAccessToken()->delete();
 
         $data = [
             'access_token' => null,
             'message' => trans('sanctumauthstarter::auth.logout')
         ];
+
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 
@@ -66,13 +66,13 @@ class LogoutController extends Controller
      */
     public function logoutFromAllSessions(): JsonResponse
     {
-        $user = Auth::user();
-        $user->tokens()->delete();
+        Auth::user()->tokens()->delete();
 
         $data = [
             'access_token' => null,
             'message' => trans('sanctumauthstarter::auth.logout')
         ];
+
         return $this->httpJsonResponse(trans('sanctumauthstarter::general.success'), 200, $data);
     }
 }

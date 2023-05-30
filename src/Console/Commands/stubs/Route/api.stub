@@ -12,12 +12,6 @@
  * @subgroup Require Pin APIs
  */
 
-/**
- * @group Sample APIs
- *
- * Sample APIs that require User authentication
- */
-
 Route::prefix('auth')->group(function () {
     Route::post('register', [\App\Http\Controllers\Auth\RegisterController::class,
         'register'])->name('register');
