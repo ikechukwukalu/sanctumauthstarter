@@ -3,8 +3,6 @@
 namespace Ikechukwukalu\Sanctumauthstarter\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-
 class SetupCommand extends Command
 {
     /**

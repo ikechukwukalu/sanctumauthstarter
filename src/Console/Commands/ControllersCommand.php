@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Console\Input\InputOption;
 
 class ControllersCommand extends Command
 {
