@@ -31,7 +31,7 @@
         "laravel/socialite": "^5.5",
         "laragear/two-factor": "^1.2",
         "laravel/ui": "^4.0",
-        "nesbot/carbon": "dev-master",
+        "nesbot/carbon": "^2.67",
         "php": "^8.0",
         "predis/predis": "^2.1",
         "pusher/pusher-php-server": "^7.2",
