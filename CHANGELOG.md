@@ -1,4 +1,8 @@
-# v2.0.1
+# v2.0.2
+
+- Updated json response to reflect error status.
+
+## v2.0.1
 
 - Updated `composer.json`
 
