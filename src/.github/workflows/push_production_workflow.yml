@@ -19,7 +19,7 @@ jobs:
           - 3307:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install NPM
@@ -36,8 +36,15 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PRODUCTION_PASSWORD }}
           DB_DATABASE: ${{ secrets.DB_PRODUCTION_NAME }}
         run: |
-          php artisan migrate
+          php artisan migrate --seed
           php artisan test
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects
+          command: test
   deploy-production:
     name: Deploy Project to PRODUCTION Server
     runs-on: ubuntu-latest
@@ -50,14 +57,12 @@ jobs:
         with:
           php-version: 8.1
           extension-csv: mbstring, bcmath
-      - name: Composer install
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
       - name: Deploy to Production
         uses: appleboy/ssh-action@master
         env:
             DOT_ENV: ${{ secrets.DOT_ENV_PRODUCTION }}
             PAT: ${{ secrets.PAT }}
-            $DEPLOY_PATH_PRODUCTION: ${{ secrets.DEPLOY_PATH_PRODUCTION }}
+            DEPLOY_PATH_PRODUCTION: ${{ secrets.DEPLOY_PATH_PRODUCTION }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -66,20 +71,23 @@ jobs:
           script: |
             sudo mkdir -p /tmp/production/repo
             sudo chmod -R 777 /tmp/production/repo
-            cd /tmp/production && git clone https://$PAT@github.com/monitecture/repo.git
+            cd /tmp/production && git clone https://$PAT@github.com/username/repo.git
             cd /tmp/production/repo
             sudo git checkout production
             sudo touch .env
             echo "$DOT_ENV" | sudo tee /tmp/production/repo/.env
             composer install
-            sudo php artisan migrate --force
-            sudo php artisan config:clear
-            sudo rm -r $DEPLOY_PATH_PRODUCTION/repo-old
-            sudo mv $DEPLOY_PATH_PRODUCTION/repo $DEPLOY_PATH_PRODUCTION/repo-old
-            sudo mkdir -p $DEPLOY_PATH_PRODUCTION/repo
-            sudo cp -r /tmp/production/repo/* $DEPLOY_PATH_PRODUCTION/repo
+            npm install && npm run build
+            sudo php artisan migrate:refresh --seed && sudo php artisan test
+            composer require --dev knuckleswtf/scribe
+            sudo php artisan scribe:generate && php artisan config:clear
+            sudo rm -r $DEPLOY_PATH_PRODUCTION/api/repo-old
+            sudo mv $DEPLOY_PATH_PRODUCTION/api/repo $DEPLOY_PATH_PRODUCTION/api/repo-old
+            sudo mkdir -p $DEPLOY_PATH_PRODUCTION/api/repo
+            sudo cp -r /tmp/production/repo/* $DEPLOY_PATH_PRODUCTION/api/repo
             sudo rm -r /tmp/production/repo
-            echo "$DOT_ENV" | sudo tee $DEPLOY_PATH_PRODUCTION/repo/.env
-            sudo chmod -R 0755 $DEPLOY_PATH_PRODUCTION/repo
-            sudo chmod -R ugo+rw $DEPLOY_PATH_PRODUCTION/repo/storage
+            echo "$DOT_ENV" | sudo tee $DEPLOY_PATH_PRODUCTION/api/repo/.env
+            sudo chmod -R 0755 $DEPLOY_PATH_PRODUCTION/api/repo
+            sudo chmod -R 777 $DEPLOY_PATH_PRODUCTION/api/repo/storage
+
 

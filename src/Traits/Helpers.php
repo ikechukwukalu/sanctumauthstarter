@@ -28,7 +28,7 @@ trait Helpers {
             'status' => $status,
             'status_code' => $status_code,
             'data' => $data
-        ]);
+        ], $status_code);
     }
 
     public function getUserIp(Request $request) {
