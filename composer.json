@@ -13,7 +13,7 @@
     "require": {
         "beyondcode/laravel-websockets": "^1.14",
         "doctrine/dbal": "^3.5",
-        "hisorange/browser-detect": "^4.5",
+        "hisorange/browser-detect": "^4.5 || ^5.0",
         "illuminate/auth": "^9.0|^10.0",
         "illuminate/bus": "^9.0|^10.0",
         "illuminate/broadcasting": "^9.0|^10.0",
